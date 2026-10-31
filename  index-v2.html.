@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#101114">
 <meta name="description" content="Redline — Build discipline. Track progress.">
 <title>Redline 2.0</title>
-<link rel="manifest" href="manifest.webmanifest">
+
 <style>
 :root {
   --bg:#101114;
@@ -19,66 +19,99 @@
   --border:#2b2d35;
   --green:#54d69a;
   --radius:18px;
+  --accent-soft:rgba(255,81,72,.13);
+  --shadow:0 12px 35px rgba(0,0,0,.22);
+  --transition:all .22s ease;
 }
+
 * {box-sizing:border-box}
+
+html {scroll-behavior:smooth}
+
 body {
   margin:0;
+  min-height:100vh;
   background:var(--bg);
   color:var(--text);
   font-family:system-ui,-apple-system,sans-serif;
+  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
 }
+
 button,input,textarea,select {font:inherit}
-button {cursor:pointer}
+button {cursor:pointer;transition:var(--transition)}
+button:active {transform:scale(.96)}
+
 .app {
   max-width:1100px;
   margin:auto;
   padding:20px 18px 100px;
 }
+
 header {
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-bottom:26px;
 }
+
 .logo {
   font-size:25px;
   font-weight:900;
   letter-spacing:2px;
 }
+
 .logo span {color:var(--accent)}
+
 .header-info {
   color:var(--muted);
   font-size:12px;
 }
+
 .page {display:none}
-.page.active {display:block}
+.page.active {display:block;animation:pageEnter .28s ease both}
+
 h1 {font-size:27px;margin:0 0 7px}
 h2 {font-size:19px;margin:0 0 14px}
 p {color:var(--muted)}
+
 .card {
   background:var(--panel);
   border:1px solid var(--border);
   border-radius:var(--radius);
   padding:18px;
   margin-bottom:15px;
+  box-shadow:var(--shadow);
+  animation:fadeUp .35s ease both;
 }
+
 .grid {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:12px;
 }
+
 .stat {
   background:var(--panel2);
   border-radius:14px;
   padding:15px;
+  transition:var(--transition);
 }
+
+.stat:hover {
+  transform:translateY(-3px);
+  border:1px solid var(--accent);
+}
+
 .stat strong {
   display:block;
   font-size:25px;
   margin-top:6px;
 }
+
 .muted {color:var(--muted)}
 .accent {color:var(--accent)}
+
 .primary {
   background:var(--accent);
   border:0;
@@ -87,6 +120,9 @@ p {color:var(--muted)}
   padding:12px 17px;
   font-weight:750;
 }
+
+.primary:hover {filter:brightness(1.12)}
+
 .secondary {
   background:var(--panel2);
   border:1px solid var(--border);
@@ -94,6 +130,12 @@ p {color:var(--muted)}
   border-radius:12px;
   padding:11px 14px;
 }
+
+.secondary:hover {
+  background:#292c34;
+  border-color:#555965;
+}
+
 input,textarea,select {
   width:100%;
   background:var(--panel2);
@@ -103,19 +145,41 @@ input,textarea,select {
   color:var(--text);
   margin:7px 0;
 }
+
 textarea {resize:vertical}
+
+input:focus,textarea:focus,select:focus {
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-soft);
+}
+
 .progress {
   height:9px;
   background:var(--panel2);
   border-radius:20px;
   overflow:hidden;
+  position:relative;
 }
+
 .progress div {
   height:100%;
   width:0;
   background:var(--accent);
   border-radius:20px;
+  transition:width .5s ease;
 }
+
+.section-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin:20px 0 12px;
+}
+
+.hidden {display:none!important}
+
 .bottom-nav {
   position:fixed;
   bottom:0;
@@ -129,6 +193,7 @@ textarea {resize:vertical}
   padding:10px 4px calc(10px + env(safe-area-inset-bottom));
   z-index:20;
 }
+
 .nav-btn {
   background:none;
   border:0;
@@ -139,17 +204,32 @@ textarea {resize:vertical}
   align-items:center;
   gap:4px;
   min-width:55px;
+  padding:5px 2px;
+  border-radius:12px;
 }
-.nav-btn .symbol {font-size:19px}
-.nav-btn.active {color:var(--accent)}
-.section-head {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin:20px 0 12px;
+
+.nav-btn .symbol {
+  font-size:19px;
+  transition:transform .2s ease;
 }
-.hidden {display:none!important}
+
+.nav-btn.active {
+  color:var(--accent);
+  background:var(--accent-soft);
+  font-weight:750;
+}
+
+.nav-btn.active .symbol {
+  transform:translateY(-2px) scale(1.12);
+}
+
+.primary:focus-visible,
+.secondary:focus-visible,
+.nav-btn:focus-visible {
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+}
+
 #toast {
   position:fixed;
   bottom:90px;
@@ -161,12 +241,51 @@ textarea {resize:vertical}
   border-radius:12px;
   display:none;
   z-index:50;
+  box-shadow:var(--shadow);
 }
+
+@keyframes fadeUp {
+  from {opacity:0;transform:translateY(10px)}
+  to {opacity:1;transform:translateY(0)}
+}
+
+@keyframes pageEnter {
+  from {opacity:0;transform:translateY(7px)}
+  to {opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:380px) {
+  .app {padding-left:12px;padding-right:12px}
+  .nav-btn {font-size:10px;min-width:48px}
+  .nav-btn .symbol {font-size:17px}
+  h1 {font-size:24px}
+}
+
 @media(min-width:700px) {
+  .app {padding-top:30px}
   .grid {grid-template-columns:repeat(4,minmax(0,1fr))}
+  .bottom-nav {
+    left:50%;
+    right:auto;
+    transform:translateX(-50%);
+    width:min(700px,95%);
+    bottom:15px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:10px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
 }
 </style>
 </head>
+
 <body>
 <div class="app">
 
@@ -286,7 +405,9 @@ textarea {resize:vertical}
 
 <section class="page" id="awards">
   <h1>Achievements</h1>
-  <div class="card" id="achievementContent">Achievements coming in Part 6.</div>
+  <div class="card" id="achievementContent">
+    Achievements coming in Part 6.
+  </div>
 </section>
 
 <section class="page" id="challenges">
@@ -325,170 +446,6 @@ textarea {resize:vertical}
 
 <div id="toast"></div>
 
-<!-- REDLINE 2.0 CODE PARTS WILL BE ADDED BELOW -->
-
-</body>
-</html>
-
-/* ===== REDLINE 2.0 DESIGN SYSTEM ===== */
-
-:root {
-  --accent-soft:rgba(255,81,72,.13);
-  --shadow:0 12px 35px rgba(0,0,0,.22);
-  --transition:all .22s ease;
-}
-
-html {
-  scroll-behavior:smooth;
-}
-
-body {
-  min-height:100vh;
-  overflow-x:hidden;
-  -webkit-tap-highlight-color:transparent;
-}
-
-button {
-  transition:transform .18s ease,background .18s ease,
-             border-color .18s ease,opacity .18s ease;
-}
-
-button:active {
-  transform:scale(.96);
-}
-
-.primary:hover {
-  filter:brightness(1.12);
-}
-
-.secondary:hover {
-  background:#292c34;
-  border-color:#555965;
-}
-
-.card {
-  box-shadow:var(--shadow);
-  animation:fadeUp .35s ease both;
-}
-
-.stat {
-  transition:var(--transition);
-}
-
-.stat:hover {
-  transform:translateY(-3px);
-  border:1px solid var(--accent);
-}
-
-.page.active {
-  animation:pageEnter .28s ease both;
-}
-
-.nav-btn {
-  transition:var(--transition);
-  padding:5px 2px;
-  border-radius:12px;
-}
-
-.nav-btn.active {
-  background:var(--accent-soft);
-  font-weight:750;
-}
-
-.nav-btn .symbol {
-  transition:transform .2s ease;
-}
-
-.nav-btn.active .symbol {
-  transform:translateY(-2px) scale(1.12);
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline:none;
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px var(--accent-soft);
-}
-
-.primary:focus-visible,
-.secondary:focus-visible,
-.nav-btn:focus-visible {
-  outline:2px solid var(--accent);
-  outline-offset:3px;
-}
-
-.progress {
-  position:relative;
-}
-
-.progress div {
-  transition:width .5s ease;
-}
-
-#toast {
-  box-shadow:var(--shadow);
-  animation:toastEnter .25s ease;
-}
-
-@keyframes fadeUp {
-  from {opacity:0;transform:translateY(10px)}
-  to {opacity:1;transform:translateY(0)}
-}
-
-@keyframes pageEnter {
-  from {opacity:0;transform:translateY(7px)}
-  to {opacity:1;transform:translateY(0)}
-}
-
-@keyframes toastEnter {
-  from {opacity:0;transform:translate(-50%,10px)}
-  to {opacity:1;transform:translate(-50%,0)}
-}
-
-@media(max-width:380px) {
-  .app {
-    padding-left:12px;
-    padding-right:12px;
-  }
-
-  .nav-btn {
-    font-size:10px;
-    min-width:48px;
-  }
-
-  .nav-btn .symbol {
-    font-size:17px;
-  }
-
-  h1 {font-size:24px}
-}
-
-@media(min-width:700px) {
-  .app {
-    padding-top:30px;
-  }
-
-  .bottom-nav {
-    left:50%;
-    right:auto;
-    transform:translateX(-50%);
-    width:min(700px,95%);
-    bottom:15px;
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:10px;
-  }
-}
-
-@media(prefers-reduced-motion:reduce) {
-  *,*::before,*::after {
-    scroll-behavior:auto!important;
-    animation-duration:.01ms!important;
-    transition-duration:.01ms!important;
-  }
-}
-
 <script>
 /* ===== PART 3: TASK ENGINE ===== */
 
@@ -518,6 +475,26 @@ const rlToday = () => {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 };
 
+function showPage(pageId, button) {
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.toggle('active', page.id === pageId);
+  });
+
+  document.querySelectorAll('.nav-btn').forEach(nav => {
+    nav.classList.remove('active');
+  });
+
+  if (button) {
+    button.classList.add('active');
+  } else {
+    const matching = [...document.querySelectorAll('.nav-btn')]
+      .find(nav => nav.getAttribute('onclick')?.includes(`'${pageId}'`));
+    if (matching) matching.classList.add('active');
+  }
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
 function rlLevel() {
   return Math.floor(Math.sqrt(rlXP / 100)) + 1;
 }
@@ -540,14 +517,15 @@ function addTask() {
   }
 
   const id = Date.now();
+
   rlTasks.push({
     id,
-    text: value,
-    date: rlToday(),
-    cat: 'Personal',
-    pri: 1,
-    rep: 'none',
-    done: false
+    text:value,
+    date:rlToday(),
+    cat:'Personal',
+    pri:1,
+    rep:'none',
+    done:false
   });
 
   input.value = '';
@@ -590,9 +568,9 @@ function rlToggleTask(id) {
       if (!exists) {
         rlTasks.push({
           ...task,
-          id: Date.now() + Math.random(),
-          date: nextDate,
-          done: false
+          id:Date.now() + Math.random(),
+          date:nextDate,
+          done:false
         });
       }
     }
@@ -625,7 +603,7 @@ function rlRenderTasks() {
     }
 
     return tasks.map(t => `
-      <div class="task-row" style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)">
         <input type="checkbox" style="width:20px;margin:0"
           ${t.done ? 'checked' : ''}
           onchange="rlToggleTask(${JSON.stringify(t.id)})">
@@ -633,7 +611,10 @@ function rlRenderTasks() {
           <div style="${t.done ? 'text-decoration:line-through;opacity:.5' : ''}">
             ${rlEscape(t.text)}
           </div>
-          <small class="muted">${rlEscape(t.cat || 'Personal')} · ${t.pri === 2 ? 'High' : t.pri === 1 ? 'Medium' : 'Low'} priority</small>
+          <small class="muted">
+            ${rlEscape(t.cat || 'Personal')} ·
+            ${t.pri === 2 ? 'High' : t.pri === 1 ? 'Medium' : 'Low'} priority
+          </small>
         </div>
         <button class="secondary" onclick="rlDeleteTask(${JSON.stringify(t.id)})">×</button>
       </div>
@@ -692,3 +673,6 @@ document.addEventListener('DOMContentLoaded', () => {
   rlRenderTasks();
 });
 </script>
+
+</body>
+</html>
