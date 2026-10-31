@@ -1,0 +1,694 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#101114">
+<meta name="description" content="Redline — Build discipline. Track progress.">
+<title>Redline 2.0</title>
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root {
+  --bg:#101114;
+  --panel:#191b20;
+  --panel2:#202229;
+  --text:#f5f5f5;
+  --muted:#92949e;
+  --accent:#ff5148;
+  --border:#2b2d35;
+  --green:#54d69a;
+  --radius:18px;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,sans-serif;
+}
+button,input,textarea,select {font:inherit}
+button {cursor:pointer}
+.app {
+  max-width:1100px;
+  margin:auto;
+  padding:20px 18px 100px;
+}
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:26px;
+}
+.logo {
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+.logo span {color:var(--accent)}
+.header-info {
+  color:var(--muted);
+  font-size:12px;
+}
+.page {display:none}
+.page.active {display:block}
+h1 {font-size:27px;margin:0 0 7px}
+h2 {font-size:19px;margin:0 0 14px}
+p {color:var(--muted)}
+.card {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px;
+  margin-bottom:15px;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.stat {
+  background:var(--panel2);
+  border-radius:14px;
+  padding:15px;
+}
+.stat strong {
+  display:block;
+  font-size:25px;
+  margin-top:6px;
+}
+.muted {color:var(--muted)}
+.accent {color:var(--accent)}
+.primary {
+  background:var(--accent);
+  border:0;
+  border-radius:12px;
+  color:white;
+  padding:12px 17px;
+  font-weight:750;
+}
+.secondary {
+  background:var(--panel2);
+  border:1px solid var(--border);
+  color:var(--text);
+  border-radius:12px;
+  padding:11px 14px;
+}
+input,textarea,select {
+  width:100%;
+  background:var(--panel2);
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:12px;
+  color:var(--text);
+  margin:7px 0;
+}
+textarea {resize:vertical}
+.progress {
+  height:9px;
+  background:var(--panel2);
+  border-radius:20px;
+  overflow:hidden;
+}
+.progress div {
+  height:100%;
+  width:0;
+  background:var(--accent);
+  border-radius:20px;
+}
+.bottom-nav {
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#17181df2;
+  backdrop-filter:blur(16px);
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:space-around;
+  padding:10px 4px calc(10px + env(safe-area-inset-bottom));
+  z-index:20;
+}
+.nav-btn {
+  background:none;
+  border:0;
+  color:var(--muted);
+  font-size:11px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  min-width:55px;
+}
+.nav-btn .symbol {font-size:19px}
+.nav-btn.active {color:var(--accent)}
+.section-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin:20px 0 12px;
+}
+.hidden {display:none!important}
+#toast {
+  position:fixed;
+  bottom:90px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#292b32;
+  border:1px solid var(--border);
+  padding:12px 18px;
+  border-radius:12px;
+  display:none;
+  z-index:50;
+}
+@media(min-width:700px) {
+  .grid {grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header>
+  <div class="logo">RED<span>LINE</span></div>
+  <div class="header-info" id="headerDate">YOUR DAY</div>
+</header>
+
+<main>
+
+<section class="page active" id="today">
+  <h1>Today's mission.</h1>
+  <p id="todayDate"></p>
+
+  <div class="grid">
+    <div class="stat">
+      <span class="muted">LEVEL</span>
+      <strong id="levelValue">1</strong>
+    </div>
+    <div class="stat">
+      <span class="muted">TOTAL XP</span>
+      <strong id="xpValue">0</strong>
+    </div>
+    <div class="stat">
+      <span class="muted">TASKS DONE</span>
+      <strong id="tasksValue">0/0</strong>
+    </div>
+    <div class="stat">
+      <span class="muted">STREAK</span>
+      <strong id="streakValue">0 days</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-head">
+      <h2>Daily progress</h2>
+      <strong id="progressText">0%</strong>
+    </div>
+    <div class="progress"><div id="dailyProgress"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="section-head">
+      <h2>Today's tasks</h2>
+      <button class="secondary" onclick="showPage('tasks')">View all</button>
+    </div>
+    <div id="todayTasks"></div>
+  </div>
+
+  <div class="card">
+    <h2>Daily motivation</h2>
+    <p id="dailyQuote">Discipline beats motivation.</p>
+  </div>
+</section>
+
+<section class="page" id="tasks">
+  <h1>Tasks</h1>
+  <p>Plan your day. Execute your missions.</p>
+  <div class="card">
+    <h2>Add a task</h2>
+    <input id="taskInput" placeholder="What needs to get done?">
+    <button class="primary" onclick="addTask()">Add task</button>
+  </div>
+  <div class="card">
+    <div id="taskList"></div>
+  </div>
+</section>
+
+<section class="page" id="calendar">
+  <h1>Calendar</h1>
+  <p>Your schedule, organised.</p>
+  <div class="card" id="calendarContent">
+    Calendar system coming in Part 4.
+  </div>
+</section>
+
+<section class="page" id="focus">
+  <h1>Focus mode</h1>
+  <p>Protect your attention.</p>
+  <div class="card">
+    <div id="timerDisplay" style="font-size:54px;text-align:center;font-weight:850">25:00</div>
+    <div class="section-head">
+      <button class="secondary" onclick="setTimer(25)">25 min</button>
+      <button class="secondary" onclick="setTimer(45)">45 min</button>
+      <button class="secondary" onclick="setTimer(60)">60 min</button>
+    </div>
+    <button class="primary" id="timerButton" onclick="toggleTimer()">Start focus</button>
+  </div>
+</section>
+
+<section class="page" id="progress">
+  <h1>Your progress</h1>
+  <p>Small wins add up.</p>
+  <div class="card" id="statsContent">
+    Statistics system coming in Part 8.
+  </div>
+</section>
+
+<section class="page" id="more">
+  <h1>Redline hub</h1>
+  <p>Everything else in one place.</p>
+  <div id="moreContent" class="card">
+    <button class="secondary" onclick="showPage('notes')">Daily journal</button>
+    <button class="secondary" onclick="showPage('awards')">Achievements</button>
+    <button class="secondary" onclick="showPage('challenges')">Challenges</button>
+    <button class="secondary" onclick="showPage('store')">Avatar store</button>
+  </div>
+</section>
+
+<section class="page" id="notes">
+  <h1>Daily journal</h1>
+  <div class="card">
+    <textarea id="journalInput" rows="7" placeholder="How was your day?"></textarea>
+    <button class="primary" onclick="saveJournal()">Save entry</button>
+  </div>
+</section>
+
+<section class="page" id="awards">
+  <h1>Achievements</h1>
+  <div class="card" id="achievementContent">Achievements coming in Part 6.</div>
+</section>
+
+<section class="page" id="challenges">
+  <h1>Challenges</h1>
+  <div class="card">Challenge system coming in Part 10.</div>
+</section>
+
+<section class="page" id="store">
+  <h1>Avatar store</h1>
+  <div class="card">Customization system coming in Part 7.</div>
+</section>
+
+</main>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="showPage('today',this)">
+    <span class="symbol">⌂</span>Today
+  </button>
+  <button class="nav-btn" onclick="showPage('tasks',this)">
+    <span class="symbol">☑</span>Tasks
+  </button>
+  <button class="nav-btn" onclick="showPage('calendar',this)">
+    <span class="symbol">▦</span>Calendar
+  </button>
+  <button class="nav-btn" onclick="showPage('focus',this)">
+    <span class="symbol">◷</span>Focus
+  </button>
+  <button class="nav-btn" onclick="showPage('progress',this)">
+    <span class="symbol">↗</span>Progress
+  </button>
+  <button class="nav-btn" onclick="showPage('more',this)">
+    <span class="symbol">•••</span>More
+  </button>
+</nav>
+
+<div id="toast"></div>
+
+<!-- REDLINE 2.0 CODE PARTS WILL BE ADDED BELOW -->
+
+</body>
+</html>
+
+/* ===== REDLINE 2.0 DESIGN SYSTEM ===== */
+
+:root {
+  --accent-soft:rgba(255,81,72,.13);
+  --shadow:0 12px 35px rgba(0,0,0,.22);
+  --transition:all .22s ease;
+}
+
+html {
+  scroll-behavior:smooth;
+}
+
+body {
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+
+button {
+  transition:transform .18s ease,background .18s ease,
+             border-color .18s ease,opacity .18s ease;
+}
+
+button:active {
+  transform:scale(.96);
+}
+
+.primary:hover {
+  filter:brightness(1.12);
+}
+
+.secondary:hover {
+  background:#292c34;
+  border-color:#555965;
+}
+
+.card {
+  box-shadow:var(--shadow);
+  animation:fadeUp .35s ease both;
+}
+
+.stat {
+  transition:var(--transition);
+}
+
+.stat:hover {
+  transform:translateY(-3px);
+  border:1px solid var(--accent);
+}
+
+.page.active {
+  animation:pageEnter .28s ease both;
+}
+
+.nav-btn {
+  transition:var(--transition);
+  padding:5px 2px;
+  border-radius:12px;
+}
+
+.nav-btn.active {
+  background:var(--accent-soft);
+  font-weight:750;
+}
+
+.nav-btn .symbol {
+  transition:transform .2s ease;
+}
+
+.nav-btn.active .symbol {
+  transform:translateY(-2px) scale(1.12);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-soft);
+}
+
+.primary:focus-visible,
+.secondary:focus-visible,
+.nav-btn:focus-visible {
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+}
+
+.progress {
+  position:relative;
+}
+
+.progress div {
+  transition:width .5s ease;
+}
+
+#toast {
+  box-shadow:var(--shadow);
+  animation:toastEnter .25s ease;
+}
+
+@keyframes fadeUp {
+  from {opacity:0;transform:translateY(10px)}
+  to {opacity:1;transform:translateY(0)}
+}
+
+@keyframes pageEnter {
+  from {opacity:0;transform:translateY(7px)}
+  to {opacity:1;transform:translateY(0)}
+}
+
+@keyframes toastEnter {
+  from {opacity:0;transform:translate(-50%,10px)}
+  to {opacity:1;transform:translate(-50%,0)}
+}
+
+@media(max-width:380px) {
+  .app {
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .nav-btn {
+    font-size:10px;
+    min-width:48px;
+  }
+
+  .nav-btn .symbol {
+    font-size:17px;
+  }
+
+  h1 {font-size:24px}
+}
+
+@media(min-width:700px) {
+  .app {
+    padding-top:30px;
+  }
+
+  .bottom-nav {
+    left:50%;
+    right:auto;
+    transform:translateX(-50%);
+    width:min(700px,95%);
+    bottom:15px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:10px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
+
+<script>
+/* ===== PART 3: TASK ENGINE ===== */
+
+const RL = {
+  read(key, fallback) {
+    try {
+      const value = localStorage.getItem('rl-' + key);
+      return value ? JSON.parse(value) : fallback;
+    } catch {
+      return fallback;
+    }
+  },
+  save(key, value) {
+    localStorage.setItem('rl-' + key, JSON.stringify(value));
+  }
+};
+
+let rlTasks = RL.read('tasks', []);
+let rlCategories = RL.read('cats', [
+  'Math','English','Science','Personal'
+]);
+let rlXP = Number(RL.read('xp', 0)) || 0;
+let rlAwards = RL.read('xpAwards', {});
+
+const rlToday = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+};
+
+function rlLevel() {
+  return Math.floor(Math.sqrt(rlXP / 100)) + 1;
+}
+
+function rlAward(id, amount) {
+  if (rlAwards[id]) return;
+  rlAwards[id] = true;
+  rlXP += amount;
+  RL.save('xp', rlXP);
+  RL.save('xpAwards', rlAwards);
+}
+
+function addTask() {
+  const input = document.getElementById('taskInput');
+  const value = input.value.trim();
+
+  if (!value) {
+    rlToast('Enter a task first');
+    return;
+  }
+
+  const id = Date.now();
+  rlTasks.push({
+    id,
+    text: value,
+    date: rlToday(),
+    cat: 'Personal',
+    pri: 1,
+    rep: 'none',
+    done: false
+  });
+
+  input.value = '';
+  rlSaveTasks();
+  rlRenderTasks();
+  rlToast('Task added');
+}
+
+function rlSaveTasks() {
+  RL.save('tasks', rlTasks);
+}
+
+function rlToggleTask(id) {
+  const task = rlTasks.find(t => t.id === id);
+  if (!task) return;
+
+  task.done = !task.done;
+
+  if (task.done) {
+    rlAward('task-' + task.id,
+      task.pri === 2 ? 30 : task.pri === 1 ? 20 : 10
+    );
+
+    if (task.rep === 'daily' || task.rep === 'weekly') {
+      const seriesId = task.seriesId ?? task.id;
+      task.seriesId = seriesId;
+
+      const next = new Date(task.date + 'T12:00:00');
+      next.setDate(next.getDate() +
+        (task.rep === 'weekly' ? 7 : 1));
+
+      const nextDate =
+        `${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,'0')}-${String(next.getDate()).padStart(2,'0')}`;
+
+      const exists = rlTasks.some(t =>
+        (t.seriesId ?? t.id) === seriesId &&
+        t.date === nextDate
+      );
+
+      if (!exists) {
+        rlTasks.push({
+          ...task,
+          id: Date.now() + Math.random(),
+          date: nextDate,
+          done: false
+        });
+      }
+    }
+  }
+
+  rlSaveTasks();
+  rlRenderTasks();
+  rlToast(task.done ? 'Task completed!' : 'Task reopened');
+}
+
+function rlDeleteTask(id) {
+  if (!confirm('Delete this task?')) return;
+
+  rlTasks = rlTasks.filter(t => t.id !== id);
+  rlSaveTasks();
+  rlRenderTasks();
+  rlToast('Task deleted');
+}
+
+function rlRenderTasks() {
+  const today = rlToday();
+  const todayTasks = rlTasks.filter(t => t.date === today);
+
+  const list = document.getElementById('taskList');
+  const todayList = document.getElementById('todayTasks');
+
+  function makeHTML(tasks) {
+    if (!tasks.length) {
+      return '<p class="muted">No tasks yet. Add your first mission.</p>';
+    }
+
+    return tasks.map(t => `
+      <div class="task-row" style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)">
+        <input type="checkbox" style="width:20px;margin:0"
+          ${t.done ? 'checked' : ''}
+          onchange="rlToggleTask(${JSON.stringify(t.id)})">
+        <div style="flex:1;min-width:0">
+          <div style="${t.done ? 'text-decoration:line-through;opacity:.5' : ''}">
+            ${rlEscape(t.text)}
+          </div>
+          <small class="muted">${rlEscape(t.cat || 'Personal')} · ${t.pri === 2 ? 'High' : t.pri === 1 ? 'Medium' : 'Low'} priority</small>
+        </div>
+        <button class="secondary" onclick="rlDeleteTask(${JSON.stringify(t.id)})">×</button>
+      </div>
+    `).join('');
+  }
+
+  if (list) list.innerHTML = makeHTML(todayTasks);
+  if (todayList) todayList.innerHTML = makeHTML(todayTasks);
+
+  const completed = todayTasks.filter(t => t.done).length;
+  const percent = todayTasks.length
+    ? Math.round(completed / todayTasks.length * 100)
+    : 0;
+
+  document.getElementById('tasksValue').textContent =
+    `${completed}/${todayTasks.length}`;
+
+  document.getElementById('progressText').textContent = percent + '%';
+  document.getElementById('dailyProgress').style.width = percent + '%';
+  document.getElementById('xpValue').textContent = rlXP;
+  document.getElementById('levelValue').textContent = rlLevel();
+}
+
+function rlEscape(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[c]);
+}
+
+function rlToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.style.display = 'block';
+
+  clearTimeout(window.rlToastTimeout);
+  window.rlToastTimeout = setTimeout(() => {
+    toast.style.display = 'none';
+  }, 2200);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('todayDate').textContent =
+    new Date().toLocaleDateString(undefined, {
+      weekday:'long',year:'numeric',month:'long',day:'numeric'
+    });
+
+  document.getElementById('headerDate').textContent =
+    new Date().toLocaleDateString(undefined, {
+      month:'short',day:'numeric'
+    });
+
+  rlRenderTasks();
+});
+</script>
