@@ -1,368 +1,1503 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#101114">
-<meta name="description" content="Redline — build consistency, one task at a time.">
+<meta name="description" content="Redline — build your momentum.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>Redline — Build your momentum</title>
+<title>Redline 2.0</title>
+
 <style>
-:root{color-scheme:dark;--bg:#101114;--panel:#181a20;--panel2:#20232b;--line:#2c303a;--ink:#f4f4f6;--muted:#969ba8;--red:#ef4053;--red2:#b92339;--green:#54d6a0;--amber:#f2bd62;--blue:#83aaff;--radius:20px;--shadow:0 16px 45px #0005}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% -15%,#57202a55,transparent 42%),var(--bg);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--red);outline-offset:3px}.app{max-width:1080px;margin:auto;padding:26px 22px 110px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px}.mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#ff6472,var(--red2));display:grid;place-items:center;font-weight:950;font-size:20px;box-shadow:0 8px 25px #ef405344}.brand strong{display:block;letter-spacing:.13em;font-size:14px}.brand small{color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}.topright{display:flex;align-items:center;gap:9px}.level-pill,.icon-btn{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:9px 13px;font-size:12px}.icon-btn{width:40px;height:40px;padding:0;border-radius:13px;font-size:17px}.screen{animation:appear .24s ease}@keyframes appear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}.eyebrow{color:var(--red);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:10px}.hero{display:grid;grid-template-columns:1.4fr .8fr;gap:18px;margin-bottom:18px}.hero-main,.hero-xp,.card{background:linear-gradient(145deg,#20232b,#17191f);border:1px solid var(--line);border-radius:var(--radius);padding:23px;box-shadow:var(--shadow)}.hero-main{position:relative;overflow:hidden;min-height:210px}.hero-main:after{content:"";position:absolute;width:230px;height:230px;border:1px solid #ef405322;border-radius:50%;right:-90px;top:-100px;box-shadow:0 0 0 25px #ef405309,0 0 0 50px #ef405306}.hero-main h1{font-size:clamp(28px,5vw,44px);line-height:1.06;letter-spacing:-.045em;margin:10px 0}.hero-main p{color:var(--muted);margin:0}.hero-bottom{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}.chip{border:1px solid var(--line);background:#ffffff08;padding:7px 11px;border-radius:99px;font-size:12px;color:#d9dbe1}.hero-xp{display:flex;flex-direction:column;justify-content:space-between}.xp-head{display:flex;justify-content:space-between;align-items:center}.level-number{font-size:37px;font-weight:900;letter-spacing:-.06em}.xpbar,.bar{height:9px;border-radius:20px;background:#ffffff12;overflow:hidden}.xpbar i,.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--red2),#ff6573);border-radius:20px;transition:width .35s}.muted{color:var(--muted)}.small{font-size:12px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 18px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.stat b{display:block;font-size:25px;letter-spacing:-.04em}.stat span{color:var(--muted);font-size:11px}.layout{display:grid;grid-template-columns:1.35fr .85fr;gap:16px}.card{padding:20px;margin-bottom:15px}.card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.card h2,.card h3{margin:0;font-size:16px;letter-spacing:-.02em}.link-btn{border:0;background:none;color:var(--red);font-weight:750;font-size:12px;padding:5px}.task-list{display:grid;gap:8px}.task{display:flex;align-items:center;gap:11px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#ffffff04;transition:background .2s,border .2s}.task:hover{background:#ffffff08;border-color:#454a57}.check{flex:0 0 23px;width:23px;height:23px;border:1.5px solid #626875;border-radius:8px;background:transparent;display:grid;place-items:center;color:white;font-weight:900}.task.done .check{background:var(--green);border-color:var(--green);color:#0e1915}.task-copy{min-width:0;flex:1}.task-name{display:block;font-weight:700;overflow-wrap:anywhere}.task.done .task-name{text-decoration:line-through;color:var(--muted)}.task-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:3px}.tag{font-size:10px;color:var(--muted);background:#ffffff0a;padding:3px 7px;border-radius:99px}.tag.high{color:#ff929c;background:#ef40531b}.tag.medium{color:var(--amber)}.delete{border:0;background:transparent;color:#777e8c;font-size:20px;padding:2px 5px}.delete:hover{color:var(--red)}.empty{padding:24px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px;font-size:13px}.quick-add,.primary{border:0;border-radius:12px;background:var(--red);color:white;padding:11px 15px;font-weight:800;box-shadow:0 7px 20px #ef40532b}.quick-add{width:100%;margin-top:12px}.primary:hover,.quick-add:hover{background:#ff596b}.secondary{border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:10px 13px;font-weight:700}.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.row>*{min-width:0}.day-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}.day-head h2{font-size:16px;margin:0}.date-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:16px}.date-btn{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:9px 2px;text-align:center}.date-btn span{display:block;color:var(--muted);font-size:10px}.date-btn b{display:block;font-size:14px;margin:4px 0}.date-btn.active{background:#ef40531b;border-color:var(--red)}.date-btn i{display:block;width:4px;height:4px;border-radius:50%;background:var(--red);margin:auto}.progress-ring{width:90px;height:90px;position:relative;display:grid;place-items:center}.progress-ring svg{position:absolute;inset:0;transform:rotate(-90deg)}.progress-ring circle{fill:none;stroke-width:8}.progress-ring .track{stroke:#ffffff17}.progress-ring .value{stroke:var(--red);stroke-linecap:round;transition:stroke-dashoffset .3s}.progress-ring b{font-size:19px}.nav{position:fixed;z-index:5;bottom:0;left:0;right:0;display:flex;justify-content:center;padding:9px 12px calc(9px + env(safe-area-inset-bottom));background:#111216ef;backdrop-filter:blur(18px);border-top:1px solid var(--line)}.nav-inner{width:min(650px,100%);display:grid;grid-template-columns:repeat(5,1fr);gap:5px}.nav button{border:0;background:none;color:var(--muted);padding:8px 3px;border-radius:12px;font-size:10px;font-weight:700}.nav button span{display:block;font-size:18px;margin-bottom:2px}.nav button.active{background:#ef40531b;color:#ff7784}.modal{position:fixed;inset:0;background:#000a;z-index:10;display:none;align-items:flex-end;justify-content:center;padding:16px}.modal.open{display:flex}.modal-box{width:min(520px,100%);background:#1b1e25;border:1px solid #3b404c;border-radius:23px;padding:22px;box-shadow:var(--shadow);max-height:90vh;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.modal-head h2{margin:0}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:11px;color:var(--muted);font-weight:750}.field input,.field select,.inline-input{width:100%;border:1px solid var(--line);background:#111319;color:var(--ink);padding:12px;border-radius:11px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.modal-actions{display:flex;gap:9px;margin-top:17px}.modal-actions button{flex:1}.seg{display:flex;gap:5px;padding:4px;background:var(--panel);border:1px solid var(--line);border-radius:13px;width:max-content;max-width:100%;overflow:auto}.seg button{border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:9px;font-size:12px}.seg button.active{background:var(--red);color:white}.chart{display:flex;align-items:end;gap:7px;height:160px;padding:15px 2px 0}.bar-col{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:7px}.bar-col i{display:block;width:min(25px,75%);min-height:2px;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#ff7180,var(--red2))}.bar-col span{font-size:9px;color:var(--muted)}.achievement-list{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.achievement{border:1px solid var(--line);border-radius:13px;padding:12px;background:#ffffff04}.achievement.locked{opacity:.42;filter:grayscale(1)}.achievement b{display:block;font-size:12px}.achievement span{font-size:10px;color:var(--muted)}.achievement i{font-style:normal;font-size:22px;display:block;margin-bottom:5px}.focus-wrap{text-align:center;padding:22px 5px}.timer{font-size:58px;font-weight:850;letter-spacing:-.06em;margin:12px 0}.timer-ring{width:210px;height:210px;margin:12px auto;position:relative;display:grid;place-items:center}.timer-ring svg{position:absolute;inset:0;transform:rotate(-90deg)}.timer-ring circle{fill:none;stroke-width:6}.timer-ring .track{stroke:#ffffff12}.timer-ring .value{stroke:var(--red);stroke-linecap:round}.timer-ring .timer{position:relative}.notice{border:1px solid #ef405344;background:#ef405310;padding:12px;border-radius:12px;color:#ffb1b8;font-size:12px}.exam{display:flex;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.exam b{font-size:12px;min-width:65px}.exam span{flex:1;font-size:13px}.hidden{display:none!important}.toast{position:fixed;z-index:30;left:50%;bottom:90px;transform:translateX(-50%);background:#f4f4f6;color:#17191f;border-radius:99px;padding:10px 16px;font-size:12px;font-weight:750;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
-@media(max-width:760px){.app{padding:18px 14px 105px}.hero{grid-template-columns:1fr}.hero-main{min-height:180px}.hero-xp{gap:12px}.grid{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.top{margin-bottom:18px}.level-pill{padding:8px 10px}}
-@media(max-width:380px){.form-grid{grid-template-columns:1fr}.date-strip{gap:4px}.date-btn{padding:7px 1px}.hero-main,.hero-xp{padding:18px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+:root{
+  color-scheme:dark;
+  --bg:#101114;
+  --panel:#191b22;
+  --panel2:#22252e;
+  --line:#303440;
+  --ink:#f5f5f7;
+  --muted:#999eaa;
+  --red:#ef4053;
+  --green:#54d6a0;
+  --amber:#f2bd62;
+  --blue:#83aaff;
+  --radius:18px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+  padding-bottom:100px;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;color:inherit}
+.app{max-width:850px;margin:auto;padding:18px}
+.top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 2px 22px;
+}
+.brand{font-size:23px;font-weight:900;letter-spacing:2px}
+.brand span{color:var(--red)}
+.level-pill{
+  background:var(--panel2);border:1px solid var(--line);
+  border-radius:30px;padding:8px 13px;font-size:12px;
+}
+.page-heading{margin:12px 0 22px}
+.eyebrow{
+  color:var(--red);font-size:10px;font-weight:800;
+  letter-spacing:2px;text-transform:uppercase;
+}
+h1{font-size:34px;line-height:1.1;margin:9px 0}
+h2{font-size:19px;margin:7px 0}
+h3{margin:6px 0}
+p{line-height:1.5}
+.muted{color:var(--muted);font-size:13px}
+.card{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--radius);padding:17px;margin:13px 0;
+}
+.hero{
+  background:linear-gradient(135deg,#29202a,#191b22 65%);
+  border:1px solid #49313a;border-radius:23px;
+  padding:23px;margin-bottom:15px;
+}
+.hero h1{font-size:38px}
+.hero h1 span{color:var(--red)}
+.hero p{color:var(--muted)}
+.grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.stat-card{margin:0;padding:15px}
+.stat-number{font-size:28px;font-weight:850;margin:9px 0}
+.stat-number small{font-size:12px;color:var(--muted)}
+.primary,.secondary,.danger{
+  border:0;border-radius:12px;padding:12px 16px;font-weight:750;
+  transition:transform .15s,filter .15s;
+}
+.primary{background:var(--red);color:white}
+.secondary{background:var(--panel2);border:1px solid var(--line)}
+.danger{background:#48232a;color:#ffb3bc}
+button:active{transform:scale(.96)}
+.block{width:100%;margin-top:9px}
+input,textarea,select{
+  width:100%;padding:12px;border-radius:11px;
+  border:1px solid var(--line);background:var(--panel2);
+  color:var(--ink);outline:none;
+}
+textarea{resize:vertical;min-height:100px}
+input:focus,textarea:focus,select:focus{
+  border-color:var(--red);
+}
+.field{margin:13px 0}
+.field label{
+  display:block;font-size:10px;letter-spacing:1.5px;
+  color:var(--muted);font-weight:800;margin-bottom:7px;
+}
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin:22px 0 10px;
+}
+.task{
+  display:flex;align-items:center;gap:11px;
+  padding:13px 0;border-bottom:1px solid var(--line);
+}
+.task:last-child{border:0}
+.task input[type=checkbox]{width:20px;height:20px;accent-color:var(--red)}
+.task.done .task-name{text-decoration:line-through;color:var(--muted)}
+.task-name{font-weight:650;flex:1;overflow-wrap:anywhere}
+.task small{display:block;color:var(--muted);margin-top:4px}
+.delete{
+  border:0;background:transparent;color:var(--muted);
+  font-size:20px;padding:5px 9px;
+}
+.progress-track{
+  height:9px;background:var(--panel2);border-radius:20px;
+  overflow:hidden;margin:12px 0;
+}
+.progress-track i{
+  display:block;height:100%;background:var(--red);
+  border-radius:20px;transition:width .3s;
+}
+.date-strip{
+  display:flex;gap:7px;overflow-x:auto;padding:5px 0 15px;
+}
+.date-btn{
+  min-width:49px;padding:9px 5px;background:var(--panel);
+  border:1px solid var(--line);border-radius:13px;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+}
+.date-btn span{font-size:10px;color:var(--muted)}
+.date-btn.active{border-color:var(--red);background:#382029}
+.date-btn b{font-size:17px}
+.date-btn i{font-size:10px;color:var(--green)}
+.nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:10;
+  background:#15161bf2;border-top:1px solid var(--line);
+  padding:9px 5px calc(9px + env(safe-area-inset-bottom));
+  backdrop-filter:blur(15px);
+}
+.nav-inner{
+  max-width:850px;margin:auto;display:flex;
+  justify-content:space-around;gap:3px;
+}
+.nav button{
+  flex:1;border:0;background:transparent;color:var(--muted);
+  padding:9px 2px;border-radius:12px;font-size:10px;
+}
+.nav button.active{color:white;background:var(--panel2)}
+.nav button span{display:block;font-size:19px;margin-bottom:4px}
+.timer{
+  font-size:55px;font-weight:850;letter-spacing:2px;
+  text-align:center;margin:20px 0;
+}
+.timer-ring{
+  width:220px;height:220px;border:8px solid var(--panel2);
+  border-radius:50%;display:flex;align-items:center;
+  justify-content:center;margin:20px auto;
+}
+.center{text-align:center}
+.quote{
+  font-size:19px;font-weight:700;line-height:1.5;
+  padding:15px 0;
+}
+.chart{
+  display:flex;align-items:flex-end;gap:7px;
+  height:150px;padding:15px 0 0;
+}
+.bar-col{
+  flex:1;height:100%;display:flex;flex-direction:column;
+  justify-content:flex-end;align-items:center;gap:6px;
+  min-width:0;
+}
+.bar-col i{
+  width:70%;max-width:30px;background:var(--red);
+  border-radius:6px 6px 2px 2px;min-height:2px;
+}
+.bar-col span{font-size:9px;color:var(--muted)}
+.calendar-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:5px;
+}
+.calendar-day{
+  min-height:48px;border:1px solid var(--line);
+  border-radius:9px;background:var(--panel2);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;font-size:12px;
+}
+.calendar-day.today{border-color:var(--red)}
+.calendar-day.marked{background:#263b35;border-color:var(--green)}
+.badge{
+  border:1px solid var(--line);background:var(--panel2);
+  padding:12px;border-radius:13px;margin:5px 0;
+}
+.badge.unlocked{border-color:#8a7040}
+.badge.locked{opacity:.5}
+.shop-item{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 0;border-bottom:1px solid var(--line);
+}
+.shop-item .emoji{font-size:27px}
+.shop-item .details{flex:1}
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  background:#30333d;color:white;padding:12px 18px;
+  border-radius:12px;z-index:30;font-size:13px;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.toast.show{opacity:1}
+.modal{
+  display:none;position:fixed;inset:0;background:#000b;
+  z-index:20;align-items:center;justify-content:center;padding:18px;
+}
+.modal.show{display:flex}
+.modal-box{
+  width:100%;max-width:430px;background:var(--panel);
+  border:1px solid var(--line);border-radius:20px;padding:20px;
+  max-height:90vh;overflow:auto;
+}
+.empty{text-align:center;padding:25px 10px;color:var(--muted)}
+.small{font-size:11px}
+@media(min-width:650px){
+  .app{padding:25px}
+  .hero{padding:30px}
+  h1{font-size:40px}
+}
 </style>
 </head>
+
 <body>
 <div class="app">
-<header class="top">
-<div class="brand"><div class="mark">R</div><div><strong>REDLINE</strong><small>Build your momentum</small></div></div>
-<div class="topright"><div class="level-pill" id="topLevel">LEVEL 1</div><button class="icon-btn" onclick="exportData()" title="Export backup">↥</button></div>
-</header>
-<main id="screen" class="screen"></main>
+  <header class="top">
+    <div class="brand">RED<span>LINE</span></div>
+    <div class="level-pill" id="levelPill">LEVEL 1 · 0 XP</div>
+  </header>
+
+  <main id="screen"></main>
 </div>
-<div class="nav"><div class="nav-inner" id="nav"></div></div>
+
+<nav class="nav">
+  <div class="nav-inner" id="nav"></div>
+</nav>
+
 <div class="toast" id="toast"></div>
 
-<div class="modal" id="taskModal" onclick="if(event.target===this)closeTaskModal()">
-<div class="modal-box">
-<div class="modal-head"><h2>New task</h2><button class="icon-btn" onclick="closeTaskModal()">×</button></div>
-<div class="field"><label for="taskTitle">TASK</label><input id="taskTitle" maxlength="120" placeholder="What needs to get done?"></div>
-<div class="form-grid">
-<div class="field"><label for="taskDate">DATE</label><input id="taskDate" type="date"></div>
-<div class="field"><label for="taskTime">TIME (OPTIONAL)</label><input id="taskTime" type="time"></div>
-</div>
-<div class="form-grid">
-<div class="field"><label for="taskCat">SUBJECT</label><select id="taskCat"></select></div>
-<div class="field"><label for="taskPriority">PRIORITY</label><select id="taskPriority"><option value="0">Low</option><option value="1" selected>Medium</option><option value="2">High</option></select></div>
-</div>
-<div class="field"><label for="taskRepeat">REPEAT</label><select id="taskRepeat"><option value="none">No repeat</option><option value="daily">Daily</option><option value="weekly">Weekly</option></select></div>
-<div class="modal-actions"><button class="secondary" onclick="closeTaskModal()">Cancel</button><button class="primary" onclick="addTask()">Add task</button></div>
-</div>
+<div class="modal" id="taskModal">
+  <div class="modal-box">
+    <div class="section-head">
+      <h2>New task</h2>
+      <button class="delete" onclick="closeTaskModal()">✕</button>
+    </div>
+    <div class="field">
+      <label>TASK NAME</label>
+      <input id="taskName" maxlength="100" placeholder="What needs to get done?">
+    </div>
+    <div class="field">
+      <label>DATE</label>
+      <input id="taskDate" type="date">
+    </div>
+    <div class="field">
+      <label>CATEGORY</label>
+      <select id="taskCat"></select>
+    </div>
+    <div class="field">
+      <label>PRIORITY</label>
+      <select id="taskPri">
+        <option value="0">Normal</option>
+        <option value="1">Important</option>
+        <option value="2">High</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>REPEAT</label>
+      <select id="taskRep">
+        <option value="none">Does not repeat</option>
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+      </select>
+    </div>
+    <button class="primary block" onclick="addTask()">Add task</button>
+  </div>
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
-const pad=n=>String(n).padStart(2,'0');
-const dateKey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-const fromKey=k=>new Date(k+'T12:00:00');
-const todayKey=()=>dateKey(new Date());
-const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const read=(k,fallback)=>{try{const x=localStorage.getItem('rl-'+k);return x===null?fallback:JSON.parse(x)}catch{return fallback}};
-const write=(k,v)=>{try{localStorage.setItem('rl-'+k,JSON.stringify(v));return true}catch{return false}};
-let tasks=read('tasks',[]),cats=read('cats',['Math','English','Science','Personal']),focus=read('focus',{}),exams=read('exams',[]),weeklyGoal=read('goal',20),xp=read('xp',0),xpAwards=read('xpAwards',{});
-let tab='today',selectedDate=todayKey(),statsRange='Week',timerLength=25*60,timerLeft=25*60,timerId=null;
-const NAV=[['today','⌂','Today'],['stats','▥','Progress'],['focus','◷','Focus'],['plan','▦','Plan'],['awards','★','Awards']];
-const save=()=>{write('tasks',tasks);write('cats',cats);write('focus',focus);write('exams',exams);write('goal',weeklyGoal);write('xp',xp);write('xpAwards',xpAwards)};
-function toast(message){const e=$('toast');e.textContent=message;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2100)}
-function level(){return Math.floor(Math.sqrt(Math.max(0,xp)/100))+1}
-function levelStart(){return (level()-1)**2*100}
-function levelEnd(){return level()**2*100}
-function xpPercent(){return Math.min(100,(xp-levelStart())/(levelEnd()-levelStart())*100)}
-function awardXP(id,amount){if(xpAwards[id])return;xpAwards[id]=amount;xp+=amount;save();toast('+'+amount+' XP earned')}
-function completedCount(){return tasks.filter(t=>t.done).length}
-function streak(){let count=0,d=fromKey(todayKey());for(let i=0;i<365;i++){const k=dateKey(d),day=tasks.filter(t=>t.date===k);if(day.length&&day.every(t=>t.done)){count++;d.setDate(d.getDate()-1)}else if(i===0){d.setDate(d.getDate()-1);const prev=tasks.filter(t=>t.date===dateKey(d));if(prev.length&&prev.every(t=>t.done)){count++;d.setDate(d.getDate()-1);continue}break}else break}return count}
-function openTaskModal(){ $('taskDate').value=selectedDate;$('taskTitle').value='';$('taskTime').value='';$('taskCat').innerHTML=cats.map((c,i)=>`<option value="${i}">${escapeHTML(c)}</option>`).join('');$('taskModal').classList.add('open');$('taskTitle').focus()}
-function closeTaskModal(){$('taskModal').classList.remove('open')}
-function addTask(){const title=$('taskTitle').value.trim();if(!title){toast('Enter a task name');return}tasks.push({id:Date.now(),text:title,date:$('taskDate').value||todayKey(),cat:+$('taskCat').value,time:$('taskTime').value,pri:+$('taskPriority').value,rep:$('taskRepeat').value,done:false});save();closeTaskModal();render();toast('Task added')}
-function toggleTask(id){const t=tasks.find(x=>x.id===id);if(!t)return;t.done=!t.done;if(t.done){awardXP('task-'+t.id,t.pri===2?30:t.pri===1?20:10);if(t.rep&&t.rep!=='none'&&!t.next){const d=fromKey(t.date);d.setDate(d.getDate()+(t.rep==='weekly'?7:1));tasks.push({...t,id:Date.now()+Math.random(),date:dateKey(d),done:false,next:1})}}save();render()}
-function deleteTask(id){tasks=tasks.filter(t=>t.id!==id);save();render();toast('Task deleted')}
-function go(name){tab=name;render()}
-function chooseDate(k){selectedDate=k;render()}
-function dayTasks(k){return tasks.filter(t=>t.date===k).sort((a,b)=>Number(a.done)-Number(b.done)||(a.time||'99:99').localeCompare(b.time||'99:99')||b.pri-a.pri)}
-function taskHTML(t){return `<div class="task ${t.done?'done':''}"><button class="check" onclick="toggleTask(${JSON.stringify(t.id)})">${t.done?'✓':''}</button><div class="task-copy"><span class="task-name">${escapeHTML(t.text)}</span><div class="task-meta">${t.time?`<span class="tag">${t.time}</span>`:''}<span class="tag">${escapeHTML(cats[t.cat]||'Other')}</span><span class="tag ${t.pri===2?'high':t.pri===1?'medium':''}">${['Low','Medium','High'][t.pri]||'Medium'}</span></div></div><button class="delete" onclick="deleteTask(${JSON.stringify(t.id)})" aria-label="Delete task">×</button></div>`}
-function ring(percent,label){const c=2*Math.PI*42;return `<div class="progress-ring"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="42"/><circle class="value" cx="50" cy="50" r="42" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-percent/100)}"/></svg><b>${label}</b></div>`}
-function renderNav(){$('nav').innerHTML=NAV.map(([id,icon,label])=>`<button class="${tab===id?'active':''}" onclick="go('${id}')"><span>${icon}</span>${label}</button>`).join('');$('topLevel').textContent='LEVEL '+level()}
-function render(){renderNav();({today:renderToday,stats:renderStats,focus:renderFocus,plan:renderPlan,awards:renderAwards})[tab]();$('screen').classList.remove('screen');void $('screen').offsetWidth;$('screen').classList.add('screen')}
-</script><script>
-function renderToday(){
-  const today=todayKey();
-  const list=dayTasks(selectedDate);
-  const done=list.filter(t=>t.done).length;
-  const total=list.length;
-  const percent=total?Math.round(done/total*100):0;
-  const d=fromKey(selectedDate);
-  const isToday=selectedDate===today;
-  const dateLabel=isToday?'Today':d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
-  const week=[];
-  const start=new Date();start.setDate(start.getDate()-start.getDay());
-  for(let i=0;i<7;i++){const x=new Date(start);x.setDate(start.getDate()+i);week.push(x)}
-  const todayFocus=focus[today]||0;
-  const focusHours=Math.floor(todayFocus/60);
-  const focusMins=todayFocus%60;
+// ==========================================
+// REDLINE 2.0 — CORE SYSTEM
+// ==========================================
 
-  $('screen').innerHTML=`
-  <section class="hero">
-    <div class="hero-main">
-      <div class="eyebrow">YOUR DAILY MISSION</div>
-      <h1>Make today<br><span>count.</span></h1>
-      <p>${isToday?'One task at a time. Keep moving.':'Your schedule for '+escapeHTML(dateLabel)+'.'}</p>
-      <button class="primary" onclick="openTaskModal()">＋ Add a task</button>
-    </div>
-    <div class="hero-xp">
-      ${ring(percent,percent+'%')}
-      <div><div class="eyebrow">DAILY PROGRESS</div><h2>${done}<span style="color:var(--muted)"> / ${total}</span></h2><p class="muted">Tasks completed</p></div>
-    </div>
-  </section>
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2,'0');
 
-  <div class="date-strip">
-    ${week.map(x=>{const k=dateKey(x),n=tasks.filter(t=>t.date===k&&t.done).length;return `<button class="date-btn ${k===selectedDate?'active':''}" onclick="chooseDate('${k}')"><span>${x.toLocaleDateString('en-IN',{weekday:'short'})}</span><b>${x.getDate()}</b><i>${n?'✓':'·'}</i></button>`}).join('')}
-  </div>
+const dateKey = d =>
+  `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 
-  <div class="section-head"><div><div class="eyebrow">YOUR SCHEDULE</div><h2>${escapeHTML(dateLabel)}</h2></div><button class="text-btn" onclick="openTaskModal()">＋ Add</button></div>
+const fromKey = k => new Date(k+'T12:00:00');
+const todayKey = () => dateKey(new Date());
 
-  <div class="card task-card">
-    ${total?list.map(taskHTML).join(''):`<div class="empty"><div class="empty-icon">✦</div><b>Nothing scheduled</b><p>Add a task and get started.</p><button class="secondary" onclick="openTaskModal()">Create your first task</button></div>`}
-  </div>
-
-  <div class="grid">
-    <div class="card stat-card"><div class="eyebrow">CURRENT STREAK</div><div class="stat-number">${streak()} <small>days</small></div><div class="muted">Keep the chain going</div></div>
-    <div class="card stat-card"><div class="eyebrow">FOCUS TODAY</div><div class="stat-number">${focusHours}<small>h</small> ${focusMins}<small>m</small></div><div class="muted">Time spent focused</div></div>
-  </div>
-
-  <div class="card level-card">
-    <div class="level-row"><div><div class="eyebrow">YOUR JOURNEY</div><h3>Level ${level()}</h3></div><b>${xp} XP</b></div>
-    <div class="xp-track"><i style="width:${xpPercent()}%"></i></div>
-    <div class="level-row muted"><span>${xp-levelStart()} XP earned this level</span><span>${levelEnd()-xp} XP to next</span></div>
-  </div>`;
+function read(key,fallback){
+  try{
+    const value=localStorage.getItem('rl2-'+key);
+    return value===null?fallback:JSON.parse(value);
+  }catch{return fallback}
 }
 
-function renderStats(){
-  const now=new Date();
-  let days=7;
-  if(statsRange==='Month')days=30;
-  if(statsRange==='All')days=Math.max(7,Math.min(90,Math.ceil((now-fromKey(tasks.reduce((a,t)=>t.date<a?t.date:a,todayKey())))/86400000)+1));
-  const data=[];
-  for(let i=days-1;i>=0;i--){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const k=dateKey(d),items=tasks.filter(t=>t.date===k);
-    data.push({key:k,label:days<=7?d.toLocaleDateString('en-IN',{weekday:'short'}):d.getDate()+'',done:items.filter(t=>t.done).length,total:items.length});
+function write(key,value){
+  localStorage.setItem('rl2-'+key,JSON.stringify(value));
+}
+
+let tasks=read('tasks',[]);
+let cats=read('cats',['Study','Personal','Fitness','Other']);
+let focus=read('focus',{});
+let exams=read('exams',[]);
+let notes=read('notes',{});
+let events=read('events',[]);
+let xp=Number(read('xp',0))||0;
+let coins=Number(read('coins',0))||0;
+let xpAwards=read('xpAwards',{});
+let owned=read('owned',['default']);
+let avatar=read('avatar','default');
+let challenges=read('challenges',[]);
+let completedDays=read('completedDays',[]);
+let weeklyGoal=Number(read('goal',20))||20;
+
+let tab='today';
+let selectedDate=todayKey();
+let statsRange='Week';
+let calendarMonth=new Date();
+let timerLength=25*60;
+let timerLeft=25*60;
+let timerEndAt=Number(read('timerEndAt',0))||0;
+let timerId=null;
+let timerRunning=timerEndAt>Date.now();
+
+const NAV=[
+  ['today','⌂','Today'],
+  ['calendar','▦','Calendar'],
+  ['focus','◷','Focus'],
+  ['stats','▥','Progress'],
+  ['more','✦','More']
+];
+
+const quotes=[
+  'Small progress is still progress.',
+  'Discipline creates freedom.',
+  'Your future is built by what you do today.',
+  'Start before you feel ready.',
+  'Consistency beats intensity.',
+  'Focus on what you can control.',
+  'Make your actions match your goals.',
+  'One good decision can change your day.',
+  'You do not need to be perfect. Just consistent.',
+  'The secret is to keep showing up.',
+  'Stop waiting. Start building.',
+  'Your effort today is an investment in tomorrow.',
+  'A little better every day adds up.',
+  'Make the next hour count.',
+  'Do the work. Trust the process.',
+  'Progress takes patience.',
+  'Your habits shape your future.',
+  'Turn your plans into actions.',
+  'Be proud of the effort you put in.',
+  'One task at a time.'
+];
+
+const shop=[
+  {id:'default',name:'Classic',emoji:'⚡',price:0},
+  {id:'fire',name:'Fire mode',emoji:'🔥',price:100},
+  {id:'crown',name:'Royal crown',emoji:'👑',price:200},
+  {id:'robot',name:'Robot',emoji:'🤖',price:150},
+  {id:'diamond',name:'Diamond',emoji:'💎',price:300},
+  {id:'ninja',name:'Ninja',emoji:'🥷',price:250},
+  {id:'star',name:'Star',emoji:'🌟',price:175},
+  {id:'ghost',name:'Ghost',emoji:'👻',price:125}
+];
+
+const save=()=>{
+  write('tasks',tasks);
+  write('cats',cats);
+  write('focus',focus);
+  write('exams',exams);
+  write('notes',notes);
+  write('events',events);
+  write('xp',xp);
+  write('coins',coins);
+  write('xpAwards',xpAwards);
+  write('owned',owned);
+  write('avatar',avatar);
+  write('challenges',challenges);
+  write('completedDays',completedDays);
+  write('goal',weeklyGoal);
+  write('timerEndAt',timerEndAt);
+};
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[c]);
+}
+
+function toast(message){
+  const el=$('toast');
+  el.textContent=message;
+  el.classList.add('show');
+  clearTimeout(window.redlineToast);
+  window.redlineToast=setTimeout(()=>{
+    el.classList.remove('show');
+  },2200);
+}
+
+function level(){
+  return Math.floor(Math.sqrt(Math.max(0,xp)/100))+1;
+}
+
+function levelStart(){
+  return (level()-1)**2*100;
+}
+
+function levelEnd(){
+  return level()**2*100;
+}
+
+function xpPercent(){
+  return Math.max(0,Math.min(100,
+    (xp-levelStart())/(levelEnd()-levelStart())*100
+  ));
+}
+
+function awardXP(id,amount){
+  if(xpAwards[id])return;
+  xpAwards[id]=true;
+  xp+=amount;
+  coins+=Math.max(1,Math.floor(amount/2));
+  save();
+}
+
+function completedCount(){
+  return tasks.filter(t=>t.done).length;
+}
+
+function dayTasks(key){
+  return tasks.filter(t=>t.date===key)
+    .sort((a,b)=>(b.pri||0)-(a.pri||0));
+}
+
+function streak(){
+  let count=0;
+  let d=fromKey(todayKey());
+
+  while(true){
+    const k=dateKey(d);
+    if(!tasks.some(t=>t.date===k&&t.done))break;
+    count++;
+    d.setDate(d.getDate()-1);
   }
-  const totalDone=tasks.filter(t=>t.done).length;
-  const totalTasks=tasks.length;
-  const rate=totalTasks?Math.round(totalDone/totalTasks*100):0;
-  const focusMinutes=Object.values(focus).reduce((a,b)=>a+(Number(b)||0),0);
-  const max=Math.max(1,...data.map(x=>x.total));
-  const categoryData=cats.map((c,i)=>({name:c,count:tasks.filter(t=>t.cat===i&&t.done).length})).filter(x=>x.count).sort((a,b)=>b.count-a.count);
+  return count;
+}
 
-  $('screen').innerHTML=`
-  <div class="page-heading"><div class="eyebrow">THE BIG PICTURE</div><h1>Your progress.</h1><p>Small wins add up. Here's the evidence.</p></div>
-  <div class="grid">
-    <div class="card stat-card"><div class="eyebrow">TASKS COMPLETED</div><div class="stat-number">${totalDone}</div><div class="muted">All time</div></div>
-    <div class="card stat-card"><div class="eyebrow">COMPLETION RATE</div><div class="stat-number">${rate}<small>%</small></div><div class="muted">${totalDone} of ${totalTasks} tasks</div></div>
-    <div class="card stat-card"><div class="eyebrow">FOCUS TIME</div><div class="stat-number">${Math.floor(focusMinutes/60)}<small>h</small> ${focusMinutes%60}<small>m</small></div><div class="muted">Recorded sessions</div></div>
-    <div class="card stat-card"><div class="eyebrow">BEST STREAK</div><div class="stat-number">${streak()}<small> days</small></div><div class="muted">Current streak</div></div>
-  </div>
-  <div class="card">
-    <div class="section-head"><div><div class="eyebrow">ACTIVITY</div><h2>Task history</h2></div></div>
-    <div class="seg">
-      ${['Week','Month','All'].map(r=>`<button class="${statsRange===r?'active':''}" onclick="statsRange='${r}';render()">${r}</button>`).join('')}
-    </div>
-    <div class="chart">
-      ${data.map(x=>`<div class="bar-col" title="${x.key}: ${x.done}/${x.total} completed"><i style="height:${Math.max(2,x.done/max*100)}%"></i><span>${x.label}</span></div>`).join('')}
-    </div>
-    <p class="muted" style="font-size:11px;margin-top:12px">Bars show completed tasks per day. Empty days have no activity.</p>
-  </div>
-  <div class="card">
-    <div class="eyebrow">SUBJECT BREAKDOWN</div><h2>Where your effort goes</h2>
-    ${categoryData.length?categoryData.map(x=>`<div class="breakdown-row"><span>${escapeHTML(x.name)}</span><div class="mini-track"><i style="width:${x.count/Math.max(1,totalDone)*100}%"></i></div><b>${x.count}</b></div>`).join(''):'<p class="muted">Complete tasks to see your breakdown.</p>'}
-  </div>
-  <div class="card">
-    <div class="eyebrow">TOTAL EXPERIENCE</div><div class="stat-number">${xp} <small>XP</small></div><p class="muted">You're currently Level ${level()}.</p>
-    <div class="xp-track"><i style="width:${xpPercent()}%"></i></div>
-  </div>`;
-}
-</script><script>
-function renderFocus(){
-  const minutes=Math.floor(timerLeft/60),seconds=timerLeft%60;
-  const progress=1-timerLeft/timerLength;
-  const circumference=2*Math.PI*48;
-  const totalMinutes=Object.values(focus).reduce((a,b)=>a+(Number(b)||0),0);
-  $('screen').innerHTML=`
-  <div class="page-heading"><div class="eyebrow">DEEP WORK MODE</div><h1>Lock in.</h1><p>One session. One goal. No distractions.</p></div>
-  <div class="card focus-wrap">
-    <div class="eyebrow">FOCUS SESSION</div>
-    <div class="timer-ring">
-      <svg viewBox="0 0 110 110"><circle class="track" cx="55" cy="55" r="48"/><circle class="value" cx="55" cy="55" r="48" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference*progress}"/></svg>
-      <div class="timer">${pad(minutes)}:${pad(seconds)}</div>
-    </div>
-    <div class="seg" style="margin:15px auto">
-      ${[15,25,45,60].map(m=>`<button class="${timerLength===m*60?'active':''}" onclick="setTimer(${m})">${m} min</button>`).join('')}
-    </div>
-    <div class="modal-actions" style="max-width:320px;margin:18px auto">
-      <button class="secondary" onclick="resetTimer()">Reset</button>
-      <button class="primary" id="timerButton" onclick="toggleTimer()">${timerId?'Pause':'Start focus'}</button>
-    </div>
-    <p class="muted" style="font-size:11px">XP is earned when a full session is completed.</p>
-  </div>
-  <div class="grid">
-    <div class="card stat-card"><div class="eyebrow">TOTAL FOCUS</div><div class="stat-number">${Math.floor(totalMinutes/60)}<small>h</small> ${totalMinutes%60}<small>m</small></div></div>
-    <div class="card stat-card"><div class="eyebrow">TODAY</div><div class="stat-number">${focus[todayKey()]||0}<small> min</small></div></div>
-  </div>
-  <div class="notice">Keep Redline open while your timer runs. Leaving the page or closing the browser may interrupt the session.</div>`;
-}
-function setTimer(m){if(timerId){toast('Pause the timer first');return}timerLength=m*60;timerLeft=timerLength;render()}
-function resetTimer(){if(timerId){clearInterval(timerId);timerId=null}timerLeft=timerLength;render()}
-function toggleTimer(){
-  if(timerId){clearInterval(timerId);timerId=null;render();return}
-  if(timerLeft<=0)timerLeft=timerLength;
-  timerId=setInterval(()=>{
-    timerLeft--;
-    if(timerLeft<=0){
-      clearInterval(timerId);timerId=null;
-      const mins=Math.round(timerLength/60);
-      focus[todayKey()]=(focus[todayKey()]||0)+mins;
-      awardXP('focus-'+Date.now(),mins>=45?30:mins>=25?20:10);
-      save();timerLeft=timerLength;render();toast('Focus session complete!');
-    }else{
-      const el=$('screen').querySelector('.timer');
-      if(el)el.textContent=pad(Math.floor(timerLeft/60))+':'+pad(timerLeft%60);
-      const circle=$('screen').querySelector('.timer-ring .value');
-      if(circle)circle.style.strokeDashoffset=2*Math.PI*48*timerLeft/timerLength;
-      const button=$('timerButton');if(button)button.textContent='Pause';
-    }
-  },1000);
+function go(name){
+  tab=name;
   render();
 }
-function renderPlan(){
-  const upcoming=exams.slice().sort((a,b)=>a.date.localeCompare(b.date));
-  const next=upcoming.filter(e=>e.date>=todayKey());
-  const weekStart=new Date();weekStart.setDate(weekStart.getDate()-weekStart.getDay());
-  const weekEnd=new Date(weekStart);weekEnd.setDate(weekEnd.getDate()+6);
-  const weekTasks=tasks.filter(t=>{const d=fromKey(t.date);return d>=weekStart&&d<=weekEnd});
-  const weekDone=weekTasks.filter(t=>t.done).length;
-  $('screen').innerHTML=`
-  <div class="page-heading"><div class="eyebrow">PLAN WITH PURPOSE</div><h1>Stay ahead.</h1><p>Organise your week and keep important dates visible.</p></div>
-  <div class="card">
-    <div class="section-head"><div><div class="eyebrow">WEEKLY TARGET</div><h2>${weekDone} / ${weeklyGoal} tasks</h2></div></div>
-    <div class="xp-track"><i style="width:${Math.min(100,weekDone/Math.max(1,weeklyGoal)*100)}%"></i></div>
-    <div class="field"><label>SET YOUR WEEKLY TASK GOAL</label><div style="display:flex;gap:8px"><input class="inline-input" id="goalInput" type="number" min="1" max="500" value="${weeklyGoal}"><button class="primary" onclick="setGoal()">Save</button></div></div>
-  </div>
-  <div class="card">
-    <div class="section-head"><div><div class="eyebrow">UPCOMING EXAMS</div><h2>Exam countdown</h2></div></div>
-    <div class="field"><label>EXAM / SUBJECT</label><input id="examName" maxlength="70" placeholder="e.g. Mathematics"></div>
-    <div class="field"><label>EXAM DATE</label><input id="examDate" type="date" min="${todayKey()}"></div>
-    <button class="primary" onclick="addExam()">＋ Add exam</button>
-    <div style="margin-top:14px">
-      ${next.length?next.map(e=>{const days=Math.ceil((fromKey(e.date)-fromKey(todayKey()))/86400000);return `<div class="exam"><b>${days===0?'TODAY':days+' days'}</b><span><strong>${escapeHTML(e.name)}</strong><br><small class="muted">${e.date}</small></span><button class="delete" onclick="deleteExam(${e.id})">×</button></div>`}).join(''):'<p class="muted">No upcoming exams added.</p>'}
-    </div>
-  </div>
-  <div class="card">
-    <div class="eyebrow">QUICK PLANNING</div><h2>Make a move.</h2>
-    <button class="secondary block" onclick="selectedDate=todayKey();go('today');openTaskModal()">＋ Plan today's tasks</button>
-    <button class="secondary block" style="margin-top:9px" onclick="go('stats')">View your progress →</button>
-  </div>`;
+
+function chooseDate(key){
+  selectedDate=key;
+  tab='today';
+  render();
 }
-function setGoal(){const n=Number($('goalInput').value);if(!Number.isInteger(n)||n<1||n>500){toast('Choose a goal from 1 to 500');return}weeklyGoal=n;save();render();toast('Weekly goal updated')}
-function addExam(){const name=$('examName').value.trim(),date=$('examDate').value;if(!name||!date){toast('Enter an exam name and date');return}exams.push({id:Date.now(),name,date});save();render();toast('Exam added')}
-function deleteExam(id){exams=exams.filter(e=>e.id!==id);save();render();toast('Exam removed')}
-function renderAwards(){
-  const completed=completedCount();
-  const totalFocus=Object.values(focus).reduce((a,b)=>a+(Number(b)||0),0);
-  const achievements=[
-    ['🌱','First step','Complete your first task',completed>=1],
-    ['⚡','Getting started','Complete 10 tasks',completed>=10],
-    ['🔥','Consistent','Complete 25 tasks',completed>=25],
-    ['🏆','Task master','Complete 100 tasks',completed>=100],
-    ['⏱️','Deep focus','Finish a 25-minute focus session',totalFocus>=25],
-    ['🧠','Study mode','Record 5 hours of focus',totalFocus>=300],
-    ['📚','Level up','Reach Level 5',level()>=5],
-    ['💎','High achiever','Earn 1,000 XP',xp>=1000],
-    ['📅','Planner','Add your first exam',exams.length>=1],
-    ['🎯','Goal setter','Set a weekly goal of 20 or more',weeklyGoal>=20]
-  ];
-  const unlocked=achievements.filter(a=>a[3]).length;
-  $('screen').innerHTML=`
-  <div class="page-heading"><div class="eyebrow">RECOGNISE YOUR WINS</div><h1>Earn your badges.</h1><p>Every achievement starts with action.</p></div>
-  <div class="card">
-    <div class="level-row"><div><div class="eyebrow">ACHIEVEMENTS</div><h2>${unlocked} / ${achievements.length} unlocked</h2></div>${ring(unlocked/achievements.length*100,Math.round(unlocked/achievements.length*100)+'%')}</div>
-    <div class="xp-track"><i style="width:${unlocked/achievements.length*100}%"></i></div>
-  </div>
-  <div class="achievement-list">
-    ${achievements.map(a=>`<div class="achievement ${a[3]?'':'locked'}"><i>${a[0]}</i><b>${a[1]}</b><span>${a[2]}</span><span style="display:block;margin-top:7px">${a[3]?'✓ Unlocked':'Locked'}</span></div>`).join('')}
-  </div>
-  <div class="card level-card"><div class="eyebrow">YOUR EXPERIENCE</div><div class="stat-number">${xp} <small>XP</small></div><h3>Level ${level()}</h3><div class="xp-track"><i style="width:${xpPercent()}%"></i></div><p class="muted">${levelEnd()-xp} XP until your next level.</p></div>`;
+
+// ==========================================
+// TASK SYSTEM
+// ==========================================
+
+function openTaskModal(){
+  $('taskModal').classList.add('show');
+  $('taskDate').value=selectedDate||todayKey();
+
+  $('taskCat').innerHTML=cats.map((c,i)=>
+    `<option value="${i}">${escapeHTML(c)}</option>`
+  ).join('');
+
+  $('taskName').focus();
 }
-</script><script>
+
+function closeTaskModal(){
+  $('taskModal').classList.remove('show');
+}
+
+function addTask(){
+  const name=$('taskName').value.trim();
+  const date=$('taskDate').value;
+  if(!name||!date){
+    toast('Enter a task and date');
+    return;
+  }
+
+  tasks.push({
+    id:Date.now()+Math.random(),
+    text:name,
+    date,
+    cat:Number($('taskCat').value)||0,
+    pri:Number($('taskPri').value)||0,
+    rep:$('taskRep').value,
+    done:false,
+    seriesId:null
+  });
+
+  save();
+  $('taskName').value='';
+  closeTaskModal();
+  render();
+  toast('Task added');
+}
+
+function toggleTask(id){
+  const task=tasks.find(t=>t.id===id);
+  if(!task)return;
+
+  task.done=!task.done;
+
+  if(task.done){
+    awardXP('task-'+task.id,
+      task.pri===2?30:task.pri===1?20:10
+    );
+
+    if(task.rep&&task.rep!=='none'&&!task.generated){
+      const nextDate=fromKey(task.date);
+      nextDate.setDate(
+        nextDate.getDate()+(task.rep==='weekly'?7:1)
+      );
+
+      const seriesId=task.seriesId||task.id;
+      task.seriesId=seriesId;
+
+      const alreadyExists=tasks.some(t=>
+        t.seriesId===seriesId&&t.date===dateKey(nextDate)
+      );
+
+      if(!alreadyExists){
+        tasks.push({
+          ...task,
+          id:Date.now()+Math.random(),
+          date:dateKey(nextDate),
+          done:false,
+          generated:true,
+          seriesId
+        });
+      }
+    }
+
+    const todayList=dayTasks(todayKey());
+    if(todayList.length&&todayList.every(t=>t.done)){
+      if(!completedDays.includes(todayKey())){
+        completedDays.push(todayKey());
+        awardXP('perfect-day-'+todayKey(),25);
+      }
+    }
+  }
+
+  save();
+  render();
+}
+
+function deleteTask(id){
+  if(!confirm('Delete this task?'))return;
+  tasks=tasks.filter(t=>t.id!==id);
+  save();
+  render();
+  toast('Task deleted');
+}
+
+// ==========================================
+// FOCUS TIMER
+// ==========================================
+
+function syncTimer(){
+  if(!timerEndAt)return;
+
+  timerLeft=Math.max(0,Math.ceil((timerEndAt-Date.now())/1000));
+
+  if(timerLeft<=0){
+    finishTimer();
+  }
+}
+
+function finishTimer(){
+  clearInterval(timerId);
+  timerId=null;
+  timerRunning=false;
+  timerEndAt=0;
+
+  const mins=Math.round(timerLength/60);
+  focus[todayKey()]=(focus[todayKey()]||0)+mins;
+
+  awardXP('focus-'+Date.now(),mins>=45?30:mins>=25?20:10);
+
+  timerLeft=timerLength;
+  save();
+  render();
+  toast('Focus session complete!');
+}
+
+function toggleTimer(){
+  if(timerRunning){
+    syncTimer();
+    timerLeft=Math.max(0,timerLeft);
+    timerEndAt=0;
+    timerRunning=false;
+    clearInterval(timerId);
+    timerId=null;
+    save();
+    render();
+    return;
+  }
+
+  if(timerLeft<=0)timerLeft=timerLength;
+
+  timerEndAt=Date.now()+timerLeft*1000;
+  timerRunning=true;
+  save();
+
+  clearInterval(timerId);
+  timerId=setInterval(()=>{
+    syncTimer();
+    updateTimerDisplay();
+  },500);
+
+  render();
+}
+
+function updateTimerDisplay(){
+  syncTimer();
+
+  const el=$('screen').querySelector('.timer');
+  if(el){
+    el.textContent=pad(Math.floor(timerLeft/60))+':'+pad(timerLeft%60);
+  }
+}
+
+function setTimer(m){
+  if(timerRunning){
+    toast('Pause the timer first');
+    return;
+  }
+  timerLength=m*60;
+  timerLeft=timerLength;
+  save();
+  render();
+}
+
+function resetTimer(){
+  clearInterval(timerId);
+  timerId=null;
+  timerEndAt=0;
+  timerRunning=false;
+  timerLeft=timerLength;
+  save();
+  render();
+}
+
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&timerRunning){
+    syncTimer();
+    updateTimerDisplay();
+  }
+});
+
+window.addEventListener('pageshow',()=>{
+  if(timerRunning){
+    syncTimer();
+    if(timerLeft>0){
+      clearInterval(timerId);
+      timerId=setInterval(()=>{
+        syncTimer();
+        updateTimerDisplay();
+      },500);
+    }
+  }
+});
+
+// ==========================================
+// DAILY NOTES
+// ==========================================
+
+function saveNote(){
+  const value=$('dailyNote').value;
+  notes[todayKey()]=value;
+  save();
+  toast('Daily note saved');
+}
+
+// ==========================================
+// QUOTES
+// ==========================================
+
+function newQuote(){
+  let index=Math.floor(Math.random()*quotes.length);
+  $('quoteText').textContent=quotes[index];
+}
+
+// ==========================================
+// CALENDAR AND EXAMS
+// ==========================================
+
+function changeMonth(amount){
+  calendarMonth.setMonth(calendarMonth.getMonth()+amount);
+  render();
+}
+
+function addExam(){
+  const name=$('examName').value.trim();
+  const date=$('examDate').value;
+
+  if(!name||!date){
+    toast('Enter an exam name and date');
+    return;
+  }
+
+  exams.push({id:Date.now(),name,date});
+  save();
+  render();
+  toast('Exam added');
+}
+
+function deleteExam(id){
+  exams=exams.filter(e=>e.id!==id);
+  save();
+  render();
+}
+
+// ==========================================
+// CALENDAR EVENTS
+// ==========================================
+
+function addEvent(){
+  const name=$('eventName').value.trim();
+  const date=$('eventDate').value;
+  const time=$('eventTime').value;
+
+  if(!name||!date){
+    toast('Enter an event name and date');
+    return;
+  }
+
+  events.push({
+    id:Date.now(),
+    name,
+    date,
+    time
+  });
+
+  save();
+  render();
+  toast('Event added');
+}
+
+function deleteEvent(id){
+  events=events.filter(e=>e.id!==id);
+  save();
+  render();
+}
+
+// ==========================================
+// CHALLENGES
+// ==========================================
+
+function toggleChallenge(id){
+  const item=challenges.find(x=>x.id===id);
+  if(!item)return;
+
+  item.done=!item.done;
+
+  if(item.done){
+    awardXP('challenge-'+item.id,20);
+  }
+
+  save();
+  render();
+}
+
+// ==========================================
+// STORE AND AVATAR
+// ==========================================
+
+function buyItem(id){
+  const item=shop.find(x=>x.id===id);
+  if(!item)return;
+
+  if(owned.includes(id)){
+    avatar=id;
+    save();
+    render();
+    toast('Avatar equipped');
+    return;
+  }
+
+  if(coins<item.price){
+    toast('Not enough coins yet');
+    return;
+  }
+
+  coins-=item.price;
+  owned.push(id);
+  avatar=id;
+  save();
+  render();
+  toast('Item purchased!');
+}
+
+// ==========================================
+// BACKUP AND RESTORE
+// ==========================================
+
 function exportData(){
-  const backup={
-    version:2,
-    exported:new Date().toISOString(),
-    tasks,cats,focus,exams,weeklyGoal,xp,xpAwards
+  const data={
+    tasks,cats,focus,exams,notes,events,
+    xp,coins,xpAwards,owned,avatar,
+    challenges,completedDays,weeklyGoal
   };
-  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+
+  const blob=new Blob(
+    [JSON.stringify(data,null,2)],
+    {type:'application/json'}
+  );
+
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;
   a.download='redline-backup.json';
   a.click();
+
   setTimeout(()=>URL.revokeObjectURL(url),1000);
   toast('Backup exported');
 }
 
 function importData(file){
   if(!file)return;
+
   const reader=new FileReader();
+
   reader.onload=()=>{
     try{
       const data=JSON.parse(reader.result);
-      if(!Array.isArray(data.tasks)||!Array.isArray(data.cats))throw Error();
+      if(!Array.isArray(data.tasks))throw Error();
+
       tasks=data.tasks;
-      cats=data.cats;
+      cats=data.cats||cats;
       focus=data.focus||{};
       exams=data.exams||[];
-      weeklyGoal=data.weeklyGoal||20;
-      xp=data.xp||0;
+      notes=data.notes||{};
+      events=data.events||[];
+      xp=Number(data.xp)||0;
+      coins=Number(data.coins)||0;
       xpAwards=data.xpAwards||{};
-      save();render();toast('Backup restored');
-    }catch{toast('Invalid backup file')}
+      owned=data.owned||['default'];
+      avatar=data.avatar||'default';
+      challenges=data.challenges||[];
+      completedDays=data.completedDays||[];
+      weeklyGoal=Number(data.weeklyGoal)||20;
+
+      save();
+      render();
+      toast('Backup restored');
+    }catch{
+      toast('Invalid backup file');
+    }
   };
+
   reader.readAsText(file);
+}
+
+// ==========================================
+// INITIAL SETUP
+// ==========================================
+
+function initialise(){
+  tasks=Array.isArray(tasks)?tasks:[];
+  cats=Array.isArray(cats)&&cats.length?cats:['Study','Personal','Fitness','Other'];
+  focus=focus&&typeof focus==='object'?focus:{};
+  exams=Array.isArray(exams)?exams:[];
+  notes=notes&&typeof notes==='object'?notes:{};
+  events=Array.isArray(events)?events:[];
+  xpAwards=xpAwards&&typeof xpAwards==='object'?xpAwards:{};
+  owned=Array.isArray(owned)?owned:['default'];
+  challenges=Array.isArray(challenges)?challenges:[];
+  completedDays=Array.isArray(completedDays)?completedDays:[];
+
+  if(timerRunning){
+    syncTimer();
+    if(timerLeft>0){
+      timerId=setInterval(()=>{
+        syncTimer();
+        updateTimerDisplay();
+      },500);
+    }
+  }
+
+  save();
+}
+// ==========================================
+// NAVIGATION
+// ==========================================
+
+function renderNav(){
+  $('nav').innerHTML=NAV.map(n=>`
+    <button class="${tab===n[0]?'active':''}" onclick="go('${n[0]}')">
+      <span>${n[1]}</span>${n[2]}
+    </button>
+  `).join('');
 }
 
 function render(){
   renderNav();
+
+  $('levelPill').textContent=`LEVEL ${level()} · ${xp} XP`;
+
   const screens={
     today:renderToday,
-    stats:renderStats,
+    calendar:renderCalendar,
     focus:renderFocus,
-    plan:renderPlan,
-    awards:renderAwards
+    stats:renderStats,
+    more:renderMore
   };
+
   (screens[tab]||renderToday)();
-  $('screen').classList.remove('screen');
-  void $('screen').offsetWidth;
-  $('screen').classList.add('screen');
 }
 
-function initialise(){
-  tasks=Array.isArray(tasks)?tasks:[];
-  cats=Array.isArray(cats)&&cats.length?cats:['Math','English','Science','Personal'];
-  focus=focus&&typeof focus==='object'?focus:{};
-  exams=Array.isArray(exams)?exams:[];
-  xp=Number(xp)||0;
-  weeklyGoal=Number(weeklyGoal)||20;
-  xpAwards=xpAwards&&typeof xpAwards==='object'?xpAwards:{};
+// ==========================================
+// TODAY DASHBOARD
+// ==========================================
 
-  tasks=tasks.map((t,i)=>({
-    ...t,
-    id:t.id??Date.now()+i,
-    text:String(t.text??t.title??'Untitled task'),
-    date:t.date||todayKey(),
-    cat:Number(t.cat)||0,
-    pri:Number(t.pri)||0,
-    done:Boolean(t.done)
-  }));
+function renderToday(){
+  const today=todayKey();
+  const list=dayTasks(selectedDate);
+  const done=list.filter(t=>t.done).length;
+  const total=list.length;
+  const percent=total?Math.round(done/total*100):0;
 
-  save();
-  render();
+  const d=fromKey(selectedDate);
+  const label=selectedDate===today?'Today':
+    d.toLocaleDateString('en-IN',{
+      weekday:'long',day:'numeric',month:'long'
+    });
+
+  const week=[];
+  const start=new Date();
+  start.setDate(start.getDate()-start.getDay());
+
+  for(let i=0;i<7;i++){
+    const x=new Date(start);
+    x.setDate(start.getDate()+i);
+    week.push(x);
+  }
+
+  const todayFocus=focus[today]||0;
+
+  $('screen').innerHTML=`
+    <section class="hero">
+      <div class="eyebrow">YOUR DAILY MISSION</div>
+      <h1>Make today<br><span>count.</span></h1>
+      <p>One task at a time. Keep moving.</p>
+      <button class="primary" onclick="openTaskModal()">＋ Add a task</button>
+      <div class="section-head">
+        <b>${done} / ${total} tasks completed</b>
+        <b>${percent}%</b>
+      </div>
+      <div class="progress-track">
+        <i style="width:${percent}%"></i>
+      </div>
+    </section>
+
+    <div class="date-strip">
+      ${week.map(x=>{
+        const k=dateKey(x);
+        const n=tasks.filter(t=>t.date===k&&t.done).length;
+        return `
+          <button class="date-btn ${k===selectedDate?'active':''}"
+            onclick="chooseDate('${k}')">
+            <span>${x.toLocaleDateString('en-IN',{weekday:'short'})}</span>
+            <b>${x.getDate()}</b>
+            <i>${n?'✓':'·'}</i>
+          </button>`;
+      }).join('')}
+    </div>
+
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">YOUR SCHEDULE</div>
+        <h2>${escapeHTML(label)}</h2>
+      </div>
+      <button class="secondary" onclick="openTaskModal()">＋ Add</button>
+    </div>
+
+    <div class="card">
+      ${total?list.map(t=>`
+        <div class="task ${t.done?'done':''}">
+          <input type="checkbox" ${t.done?'checked':''}
+            onchange="toggleTask(${Number(t.id)})">
+          <div class="task-name">
+            ${escapeHTML(t.text)}
+            <small>
+              ${escapeHTML(cats[t.cat]||'Other')}
+              · ${t.pri===2?'High priority':t.pri===1?'Important':'Normal'}
+              ${t.rep&&t.rep!=='none'?' · Repeats':''}
+            </small>
+          </div>
+          <button class="delete" onclick="deleteTask(${Number(t.id)})">×</button>
+        </div>
+      `).join(''):`<div class="empty">
+        <h2>Nothing scheduled</h2>
+        <p>Add a task and get started.</p>
+      </div>`}
+    </div>
+
+    <div class="grid">
+      <div class="card stat-card">
+        <div class="eyebrow">CURRENT STREAK</div>
+        <div class="stat-number">${streak()}<small> days</small></div>
+      </div>
+      <div class="card stat-card">
+        <div class="eyebrow">FOCUS TODAY</div>
+        <div class="stat-number">${Math.floor(todayFocus/60)}<small>h</small> ${todayFocus%60}<small>m</small></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">YOUR JOURNEY</div>
+      <h2>Level ${level()} · ${xp} XP</h2>
+      <div class="progress-track">
+        <i style="width:${xpPercent()}%"></i>
+      </div>
+      <p class="muted">${levelEnd()-xp} XP until your next level.</p>
+      <p class="muted">🪙 ${coins} coins available</p>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">DAILY REFLECTION</div>
+      <h2>How was your day?</h2>
+      <textarea id="dailyNote" placeholder="Write down your thoughts...">${escapeHTML(notes[today]||'')}</textarea>
+      <button class="primary block" onclick="saveNote()">Save my note</button>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">A LITTLE MOTIVATION</div>
+      <div class="quote" id="quoteText"></div>
+      <button class="secondary block" onclick="newQuote()">Roll another quote ↻</button>
+    </div>
+  `;
+
+  newQuote();
 }
+
+// ==========================================
+// FOCUS SCREEN
+// ==========================================
+
+function renderFocus(){
+  syncTimer();
+
+  const minutes=Math.floor(timerLeft/60);
+  const seconds=timerLeft%60;
+  const total=Object.values(focus).reduce(
+    (a,b)=>a+(Number(b)||0),0
+  );
+
+  $('screen').innerHTML=`
+    <div class="page-heading">
+      <div class="eyebrow">DEEP WORK MODE</div>
+      <h1>Lock in.</h1>
+      <p class="muted">One session. One goal. No distractions.</p>
+    </div>
+
+    <div class="card center">
+      <div class="eyebrow">FOCUS SESSION</div>
+      <div class="timer-ring">
+        <div class="timer">${pad(minutes)}:${pad(seconds)}</div>
+      </div>
+
+      <div class="grid">
+        ${[15,25,45,60].map(m=>`
+          <button class="secondary" onclick="setTimer(${m})">${m} min</button>
+        `).join('')}
+      </div>
+
+      <div class="grid" style="margin-top:15px">
+        <button class="secondary" onclick="resetTimer()">Reset</button>
+        <button class="primary" onclick="toggleTimer()">
+          ${timerRunning?'Pause':'Start focus'}
+        </button>
+      </div>
+
+      <p class="muted">Your session is saved using its end time.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card stat-card">
+        <div class="eyebrow">TOTAL FOCUS</div>
+        <div class="stat-number">${Math.floor(total/60)}<small>h</small> ${total%60}<small>m</small></div>
+      </div>
+      <div class="card stat-card">
+        <div class="eyebrow">TODAY</div>
+        <div class="stat-number">${focus[todayKey()]||0}<small> min</small></div>
+      </div>
+    </div>
+  `;
+}
+
+// ==========================================
+// CALENDAR
+// ==========================================
+
+function renderCalendar(){
+  const year=calendarMonth.getFullYear();
+  const month=calendarMonth.getMonth();
+
+  const first=new Date(year,month,1);
+  const offset=first.getDay();
+  const count=new Date(year,month+1,0).getDate();
+
+  const cells=[];
+
+  for(let i=0;i<offset;i++)cells.push(null);
+  for(let i=1;i<=count;i++)cells.push(i);
+
+  $('screen').innerHTML=`
+    <div class="page-heading">
+      <div class="eyebrow">PLAN YOUR LIFE</div>
+      <h1>Your calendar.</h1>
+      <p class="muted">Keep track of tasks, events and exams.</p>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <button class="secondary" onclick="changeMonth(-1)">‹</button>
+        <h2>${calendarMonth.toLocaleDateString('en-IN',{month:'long',year:'numeric'})}</h2>
+        <button class="secondary" onclick="changeMonth(1)">›</button>
+      </div>
+
+      <div class="calendar-grid">
+        ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>`
+          <div class="center muted small">${x}</div>
+        `).join('')}
+
+        ${cells.map(day=>{
+          if(!day)return '<div></div>';
+
+          const k=dateKey(new Date(year,month,day));
+          const hasTasks=tasks.some(t=>t.date===k&&t.done);
+          const today=k===todayKey();
+
+          return `
+            <button class="calendar-day ${today?'today':''} ${hasTasks?'marked':''}"
+              onclick="chooseDate('${k}')">
+              ${day}
+              <small>${hasTasks?'✓':''}</small>
+            </button>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">ADD AN EVENT</div>
+      <h2>Something important?</h2>
+
+      <div class="field">
+        <label>EVENT NAME</label>
+        <input id="eventName" placeholder="Class, meeting, activity...">
+      </div>
+      <div class="field">
+        <label>DATE</label>
+        <input id="eventDate" type="date" value="${todayKey()}">
+      </div>
+      <div class="field">
+        <label>TIME</label>
+        <input id="eventTime" type="time">
+      </div>
+      <button class="primary block" onclick="addEvent()">Add event</button>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">UPCOMING EVENTS</div>
+      ${events.length?events.slice().sort((a,b)=>
+        a.date.localeCompare(b.date)
+      ).map(e=>`
+        <div class="task">
+          <div class="task-name">
+            ${escapeHTML(e.name)}
+            <small>${e.date} ${escapeHTML(e.time||'')}</small>
+          </div>
+          <button class="delete" onclick="deleteEvent(${Number(e.id)})">×</button>
+        </div>
+      `).join(''):'<p class="muted">No events yet.</p>'}
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">EXAM COUNTDOWN</div>
+      <h2>Add an exam</h2>
+      <div class="field">
+        <label>SUBJECT</label>
+        <input id="examName" placeholder="Mathematics">
+      </div>
+      <div class="field">
+        <label>EXAM DATE</label>
+        <input id="examDate" type="date" min="${todayKey()}">
+      </div>
+      <button class="primary block" onclick="addExam()">Add exam</button>
+
+      ${exams.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>{
+        const days=Math.ceil((fromKey(e.date)-fromKey(todayKey()))/86400000);
+        return `
+          <div class="task">
+            <div class="task-name">
+              ${escapeHTML(e.name)}
+              <small>${days<0?'Past':days===0?'Today':days+' days left'}</small>
+            </div>
+            <button class="delete" onclick="deleteExam(${Number(e.id)})">×</button>
+          </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+// ==========================================
+// PROGRESS AND 100-DAY TRACKER
+// ==========================================
+
+function renderStats(){
+  const totalDone=completedCount();
+  const totalTasks=tasks.length;
+  const rate=totalTasks?Math.round(totalDone/totalTasks*100):0;
+
+  const totalFocus=Object.values(focus).reduce(
+    (a,b)=>a+(Number(b)||0),0
+  );
+
+  const data=[];
+
+  for(let i=6;i>=0;i--){
+    const d=new Date();
+    d.setDate(d.getDate()-i);
+    const k=dateKey(d);
+    const items=tasks.filter(t=>t.date===k);
+
+    data.push({
+      label:d.toLocaleDateString('en-IN',{weekday:'short'}),
+      done:items.filter(t=>t.done).length,
+      total:items.length
+    });
+  }
+
+  const max=Math.max(1,...data.map(x=>x.total));
+
+  $('screen').innerHTML=`
+    <div class="page-heading">
+      <div class="eyebrow">THE BIG PICTURE</div>
+      <h1>Your progress.</h1>
+      <p class="muted">Look at how far you've come.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card stat-card">
+        <div class="eyebrow">TASKS DONE</div>
+        <div class="stat-number">${totalDone}</div>
+      </div>
+      <div class="card stat-card">
+        <div class="eyebrow">COMPLETION</div>
+        <div class="stat-number">${rate}%</div>
+      </div>
+      <div class="card stat-card">
+        <div class="eyebrow">FOCUS HOURS</div>
+        <div class="stat-number">${(totalFocus/60).toFixed(1)}</div>
+      </div>
+      <div class="card stat-card">
+        <div class="eyebrow">STREAK</div>
+        <div class="stat-number">${streak()} days</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">LAST 7 DAYS</div>
+      <h2>Your activity</h2>
+      <div class="chart">
+        ${data.map(x=>`
+          <div class="bar-col" title="${x.done}/${x.total}">
+            <i style="height:${Math.max(2,x.done/max*100)}%"></i>
+            <span>${x.label}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">100-DAY CHALLENGE</div>
+      <h2>Your consistency calendar</h2>
+      <p class="muted">A marked day means all tasks scheduled that day were completed.</p>
+      <div class="calendar-grid">
+        ${Array.from({length:100},(_,i)=>{
+          const d=new Date();
+          d.setDate(d.getDate()-(99-i));
+          const k=dateKey(d);
+          const marked=completedDays.includes(k);
+
+          return `
+            <div class="calendar-day ${marked?'marked':''}">
+              ${d.getDate()}
+              <small>${marked?'✓':''}</small>
+            </div>`;
+        }).join('')}
+      </div>
+      <p class="muted">${completedDays.length} perfect days recorded.</p>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">YOUR EXPERIENCE</div>
+      <h2>Level ${level()}</h2>
+      <div class="stat-number">${xp} XP</div>
+      <div class="progress-track"><i style="width:${xpPercent()}%"></i></div>
+      <p class="muted">${levelEnd()-xp} XP until next level.</p>
+    </div>
+  `;
+}
+
+// ==========================================
+// ACHIEVEMENTS
+// ==========================================
+
+function renderAchievements(){
+  const totalFocus=Object.values(focus).reduce(
+    (a,b)=>a+(Number(b)||0),0
+  );
+
+  const achievements=[
+    ['🌱','First step','Complete your first task',completedCount()>=1],
+    ['⚡','Getting started','Complete 10 tasks',completedCount()>=10],
+    ['🔥','Consistent','Complete 25 tasks',completedCount()>=25],
+    ['🏆','Task master','Complete 100 tasks',completedCount()>=100],
+    ['⏱️','Deep focus','Record 1 hour of focus',totalFocus>=60],
+    ['🧠','Study mode','Record 5 hours of focus',totalFocus>=300],
+    ['💎','High achiever','Earn 1,000 XP',xp>=1000],
+    ['📚','Level five','Reach Level 5',level()>=5],
+    ['📅','Planner','Add an exam',exams.length>=1],
+    ['📝','Reflect','Write a daily note',Object.values(notes).some(x=>String(x).trim())],
+    ['🎯','Perfect day','Complete all tasks on a day',completedDays.length>=1],
+    ['🪙','Collector','Earn 500 coins',coins>=500]
+  ];
+
+  const unlocked=achievements.filter(a=>a[3]).length;
+
+  return `
+    <div class="card">
+      <div class="eyebrow">ACHIEVEMENTS</div>
+      <h2>${unlocked} / ${achievements.length} unlocked</h2>
+      <div class="progress-track">
+        <i style="width:${unlocked/achievements.length*100}%"></i>
+      </div>
+    </div>
+    ${achievements.map(a=>`
+      <div class="badge ${a[3]?'unlocked':'locked'}">
+        <b>${a[0]} ${a[1]}</b>
+        <p class="muted">${a[2]}</p>
+        <small>${a[3]?'✓ Unlocked':'Locked'}</small>
+      </div>
+    `).join('')}
+  `;
+}
+
+// ==========================================
+// CHALLENGES
+// ==========================================
+
+function renderChallenges(){
+  const options=[
+    ['morning','🌅','Morning momentum','Complete one task before noon'],
+    ['focus','⏱️','Focus session','Complete one focus session'],
+    ['planner','📅','Plan ahead','Add three tasks'],
+    ['reflection','📝','Daily reflection','Write a daily note'],
+    ['reading','📖','Learning time','Spend some time learning something new'],
+    ['consistency','🎯','Consistency','Complete your planned tasks today']
+  ];
+
+  return `
+    <div class="card">
+      <div class="eyebrow">YOUR CHALLENGES</div>
+      <h2>Build good habits.</h2>
+      <p class="muted">Choose realistic challenges that fit your day.</p>
+    </div>
+    ${options.map(c=>{
+      const done=challenges.some(x=>x.id===c[0]&&x.done);
+
+      return `
+        <div class="badge ${done?'unlocked':''}">
+          <b>${c[1]} ${c[2]}</b>
+          <p class="muted">${c[3]}</p>
+          <button class="${done?'secondary':'primary'}"
+            onclick="toggleChallenge('${c[0]}')">
+            ${done?'Completed ✓':'Mark complete'}
+          </button>
+        </div>`;
+    }).join('')}
+  `;
+}
+
+// ==========================================
+// STORE
+// ==========================================
+
+function renderStore(){
+  return `
+    <div class="card center">
+      <div class="eyebrow">REDLINE STORE</div>
+      <h1>🪙 ${coins} coins</h1>
+      <p class="muted">Earn coins by completing tasks and focus sessions.</p>
+      <h2>Your avatar: ${shop.find(x=>x.id===avatar)?.emoji||'⚡'}</h2>
+    </div>
+
+    ${shop.map(item=>`
+      <div class="shop-item">
+        <div class="emoji">${item.emoji}</div>
+        <div class="details">
+          <b>${item.name}</b>
+          <div class="muted">${item.price===0?'Free':item.price+' coins'}</div>
+        </div>
+        <button class="secondary" onclick="buyItem('${item.id}')">
+          ${avatar===item.id?'Equipped':owned.includes(item.id)?'Equip':item.price===0?'Get':'Buy'}
+        </button>
+      </div>
+    `).join('')}
+  `;
+}
+
+// ==========================================
+// MORE SCREEN
+// ==========================================
+
+function renderMore(){
+  $('screen').innerHTML=`
+    <div class="page-heading">
+      <div class="eyebrow">YOUR CONTROL CENTRE</div>
+      <h1>More.</h1>
+      <p class="muted">Build your system. Track your progress.</p>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">YOUR PROFILE</div>
+      <h2>${shop.find(x=>x.id===avatar)?.emoji||'⚡'} Level ${level()}</h2>
+      <p class="muted">${xp} XP · ${coins} coins</p>
+      <div class="progress-track"><i style="width:${xpPercent()}%"></i></div>
+    </div>
+
+    <div class="card">
+      <div class="section-head"><h2>🏆 Achievements</h2></div>
+      ${renderAchievements()}
+    </div>
+
+    <div class="card">
+      <div class="section-head"><h2>🎮 Challenges</h2></div>
+      ${renderChallenges()}
+    </div>
+
+    <div class="card">
+      <div class="section-head"><h2>🛍️ Avatar store</h2></div>
+      ${renderStore()}
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">WEEKLY GOAL</div>
+      <h2>Set your target</h2>
+      <input id="goalInput" type="number" min="1" max="500" value="${weeklyGoal}">
+      <button class="primary block" onclick="
+        const n=Number($('goalInput').value);
+        if(!Number.isInteger(n)||n<1||n>500){toast('Choose 1 to 500');}
+        else{weeklyGoal=n;save();render();toast('Goal updated');}
+      ">Save goal</button>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">YOUR DATA</div>
+      <h2>Backup and restore</h2>
+      <button class="secondary block" onclick="exportData()">Export backup</button>
+      <div class="field">
+        <label>RESTORE A BACKUP</label>
+        <input type="file" accept=".json,application/json"
+          onchange="importData(this.files[0])">
+      </div>
+    </div>
+  `;
+}
+
+// ==========================================
+// START APP
+// ==========================================
 
 initialise();
+render();
+
 </script>
 </body>
 </html>
