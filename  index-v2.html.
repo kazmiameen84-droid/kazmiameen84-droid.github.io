@@ -672,6 +672,192 @@ document.addEventListener('DOMContentLoaded', () => {
 
   rlRenderTasks();
 });
+
+/* PART 4 — REDLINE CALENDAR */
+const rlCalendarKey = 'calendarEvents';
+let rlCalendarEvents = RL.read(rlCalendarKey, []);
+let rlCalendarDate = new Date();
+let rlSelectedDate = rlDateKey(new Date());
+
+function rlDateKey(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+function rlSaveCalendar() {
+  RL.write(rlCalendarKey, rlCalendarEvents);
+}
+
+function rlRenderCalendar() {
+  const section = document.getElementById('calendar');
+  if (!section) return;
+
+  const year = rlCalendarDate.getFullYear();
+  const month = rlCalendarDate.getMonth();
+  const firstDay = new Date(year, month, 1);
+  const offset = (firstDay.getDay() + 6) % 7;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const totalCells = Math.ceil((offset + daysInMonth) / 7) * 7;
+
+  const monthName = rlCalendarDate.toLocaleDateString('en', {
+    month: 'long',
+    year: 'numeric'
+  });
+
+  let cells = '';
+  for (let i = 0; i < totalCells; i++) {
+    const day = i - offset + 1;
+    if (day < 1 || day > daysInMonth) {
+      cells += `<div class="rl-cal-cell muted"></div>`;
+      continue;
+    }
+
+    const date = rlDateKey(new Date(year, month, day));
+    const isToday = date === rlDateKey(new Date());
+    const isSelected = date === rlSelectedDate;
+    const hasEvents = rlCalendarEvents.some(e => e.date === date);
+
+    cells += `
+      <button type="button"
+        class="rl-cal-cell ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}"
+        data-cal-date="${date}">
+        <span>${day}</span>
+        ${hasEvents ? '<i></i>' : ''}
+      </button>`;
+  }
+
+  const dayEvents = rlCalendarEvents
+    .filter(e => e.date === rlSelectedDate)
+    .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+
+  const eventHTML = dayEvents.length
+    ? dayEvents.map(e => `
+      <div class="rl-cal-event">
+        <div>
+          <strong>${rlEscape(e.title)}</strong>
+          <small>${e.time || 'Any time'}${e.description ? ' · ' + rlEscape(e.description) : ''}</small>
+        </div>
+        <button type="button" data-cal-delete="${e.id}" aria-label="Delete event">×</button>
+      </div>`).join('')
+    : '<p class="muted">Nothing scheduled for this day.</p>';
+
+  section.innerHTML = `
+    <div class="card rl-calendar">
+      <div class="rl-cal-heading">
+        <button type="button" data-cal-month="-1">‹</button>
+        <h2>${monthName}</h2>
+        <button type="button" data-cal-month="1">›</button>
+      </div>
+
+      <div class="rl-cal-weekdays">
+        ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
+          .map(d => `<span>${d}</span>`).join('')}
+      </div>
+
+      <div class="rl-cal-grid">${cells}</div>
+
+      <div class="rl-cal-selected">
+        <h3>${new Date(rlSelectedDate + 'T12:00:00')
+          .toLocaleDateString('en', {
+            weekday: 'long', day: 'numeric', month: 'long'
+          })}</h3>
+        ${eventHTML}
+      </div>
+
+      <form id="rl-calendar-form" class="rl-cal-form">
+        <h3>Add an event</h3>
+        <input name="title" placeholder="Event title" maxlength="70" required>
+        <div class="rl-cal-form-row">
+          <input name="date" type="date" value="${rlSelectedDate}" required>
+          <input name="time" type="time">
+        </div>
+        <input name="description" placeholder="Description (optional)" maxlength="120">
+        <button type="submit" class="btn primary">+ Add event</button>
+      </form>
+    </div>`;
+
+  section.querySelectorAll('[data-cal-month]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      rlCalendarDate.setMonth(
+        rlCalendarDate.getMonth() + Number(btn.dataset.calMonth)
+      );
+      rlRenderCalendar();
+    });
+  });
+
+  section.querySelectorAll('[data-cal-date]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      rlSelectedDate = btn.dataset.calDate;
+      rlCalendarDate = new Date(rlSelectedDate + 'T12:00:00');
+      rlRenderCalendar();
+    });
+  });
+
+  section.querySelectorAll('[data-cal-delete]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      rlCalendarEvents = rlCalendarEvents.filter(
+        e => String(e.id) !== btn.dataset.calDelete
+      );
+      rlSaveCalendar();
+      rlRenderCalendar();
+      rlToast('Event deleted');
+    });
+  });
+
+  const form = document.getElementById('rl-calendar-form');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const title = String(data.get('title') || '').trim();
+    if (!title) return;
+
+    rlCalendarEvents.push({
+      id: Date.now(),
+      title,
+      date: data.get('date'),
+      time: data.get('time'),
+      description: String(data.get('description') || '').trim()
+    });
+
+    rlSaveCalendar();
+    rlSelectedDate = data.get('date');
+    rlCalendarDate = new Date(rlSelectedDate + 'T12:00:00');
+    rlRenderCalendar();
+    rlToast('Event added');
+  });
+}
+
+/* Calendar styling */
+const rlCalStyle = document.createElement('style');
+rlCalStyle.textContent = `
+.rl-calendar{padding:18px}
+.rl-cal-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.rl-cal-heading h2{margin:0;font-size:20px}
+.rl-cal-heading button,.rl-cal-event button{border:0;background:var(--surface-2,#eee);border-radius:10px;padding:8px 13px;font-size:22px;color:inherit}
+.rl-cal-weekdays,.rl-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.rl-cal-weekdays span{text-align:center;font-size:11px;color:var(--muted);padding:7px 0}
+.rl-cal-cell{position:relative;min-height:43px;border:1px solid transparent;border-radius:10px;background:transparent;color:inherit;font:inherit}
+.rl-cal-cell.muted{pointer-events:none}
+.rl-cal-cell.today{border-color:var(--accent,#777)}
+.rl-cal-cell.selected{background:var(--accent,#333);color:white}
+.rl-cal-cell i{position:absolute;bottom:5px;left:50%;width:5px;height:5px;border-radius:50%;background:currentColor;transform:translateX(-50%)}
+.rl-cal-selected{margin-top:22px}
+.rl-cal-selected h3,.rl-cal-form h3{font-size:16px;margin:0 0 12px}
+.rl-cal-event{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--border,#ddd)}
+.rl-cal-event div{min-width:0}
+.rl-cal-event strong,.rl-cal-event small{display:block;overflow-wrap:anywhere}
+.rl-cal-event small{color:var(--muted);margin-top:4px}
+.rl-cal-event button{padding:3px 10px;font-size:20px}
+.rl-cal-form{display:grid;gap:10px;margin-top:22px}
+.rl-cal-form input{width:100%;min-width:0;padding:12px;border:1px solid var(--border,#ddd);border-radius:10px;background:var(--surface,#fff);color:inherit;font:inherit}
+.rl-cal-form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+`;
+document.head.appendChild(rlCalStyle);
+
+/* Show the calendar when the app loads */
+rlRenderCalendar();
 </script>
 
 </body>
