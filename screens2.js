@@ -1,0 +1,64 @@
+window.__p=3;
+// FOCUS
+function renderFocus(){const total=totalFocus(todayKey()),choices=[15,25,45,60];$('screen').innerHTML=`<div class="page-heading"><div class="eyebrow">DEEP WORK</div><h1>Focus mode.</h1><p class="muted">One thing at a time. Give it your full attention.</p></div>
+<section class="card center"><div class="eyebrow">${timerRunning?'SESSION IN PROGRESS':'READY WHEN YOU ARE'}</div><div class="timer-ring"><div><div class="timer">${timerText()}</div><div class="muted">TIME REMAINING</div></div></div>
+<div class="grid">${choices.map(n=>`<button class="secondary" onclick="setTimer(${n})" ${timerRunning?'disabled':''}>${n} min</button>`).join('')}</div>
+<button class="primary block" onclick="${timerRunning?'pauseTimer()':'startTimer()'}">${timerRunning?'Pause':'Start focus'}</button><button class="secondary block" onclick="resetTimer()">Reset</button></section>
+<div class="grid"><section class="card stat-card"><div class="eyebrow">TODAY</div><div class="stat-number">${Math.floor(total/60)}h ${total%60}<small>m</small></div><div class="muted">Focus completed</div></section><section class="card stat-card"><div class="eyebrow">WEEKLY GOAL</div><div class="stat-number">${weeklyGoal}<small>h</small></div><div class="muted">Target hours</div></section></div>
+<section class="card"><h2>Focus tip</h2><p class="muted">Put your phone on silent, choose one task, and work until the timer ends. Take a proper break afterwards.</p></section>`}
+
+// PROGRESS
+function renderStats(){const today=fromKey(todayKey());let weekDone=0,weekTotal=0,weekFocus=0;const bars=[];
+for(let i=6;i>=0;i--){const d=new Date(today);d.setDate(today.getDate()-i);const k=dateKey(d),day=dayTasks(k),done=day.filter(t=>t.done).length;weekDone+=done;weekTotal+=day.length;weekFocus+=focus[k]||0;bars.push({label:d.toLocaleDateString('en-IN',{weekday:'short'}),value:focus[k]||0})}
+const max=Math.max(1,...bars.map(b=>b.value)),percent=Math.min(100,Math.round(weekFocus/(weeklyGoal*3600)*100)),completed=completedCount();
+const last100=Array.from({length:100},(_,i)=>{const k=addDays(todayKey(),i-99);return `<div title="${k}" style="aspect-ratio:1;border-radius:4px;background:${completedDays.includes(k)?'var(--green)':'var(--panel2)'};border:1px solid var(--line)"></div>`}).join('');
+$('screen').innerHTML=`<div class="page-heading"><div class="eyebrow">YOUR MOMENTUM</div><h1>Progress.</h1><p class="muted">Measure the work. Improve the system.</p></div>
+<div class="grid"><section class="card stat-card"><div class="eyebrow">TASKS DONE</div><div class="stat-number">${completed}</div><div class="muted">All time</div></section><section class="card stat-card"><div class="eyebrow">STREAK</div><div class="stat-number">${streak()} 🔥</div><div class="muted">Consecutive days</div></section><section class="card stat-card"><div class="eyebrow">TOTAL XP</div><div class="stat-number">${xp}</div><div class="muted">Level ${level()}</div></section></div>
+<section class="card"><div class="section-head"><h2>Weekly focus</h2><b>${percent}%</b></div><div class="progress-track"><i style="width:${percent}%"></i></div><p class="muted">${(weekFocus/3600).toFixed(1)} hours out of ${weeklyGoal} hours</p><div class="chart">${bars.map(b=>`<div class="bar-col"><i style="height:${Math.max(2,b.value/max*100)}%"></i><span>${b.label}</span></div>`).join('')}</div></section>
+<section class="card"><h2>Last 100 days</h2><p class="muted">Green = a perfect day (all tasks scheduled that day completed).</p><div style="display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:15px">${last100}</div></section>
+<section class="card"><div class="eyebrow">LEVEL ${level()}</div><h2>${levelXP()} / 100 XP</h2><div class="progress-track"><i style="width:${levelXP()}%"></i></div><p class="muted">Complete tasks and focus sessions to earn XP.</p></section>
+${catBreakdown()}<section class="card"><h2>Weekly task completion</h2><div class="stat-number">${weekDone} / ${weekTotal}</div><p class="muted">Tasks completed this week.</p></section>`}
+
+// ACHIEVEMENTS
+const ACHIEVEMENTS=[
+{name:'First Step',desc:'Complete your first task',goal:1,check:()=>completedCount()},
+{name:'Getting Started',desc:'Complete 10 tasks',goal:10,check:()=>completedCount()},
+{name:'Consistent',desc:'Complete 50 tasks',goal:50,check:()=>completedCount()},
+{name:'Task Machine',desc:'Complete 100 tasks',goal:100,check:()=>completedCount()},
+{name:'Early Momentum',desc:'Build a 3-day streak',goal:3,check:()=>streak()},
+{name:'Unstoppable',desc:'Build a 7-day streak',goal:7,check:()=>streak()},
+{name:'Legendary',desc:'Build a 30-day streak',goal:30,check:()=>streak()},
+{name:'Focused',desc:'Complete 1 hour of focus',goal:3600,check:()=>Object.values(focus).reduce((a,b)=>a+b,0)},
+{name:'Deep Worker',desc:'Complete 10 hours of focus',goal:36000,check:()=>Object.values(focus).reduce((a,b)=>a+b,0)},
+{name:'Level Up',desc:'Reach level 5',goal:5,check:()=>level()},
+{name:'Big League',desc:'Reach level 10',goal:10,check:()=>level()},
+{name:'Perfect Day',desc:'Complete all tasks on a day',goal:1,check:()=>completedDays.length}
+];
+function renderAchievements(){const html=ACHIEVEMENTS.map(a=>{const v=a.check(),done=v>=a.goal,p=Math.min(100,Math.round(v/a.goal*100));return `<div class="badge ${done?'unlocked':'locked'}"><div class="section-head"><b>${done?'🏆':'🔒'} ${a.name}</b><span class="small">${done?'Unlocked':p+'%'}</span></div><div class="muted">${a.desc}</div><div class="progress-track"><i style="width:${p}%"></i></div><div class="small muted">${Math.min(v,a.goal)} / ${a.goal}</div></div>`}).join('');$('screen').innerHTML=`<div class="page-heading"><div class="eyebrow">MILESTONES</div><h1>Achievements.</h1><p class="muted">Every milestone counts. Keep building.</p></div><section class="card"><div class="stat-number">${ACHIEVEMENTS.filter(a=>a.check()>=a.goal).length} / ${ACHIEVEMENTS.length}</div><div class="muted">Achievements unlocked</div></section>${html}<button class="secondary block" onclick="go('more')">← Back to More</button>`}
+
+// CHALLENGES
+const CHALLENGE_LIST=[{id:'seven',name:'7-Day Consistency',desc:'Complete at least one task every day for 7 days.',days:7},{id:'focus5',name:'Focus Builder',desc:'Complete five focus sessions.',days:5},{id:'tasks10',name:'Task Takedown',desc:'Complete 10 tasks.',days:10},{id:'planner',name:'Plan Ahead',desc:'Add five events to your calendar.',days:5},{id:'early',name:'Morning Momentum',desc:'Complete a task before noon for five days.',days:5},{id:'notes',name:'Daily Reflection',desc:'Write a note on five different days.',days:5}];
+function challengeProgress(c){if(c.id==='seven')return Math.min(7,streak());if(c.id==='focus5')return Math.min(5,Object.values(focus).filter(v=>v>=900).length);if(c.id==='tasks10')return Math.min(10,completedCount());if(c.id==='planner')return Math.min(5,events.length);if(c.id==='notes')return Math.min(5,Object.keys(notes).length);if(c.id==='early')return Math.min(5,new Set(tasks.filter(t=>t.done&&t.doneAt&&new Date(t.doneAt).getHours()<12).map(t=>new Date(t.doneAt).toDateString())).size);return 0}
+function renderChallenges(){$('screen').innerHTML=`<div class="page-heading"><div class="eyebrow">PUSH YOURSELF</div><h1>Challenges.</h1><p class="muted">Build useful habits at a sustainable pace.</p></div>${CHALLENGE_LIST.map(c=>{const v=challengeProgress(c),done=v>=c.days;return `<section class="card"><div class="section-head"><h2>${escapeHTML(c.name)}</h2><span class="small">${done?'Completed':'In progress'}</span></div><p class="muted">${escapeHTML(c.desc)}</p><div class="progress-track"><i style="width:${Math.min(100,v/c.days*100)}%"></i></div><div class="muted small">${v} / ${c.days}</div></section>`}).join('')}<button class="secondary block" onclick="go('more')">← Back to More</button>`}
+
+// MORE
+function renderMore(){$('screen').innerHTML=`<div class="page-heading"><div class="eyebrow">YOUR REDLINE</div><h1>More.</h1><p class="muted">Milestones, challenges and useful shortcuts.</p></div>
+<section class="hero"><div class="eyebrow">LEVEL ${level()}</div><h1>${xp} <span>XP</span></h1><p>${escapeHTML(profileName)} · ${levelXP()} / 100 XP to next level</p><div class="progress-track"><i style="width:${levelXP()}%"></i></div></section>
+<div class="grid"><button class="card center" onclick="renderAchievements()"><div style="font-size:25px">🏆</div><b>Achievements</b><div class="muted">Your milestones</div></button><button class="card center" onclick="renderChallenges()"><div style="font-size:25px">🎯</div><b>Challenges</b><div class="muted">Build consistency</div></button><button class="card center" onclick="go('calendar')"><div style="font-size:25px">▦</div><b>Calendar</b><div class="muted">Manage your time</div></button><button class="card center" onclick="go('settings')"><div style="font-size:25px">⚙</div><b>Settings</b><div class="muted">Profile and app</div></button></div>
+<section class="card"><h2>Keep your momentum</h2><p class="muted">Your tasks, notes, calendar, focus history and achievements remain stored on this device.</p><button class="primary block" onclick="go('today')">Back to today</button></section>`}
+
+// SETTINGS
+function renderSettings(){$('screen').innerHTML=`<div class="page-heading"><div class="eyebrow">PREFERENCES</div><h1>Settings.</h1><p class="muted">Make Redline work the way you want.</p></div>
+<section class="card"><div class="eyebrow">ACCOUNT</div><h2>Profile</h2><p class="muted">Choose the name shown on your dashboard. No account or sign-in is required.</p><div class="field"><label>DISPLAY NAME</label><input id="profileNameInput" maxlength="32" value="${escapeHTML(profileName)}" placeholder="Operator"></div><button class="primary block" onclick="saveProfile()">Save profile</button></section>
+<section class="card"><div class="eyebrow">APPEARANCE</div><h2>Theme</h2><p class="muted">Midnight blue with crimson accents, or a clean light interface.</p><button class="secondary block" onclick="toggleTheme();renderSettings()">Switch to ${theme==='dark'?'light':'dark'} mode</button><div class="settings-row"><div><b>Reduced motion</b><div class="muted">Limit interface animations.</div></div><input type="checkbox" ${reducedMotion?'checked':''} onchange="setReducedMotion(this.checked)"></div></section>
+<section class="card"><div class="eyebrow">YOUR TARGETS</div><h2>Weekly focus goal</h2><p class="muted">Set your target in hours per week.</p><div class="field"><input id="weeklyGoalInput" type="number" min="1" max="168" value="${weeklyGoal}"></div><button class="primary block" onclick="saveGoal()">Save goal</button></section>
+<section class="card"><div class="eyebrow">DATA MANAGEMENT</div><h2>Backup & restore</h2><p class="muted">Export a backup before changing devices. Restoring a backup replaces the current app data.</p><button class="secondary block" onclick="exportData()">Export backup</button><div class="field"><label>RESTORE BACKUP</label><input type="file" accept=".json,application/json" onchange="importData(this)"></div></section>
+<section class="card"><div class="eyebrow">ABOUT</div><h2>Redline 2.4</h2><p class="muted">Midnight Edition · Your data is stored locally in this browser. Removing browser data can erase it, so keep a backup.</p></section>`}
+function saveGoal(){const v=Number($('weeklyGoalInput').value);if(!Number.isFinite(v)||v<1||v>168){toast('Enter a goal between 1 and 168 hours');return}weeklyGoal=v;save();renderSettings();toast('Weekly goal updated')}
+
+// INITIALISE
+function initialise(){if(timerEndAt&&timerEndAt<=Date.now()){const k=todayKey();focus[k]=(focus[k]||0)+timerLength;xp+=25;timerEndAt=0;setTimeout(()=>toast('Focus session finished while you were away · +25 XP'),700)}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeTaskModal();closeEventModal()}});['taskModal','eventModal'].forEach(id=>$(id).addEventListener('click',e=>{if(e.target.id===id)id==='taskModal'?closeTaskModal():closeEventModal()}));if(!Array.isArray(tasks))tasks=[];if(!Array.isArray(events))events=[];if(!Array.isArray(exams))exams=[];if(!Array.isArray(completedDays))completedDays=[];if(!Array.isArray(cats)||!cats.length)cats=['Study','Personal','Fitness','Other'];applyTheme();ensureRecurringSchedule();save();
+if(timerRunning){timerLeft=Math.max(0,Math.ceil((timerEndAt-Date.now())/1000));if(timerLeft<=0){timerRunning=false;timerEndAt=0;timerLeft=timerLength;save()}else timerId=setInterval(updateTimer,1000)}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&timerRunning)updateTimer()});window.addEventListener('pageshow',()=>{if(timerRunning)updateTimer()})}
+initialise();render();if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
