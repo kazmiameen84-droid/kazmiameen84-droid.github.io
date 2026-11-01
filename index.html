@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>Redline 2.0</title>
+<title>Redline 2.1</title>
 
 <style>
 :root{
@@ -23,19 +23,18 @@
   --green:#54d6a0;
   --amber:#f2bd62;
   --blue:#83aaff;
+  --purple:#b69aff;
   --radius:18px;
 }
 *{box-sizing:border-box}
 body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
+  margin:0;background:var(--bg);color:var(--ink);
   font-family:Inter,system-ui,-apple-system,sans-serif;
   padding-bottom:100px;
 }
 button,input,textarea,select{font:inherit}
 button{cursor:pointer;color:inherit}
-.app{max-width:850px;margin:auto;padding:18px}
+.app{max-width:1100px;margin:auto;padding:18px}
 .top{
   display:flex;align-items:center;justify-content:space-between;
   padding:10px 2px 22px;
@@ -76,8 +75,8 @@ p{line-height:1.5}
 .stat-number{font-size:28px;font-weight:850;margin:9px 0}
 .stat-number small{font-size:12px;color:var(--muted)}
 .primary,.secondary,.danger{
-  border:0;border-radius:12px;padding:12px 16px;font-weight:750;
-  transition:transform .15s,filter .15s;
+  border:0;border-radius:12px;padding:12px 16px;
+  font-weight:750;transition:transform .15s,filter .15s;
 }
 .primary{background:var(--red);color:white}
 .secondary{background:var(--panel2);border:1px solid var(--line)}
@@ -90,9 +89,7 @@ input,textarea,select{
   color:var(--ink);outline:none;
 }
 textarea{resize:vertical;min-height:100px}
-input:focus,textarea:focus,select:focus{
-  border-color:var(--red);
-}
+input:focus,textarea:focus,select:focus{border-color:var(--red)}
 .field{margin:13px 0}
 .field label{
   display:block;font-size:10px;letter-spacing:1.5px;
@@ -123,9 +120,7 @@ input:focus,textarea:focus,select:focus{
   display:block;height:100%;background:var(--red);
   border-radius:20px;transition:width .3s;
 }
-.date-strip{
-  display:flex;gap:7px;overflow-x:auto;padding:5px 0 15px;
-}
+.date-strip{display:flex;gap:7px;overflow-x:auto;padding:5px 0 15px}
 .date-btn{
   min-width:49px;padding:9px 5px;background:var(--panel);
   border:1px solid var(--line);border-radius:13px;
@@ -142,7 +137,7 @@ input:focus,textarea:focus,select:focus{
   backdrop-filter:blur(15px);
 }
 .nav-inner{
-  max-width:850px;margin:auto;display:flex;
+  max-width:1100px;margin:auto;display:flex;
   justify-content:space-around;gap:3px;
 }
 .nav button{
@@ -151,42 +146,30 @@ input:focus,textarea:focus,select:focus{
 }
 .nav button.active{color:white;background:var(--panel2)}
 .nav button span{display:block;font-size:19px;margin-bottom:4px}
-.timer{
-  font-size:55px;font-weight:850;letter-spacing:2px;
-  text-align:center;margin:20px 0;
-}
+.timer{font-size:55px;font-weight:850;letter-spacing:2px;text-align:center;margin:20px 0}
 .timer-ring{
   width:220px;height:220px;border:8px solid var(--panel2);
   border-radius:50%;display:flex;align-items:center;
   justify-content:center;margin:20px auto;
 }
 .center{text-align:center}
-.quote{
-  font-size:19px;font-weight:700;line-height:1.5;
-  padding:15px 0;
-}
-.chart{
-  display:flex;align-items:flex-end;gap:7px;
-  height:150px;padding:15px 0 0;
-}
+.quote{font-size:19px;font-weight:700;line-height:1.5;padding:15px 0}
+.chart{display:flex;align-items:flex-end;gap:7px;height:150px;padding:15px 0 0}
 .bar-col{
   flex:1;height:100%;display:flex;flex-direction:column;
-  justify-content:flex-end;align-items:center;gap:6px;
-  min-width:0;
+  justify-content:flex-end;align-items:center;gap:6px;min-width:0;
 }
 .bar-col i{
   width:70%;max-width:30px;background:var(--red);
   border-radius:6px 6px 2px 2px;min-height:2px;
 }
 .bar-col span{font-size:9px;color:var(--muted)}
-.calendar-grid{
-  display:grid;grid-template-columns:repeat(7,1fr);gap:5px;
-}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
 .calendar-day{
   min-height:48px;border:1px solid var(--line);
   border-radius:9px;background:var(--panel2);
   display:flex;flex-direction:column;align-items:center;
-  justify-content:center;font-size:12px;
+  justify-content:center;font-size:12px;min-width:0;
 }
 .calendar-day.today{border-color:var(--red)}
 .calendar-day.marked{background:#263b35;border-color:var(--green)}
@@ -215,12 +198,106 @@ input:focus,textarea:focus,select:focus{
 }
 .modal.show{display:flex}
 .modal-box{
-  width:100%;max-width:430px;background:var(--panel);
+  width:100%;max-width:500px;background:var(--panel);
   border:1px solid var(--line);border-radius:20px;padding:20px;
   max-height:90vh;overflow:auto;
 }
 .empty{text-align:center;padding:25px 10px;color:var(--muted)}
 .small{font-size:11px}
+
+/* CALENDAR 2.1 */
+.calendar-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;flex-wrap:wrap;
+}
+.calendar-toolbar h2{flex:1;text-align:center}
+.calendar-controls{display:flex;gap:6px;align-items:center}
+.calendar-controls button{padding:9px 12px}
+.view-switch{
+  display:flex;gap:4px;background:var(--panel2);
+  padding:4px;border-radius:12px;
+}
+.view-switch button{
+  border:0;background:transparent;color:var(--muted);
+  border-radius:9px;padding:8px 10px;font-size:12px;
+}
+.view-switch button.active{background:var(--red);color:white}
+.cal-weekdays{
+  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:5px;margin-bottom:6px;
+}
+.cal-weekdays div{text-align:center;color:var(--muted);font-size:11px;padding:7px 0}
+.month-grid{
+  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;
+}
+.month-cell{
+  min-height:105px;padding:7px 5px;border:1px solid var(--line);
+  border-radius:10px;background:var(--panel2);text-align:left;
+  display:flex;flex-direction:column;gap:4px;overflow:hidden;
+}
+.month-cell.outside{opacity:.35}
+.month-cell.selected{border:1px solid var(--red);background:#30212a}
+.month-cell.today .day-number{color:var(--red);font-weight:900}
+.day-number{font-size:12px}
+.event-dot{
+  font-size:10px;padding:3px 5px;border-radius:5px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  background:#34415a;color:#dce7ff;
+}
+.event-dot.task-dot{background:#263b35;color:#b6f3d8}
+.event-dot.exam-dot{background:#4b3821;color:#ffdfa5}
+.calendar-day-list{display:flex;flex-direction:column;gap:8px}
+.event-card{
+  display:flex;gap:10px;padding:12px;border:1px solid var(--line);
+  background:var(--panel2);border-radius:12px;align-items:flex-start;
+}
+.event-color{width:4px;min-width:4px;align-self:stretch;border-radius:5px}
+.event-content{flex:1;min-width:0}
+.event-content b{overflow-wrap:anywhere}
+.event-actions{display:flex;gap:5px}
+.event-actions button{padding:6px 9px;font-size:12px}
+.agenda-date{font-size:12px;color:var(--red);font-weight:800;margin:18px 0 8px}
+.time-grid{
+  overflow:auto;max-height:650px;border:1px solid var(--line);
+  border-radius:13px;background:var(--panel);
+}
+.time-grid-inner{position:relative;min-width:520px}
+.time-row{
+  display:grid;grid-template-columns:58px 1fr;
+  min-height:58px;border-bottom:1px solid var(--line);
+}
+.time-label{font-size:10px;color:var(--muted);padding:5px;text-align:center}
+.time-slot{position:relative;border-left:1px solid var(--line)}
+.time-event{
+  position:absolute;left:5px;right:5px;top:3px;
+  border-radius:7px;padding:6px 8px;font-size:11px;
+  overflow:hidden;z-index:2;border-left:3px solid var(--blue);
+}
+.note-card{
+  position:relative;background:#29252a;border:1px solid #51404a;
+  border-radius:14px;padding:17px 48px 17px 16px;
+  min-height:100px;white-space:pre-wrap;overflow-wrap:anywhere;
+  line-height:1.65;
+}
+.note-edit{
+  position:absolute;top:9px;right:9px;width:34px;height:34px;
+  border:1px solid var(--line);border-radius:10px;
+  background:var(--panel2);font-size:17px;
+}
+.color-options{display:flex;gap:9px;flex-wrap:wrap}
+.color-choice{
+  width:28px;height:28px;border-radius:50%;
+  border:3px solid transparent;padding:0;
+}
+.color-choice.active{outline:2px solid white;outline-offset:2px}
+@media(max-width:600px){
+  .app{padding:13px}
+  .month-cell{min-height:72px;padding:5px 3px}
+  .event-dot{font-size:9px;padding:2px 3px}
+  .view-switch button{padding:8px 7px;font-size:11px}
+  .calendar-toolbar{gap:6px}
+  .calendar-toolbar h2{font-size:16px}
+}
 @media(min-width:650px){
   .app{padding:25px}
   .hero{padding:30px}
@@ -235,7 +312,6 @@ input:focus,textarea:focus,select:focus{
     <div class="brand">RED<span>LINE</span></div>
     <div class="level-pill" id="levelPill">LEVEL 1 · 0 XP</div>
   </header>
-
   <main id="screen"></main>
 </div>
 
@@ -245,6 +321,7 @@ input:focus,textarea:focus,select:focus{
 
 <div class="toast" id="toast"></div>
 
+<!-- TASK MODAL -->
 <div class="modal" id="taskModal">
   <div class="modal-box">
     <div class="section-head">
@@ -283,30 +360,92 @@ input:focus,textarea:focus,select:focus{
   </div>
 </div>
 
+<!-- EVENT MODAL -->
+<div class="modal" id="eventModal">
+  <div class="modal-box">
+    <div class="section-head">
+      <h2 id="eventModalTitle">Create event</h2>
+      <button class="delete" onclick="closeEventModal()">✕</button>
+    </div>
+    <input type="hidden" id="eventEditId">
+    <div class="field">
+      <label>EVENT TITLE</label>
+      <input id="eventName" maxlength="120" placeholder="Class, meeting, activity...">
+    </div>
+    <div class="grid">
+      <div class="field">
+        <label>START DATE</label>
+        <input id="eventDate" type="date">
+      </div>
+      <div class="field">
+        <label>END DATE</label>
+        <input id="eventEndDate" type="date">
+      </div>
+    </div>
+    <div class="grid">
+      <div class="field">
+        <label>START TIME</label>
+        <input id="eventTime" type="time">
+      </div>
+      <div class="field">
+        <label>END TIME</label>
+        <input id="eventEndTime" type="time">
+      </div>
+    </div>
+    <div class="field">
+      <label>LOCATION</label>
+      <input id="eventLocation" maxlength="120" placeholder="Optional">
+    </div>
+    <div class="field">
+      <label>DESCRIPTION</label>
+      <textarea id="eventDescription" placeholder="Add details..."></textarea>
+    </div>
+    <div class="field">
+      <label>CALENDAR</label>
+      <select id="eventCategory">
+        <option value="Personal">Personal</option>
+        <option value="School">School</option>
+        <option value="Work">Work</option>
+        <option value="Fitness">Fitness</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>EVENT COLOUR</label>
+      <div class="color-options" id="eventColors"></div>
+    </div>
+    <div class="field">
+      <label>REPEAT</label>
+      <select id="eventRepeat">
+        <option value="none">Does not repeat</option>
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+        <option value="yearly">Yearly</option>
+      </select>
+    </div>
+    <button class="primary block" onclick="saveEvent()">Save event</button>
+  </div>
+</div>
+
 <script>
 // ==========================================
-// REDLINE 2.0 — CORE SYSTEM
+// REDLINE 2.1 — CORE ENGINE
 // ==========================================
 
-const $ = id => document.getElementById(id);
-const pad = n => String(n).padStart(2,'0');
-
-const dateKey = d =>
-  `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-
-const fromKey = k => new Date(k+'T12:00:00');
-const todayKey = () => dateKey(new Date());
-
-function read(key,fallback){
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,'0');
+const dateKey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const fromKey=k=>{const [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
+const todayKey=()=>dateKey(new Date());
+const addDays=(key,n)=>{const d=fromKey(key);d.setDate(d.getDate()+n);return dateKey(d)};
+const read=(key,fallback)=>{
   try{
     const value=localStorage.getItem('rl2-'+key);
     return value===null?fallback:JSON.parse(value);
-  }catch{return fallback}
-}
-
-function write(key,value){
-  localStorage.setItem('rl2-'+key,JSON.stringify(value));
-}
+  }catch(e){return fallback}
+};
+const write=(key,value)=>localStorage.setItem('rl2-'+key,JSON.stringify(value));
 
 let tasks=read('tasks',[]);
 let cats=read('cats',['Study','Personal','Fitness','Other']);
@@ -327,6 +466,12 @@ let tab='today';
 let selectedDate=todayKey();
 let statsRange='Week';
 let calendarMonth=new Date();
+let calendarView='month';
+let calendarSearch='';
+let calendarFilter='All';
+let selectedEventColor='#83aaff';
+let editingNote=false;
+
 let timerLength=25*60;
 let timerLeft=25*60;
 let timerEndAt=Number(read('timerEndAt',0))||0;
@@ -334,48 +479,53 @@ let timerId=null;
 let timerRunning=timerEndAt>Date.now();
 
 const NAV=[
-  ['today','⌂','Today'],
-  ['calendar','▦','Calendar'],
-  ['focus','◷','Focus'],
-  ['stats','▥','Progress'],
-  ['more','✦','More']
+  ['today','☀️','Today'],
+  ['calendar','🗓️','Calendar'],
+  ['focus','⏱️','Focus'],
+  ['progress','📊','Progress'],
+  ['more','☰','More']
 ];
 
-const quotes=[
-  'Small progress is still progress.',
-  'Discipline creates freedom.',
+const COLORS=[
+  '#83aaff','#54d6a0','#ef4053','#f2bd62',
+  '#b69aff','#ff91c8','#69d8dc','#b2b6c2'
+];
+
+const QUOTES=[
+  'Discipline beats motivation.',
+  'Small steps. Serious results.',
+  'You do not need to be perfect. You need to be consistent.',
   'Your future is built by what you do today.',
   'Start before you feel ready.',
-  'Consistency beats intensity.',
-  'Focus on what you can control.',
-  'Make your actions match your goals.',
-  'One good decision can change your day.',
-  'You do not need to be perfect. Just consistent.',
-  'The secret is to keep showing up.',
-  'Stop waiting. Start building.',
-  'Your effort today is an investment in tomorrow.',
-  'A little better every day adds up.',
-  'Make the next hour count.',
-  'Do the work. Trust the process.',
-  'Progress takes patience.',
-  'Your habits shape your future.',
-  'Turn your plans into actions.',
-  'Be proud of the effort you put in.',
-  'One task at a time.'
+  'One focused hour can change your day.',
+  'Stop waiting. Start doing.',
+  'Make your actions match your ambitions.',
+  'Consistency creates confidence.',
+  'Do the work. Let the results speak.',
+  'Progress is still progress, no matter how small.',
+  'Your only competition is who you were yesterday.',
+  'A little every day adds up.',
+  'Stay patient. Stay disciplined.',
+  'You can restart as many times as you need.',
+  'Make today count.',
+  'Focus on the next step, not the whole staircase.',
+  'Hard work is a habit, not a mood.',
+  'Build a life you are proud of.',
+  'Less excuses. More execution.'
 ];
 
-const shop=[
+const SHOP=[
   {id:'default',name:'Classic',emoji:'⚡',price:0},
-  {id:'fire',name:'Fire mode',emoji:'🔥',price:100},
-  {id:'crown',name:'Royal crown',emoji:'👑',price:200},
-  {id:'robot',name:'Robot',emoji:'🤖',price:150},
-  {id:'diamond',name:'Diamond',emoji:'💎',price:300},
-  {id:'ninja',name:'Ninja',emoji:'🥷',price:250},
-  {id:'star',name:'Star',emoji:'🌟',price:175},
-  {id:'ghost',name:'Ghost',emoji:'👻',price:125}
+  {id:'fire',name:'Flame',emoji:'🔥',price:100},
+  {id:'crown',name:'Royal',emoji:'👑',price:150},
+  {id:'robot',name:'Robot',emoji:'🤖',price:200},
+  {id:'diamond',name:'Diamond',emoji:'💎',price:250},
+  {id:'ninja',name:'Ninja',emoji:'🥷',price:300},
+  {id:'star',name:'Star',emoji:'⭐',price:350},
+  {id:'ghost',name:'Ghost',emoji:'👻',price:400}
 ];
 
-const save=()=>{
+function save(){
   write('tasks',tasks);
   write('cats',cats);
   write('focus',focus);
@@ -391,184 +541,171 @@ const save=()=>{
   write('completedDays',completedDays);
   write('goal',weeklyGoal);
   write('timerEndAt',timerEndAt);
-};
+}
 
 function escapeHTML(value){
-  return String(value).replace(/[&<>"']/g,c=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  })[c]);
+  return String(value??'').replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
 }
 
 function toast(message){
   const el=$('toast');
   el.textContent=message;
   el.classList.add('show');
-  clearTimeout(window.redlineToast);
-  window.redlineToast=setTimeout(()=>{
-    el.classList.remove('show');
-  },2200);
+  clearTimeout(window.toastTimeout);
+  window.toastTimeout=setTimeout(()=>el.classList.remove('show'),2300);
 }
 
 function level(){
-  return Math.floor(Math.sqrt(Math.max(0,xp)/100))+1;
+  return Math.floor(xp/100)+1;
 }
-
-function levelStart(){
-  return (level()-1)**2*100;
+function levelXP(){
+  return xp%100;
 }
-
-function levelEnd(){
-  return level()**2*100;
-}
-
-function xpPercent(){
-  return Math.max(0,Math.min(100,
-    (xp-levelStart())/(levelEnd()-levelStart())*100
-  ));
-}
-
-function awardXP(id,amount){
-  if(xpAwards[id])return;
-  xpAwards[id]=true;
+function awardXP(amount){
   xp+=amount;
-  coins+=Math.max(1,Math.floor(amount/2));
+  coins+=Math.max(1,Math.floor(amount/5));
   save();
+  toast(`+${amount} XP · Coins earned!`);
 }
-
 function completedCount(){
   return tasks.filter(t=>t.done).length;
 }
-
 function dayTasks(key){
-  return tasks.filter(t=>t.date===key)
-    .sort((a,b)=>(b.pri||0)-(a.pri||0));
+  return tasks.filter(t=>t.date===key);
 }
-
 function streak(){
   let count=0;
-  let d=fromKey(todayKey());
-
-  while(true){
-    const k=dateKey(d);
-    if(!tasks.some(t=>t.date===k&&t.done))break;
+  let d=new Date();
+  if(!completedDays.includes(dateKey(d)))d.setDate(d.getDate()-1);
+  while(completedDays.includes(dateKey(d))){
     count++;
     d.setDate(d.getDate()-1);
   }
   return count;
 }
-
-function go(name){
-  tab=name;
+function formatDate(key,options={weekday:'short',month:'short',day:'numeric'}){
+  return fromKey(key).toLocaleDateString('en-IN',options);
+}
+function formatTime(time){
+  if(!time)return '';
+  const [h,m]=time.split(':').map(Number);
+  return new Date(2000,0,1,h,m).toLocaleTimeString('en-IN',{
+    hour:'numeric',minute:'2-digit'
+  });
+}
+function go(next){
+  tab=next;
   render();
 }
-
 function chooseDate(key){
   selectedDate=key;
-  tab='today';
+  editingNote=false;
   render();
 }
 
 // ==========================================
-// TASK SYSTEM
+// TASKS
 // ==========================================
 
 function openTaskModal(){
   $('taskModal').classList.add('show');
-  $('taskDate').value=selectedDate||todayKey();
-
-  $('taskCat').innerHTML=cats.map((c,i)=>
-    `<option value="${i}">${escapeHTML(c)}</option>`
+  $('taskDate').value=selectedDate;
+  $('taskCat').innerHTML=cats.map(c=>
+    `<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`
   ).join('');
-
-  $('taskName').focus();
+  $('taskName').value='';
+  $('taskPri').value='0';
+  $('taskRep').value='none';
 }
-
 function closeTaskModal(){
   $('taskModal').classList.remove('show');
 }
 
-function addTask(){
-  const name=$('taskName').value.trim();
-  const date=$('taskDate').value;
-  if(!name||!date){
-    toast('Enter a task and date');
-    return;
-  }
+function ensureRecurringSchedule(){
+  const roots=tasks.filter(t=>t.rep&&t.rep!=='none'&&!t.generated);
+  roots.forEach(root=>{
+    if(!root.seriesId)root.seriesId=root.id;
+    const start=fromKey(root.date);
+    const end=new Date(start.getFullYear(),11,31);
+    for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
+      const diff=Math.round((d-start)/86400000);
+      const matches=root.rep==='daily'||
+        (root.rep==='weekly'&&diff%7===0);
+      if(!matches||diff===0)continue;
+      const key=dateKey(d);
+      const exists=tasks.some(t=>
+        t.seriesId===root.seriesId&&t.date===key
+      );
+      if(!exists){
+        tasks.push({
+          ...root,
+          id:Date.now()+Math.random(),
+          date:key,
+          done:false,
+          generated:true
+        });
+      }
+    }
+  });
+}
 
-  tasks.push({
+function addTask(){
+  const text=$('taskName').value.trim();
+  const date=$('taskDate').value;
+  if(!text||!date){toast('Enter a task and date');return}
+  const task={
     id:Date.now()+Math.random(),
-    text:name,
+    text,
     date,
-    cat:Number($('taskCat').value)||0,
-    pri:Number($('taskPri').value)||0,
+    cat:$('taskCat').value,
+    pri:Number($('taskPri').value),
     rep:$('taskRep').value,
     done:false,
+    generated:false,
     seriesId:null
-  });
-
+  };
+  if(task.rep!=='none')task.seriesId=task.id;
+  tasks.push(task);
+  ensureRecurringSchedule();
   save();
-  $('taskName').value='';
   closeTaskModal();
   render();
   toast('Task added');
 }
 
 function toggleTask(id){
-  const task=tasks.find(t=>t.id===id);
+  const task=tasks.find(t=>t.id==id);
   if(!task)return;
-
   task.done=!task.done;
-
   if(task.done){
-    awardXP('task-'+task.id,
-      task.pri===2?30:task.pri===1?20:10
-    );
-
-    if(task.rep&&task.rep!=='none'&&!task.generated){
-      const nextDate=fromKey(task.date);
-      nextDate.setDate(
-        nextDate.getDate()+(task.rep==='weekly'?7:1)
-      );
-
-      const seriesId=task.seriesId||task.id;
-      task.seriesId=seriesId;
-
-      const alreadyExists=tasks.some(t=>
-        t.seriesId===seriesId&&t.date===dateKey(nextDate)
-      );
-
-      if(!alreadyExists){
-        tasks.push({
-          ...task,
-          id:Date.now()+Math.random(),
-          date:dateKey(nextDate),
-          done:false,
-          generated:true,
-          seriesId
-        });
-      }
-    }
-
-    const todayList=dayTasks(todayKey());
-    if(todayList.length&&todayList.every(t=>t.done)){
-      if(!completedDays.includes(todayKey())){
-        completedDays.push(todayKey());
-        awardXP('perfect-day-'+todayKey(),25);
-      }
+    const awardKey=String(task.id);
+    if(!xpAwards[awardKey]){
+      xpAwards[awardKey]=true;
+      awardXP(10);
     }
   }
-
+  const todays=dayTasks(todayKey());
+  if(todays.length&&todays.every(t=>t.done)){
+    if(!completedDays.includes(todayKey())){
+      completedDays.push(todayKey());
+      awardXP(20);
+      toast('Perfect day! +20 XP');
+    }
+  }
   save();
   render();
 }
 
 function deleteTask(id){
-  if(!confirm('Delete this task?'))return;
-  tasks=tasks.filter(t=>t.id!==id);
+  const task=tasks.find(t=>t.id==id);
+  if(!task)return;
+  if(task.seriesId){
+    tasks=tasks.filter(t=>t.seriesId!==task.seriesId);
+  }else{
+    tasks=tasks.filter(t=>t.id!=id);
+  }
   save();
   render();
   toast('Task deleted');
@@ -578,238 +715,273 @@ function deleteTask(id){
 // FOCUS TIMER
 // ==========================================
 
-function syncTimer(){
-  if(!timerEndAt)return;
-
-  timerLeft=Math.max(0,Math.ceil((timerEndAt-Date.now())/1000));
-
-  if(timerLeft<=0){
-    finishTimer();
-  }
-}
-
-function finishTimer(){
-  clearInterval(timerId);
-  timerId=null;
-  timerRunning=false;
-  timerEndAt=0;
-
-  const mins=Math.round(timerLength/60);
-  focus[todayKey()]=(focus[todayKey()]||0)+mins;
-
-  awardXP('focus-'+Date.now(),mins>=45?30:mins>=25?20:10);
-
-  timerLeft=timerLength;
-  save();
-  render();
-  toast('Focus session complete!');
-}
-
-function toggleTimer(){
+function updateTimer(){
   if(timerRunning){
-    syncTimer();
-    timerLeft=Math.max(0,timerLeft);
-    timerEndAt=0;
-    timerRunning=false;
-    clearInterval(timerId);
-    timerId=null;
-    save();
-    render();
-    return;
+    timerLeft=Math.max(0,Math.ceil((timerEndAt-Date.now())/1000));
+    if(timerLeft<=0){
+      timerRunning=false;
+      timerEndAt=0;
+      const key=todayKey();
+      focus[key]=(focus[key]||0)+timerLength;
+      awardXP(25);
+      save();
+      clearInterval(timerId);
+      timerId=null;
+      toast('Focus session complete!');
+    }
   }
+  if(tab==='focus')renderFocus();
+}
 
-  if(timerLeft<=0)timerLeft=timerLength;
-
+function startTimer(){
+  if(timerRunning)return;
   timerEndAt=Date.now()+timerLeft*1000;
   timerRunning=true;
   save();
-
   clearInterval(timerId);
-  timerId=setInterval(()=>{
-    syncTimer();
-    updateTimerDisplay();
-  },500);
-
+  timerId=setInterval(updateTimer,1000);
   render();
 }
-
-function updateTimerDisplay(){
-  syncTimer();
-
-  const el=$('screen').querySelector('.timer');
-  if(el){
-    el.textContent=pad(Math.floor(timerLeft/60))+':'+pad(timerLeft%60);
-  }
-}
-
-function setTimer(m){
-  if(timerRunning){
-    toast('Pause the timer first');
-    return;
-  }
-  timerLength=m*60;
-  timerLeft=timerLength;
-  save();
-  render();
-}
-
-function resetTimer(){
+function pauseTimer(){
+  if(!timerRunning)return;
+  timerLeft=Math.max(0,Math.ceil((timerEndAt-Date.now())/1000));
+  timerRunning=false;
+  timerEndAt=0;
   clearInterval(timerId);
   timerId=null;
-  timerEndAt=0;
-  timerRunning=false;
-  timerLeft=timerLength;
   save();
   render();
 }
-
-document.addEventListener('visibilitychange',()=>{
-  if(!document.hidden&&timerRunning){
-    syncTimer();
-    updateTimerDisplay();
-  }
-});
-
-window.addEventListener('pageshow',()=>{
-  if(timerRunning){
-    syncTimer();
-    if(timerLeft>0){
-      clearInterval(timerId);
-      timerId=setInterval(()=>{
-        syncTimer();
-        updateTimerDisplay();
-      },500);
-    }
-  }
-});
+function resetTimer(){
+  timerRunning=false;
+  timerEndAt=0;
+  timerLeft=timerLength;
+  clearInterval(timerId);
+  timerId=null;
+  save();
+  render();
+}
+function setTimer(minutes){
+  if(timerRunning)return;
+  timerLength=minutes*60;
+  timerLeft=timerLength;
+  render();
+}
+function timerText(){
+  return `${pad(Math.floor(timerLeft/60))}:${pad(timerLeft%60)}`;
+}
+function totalFocus(key){
+  return Math.floor((focus[key]||0)/60);
+}
 
 // ==========================================
 // DAILY NOTES
 // ==========================================
 
 function saveNote(){
-  const value=$('dailyNote').value;
-  notes[todayKey()]=value;
+  const value=$('noteInput').value.trim();
+  if(value)notes[selectedDate]=value;
+  else delete notes[selectedDate];
+  editingNote=false;
   save();
-  toast('Daily note saved');
+  render();
+  toast('Note saved');
+}
+function editNote(){
+  editingNote=true;
+  render();
+  setTimeout(()=>$('noteInput')?.focus(),50);
+}
+function cancelNoteEdit(){
+  editingNote=false;
+  render();
 }
 
 // ==========================================
 // QUOTES
 // ==========================================
 
+let currentQuote=read('quote',0);
 function newQuote(){
-  let index=Math.floor(Math.random()*quotes.length);
-  $('quoteText').textContent=quotes[index];
-}
-
-// ==========================================
-// CALENDAR AND EXAMS
-// ==========================================
-
-function changeMonth(amount){
-  calendarMonth.setMonth(calendarMonth.getMonth()+amount);
+  currentQuote=(currentQuote+1)%QUOTES.length;
+  write('quote',currentQuote);
   render();
 }
 
+// ==========================================
+// EXAMS
+// ==========================================
+
 function addExam(){
-  const name=$('examName').value.trim();
-  const date=$('examDate').value;
-
-  if(!name||!date){
-    toast('Enter an exam name and date');
-    return;
-  }
-
+  const name=$('examName')?.value.trim();
+  const date=$('examDate')?.value;
+  if(!name||!date){toast('Enter exam name and date');return}
   exams.push({id:Date.now(),name,date});
   save();
   render();
   toast('Exam added');
 }
-
 function deleteExam(id){
-  exams=exams.filter(e=>e.id!==id);
+  exams=exams.filter(e=>e.id!=id);
   save();
   render();
 }
 
 // ==========================================
-// CALENDAR EVENTS
+// CALENDAR HELPERS
 // ==========================================
 
-function addEvent(){
+function setCalendarView(view){
+  calendarView=view;
+  render();
+}
+function changeCalendar(amount){
+  if(calendarView==='month'){
+    calendarMonth.setMonth(calendarMonth.getMonth()+amount);
+  }else{
+    selectedDate=addDays(selectedDate,amount*(calendarView==='week'?7:1));
+    calendarMonth=fromKey(selectedDate);
+  }
+  render();
+}
+function calendarToday(){
+  selectedDate=todayKey();
+  calendarMonth=new Date();
+  render();
+}
+function setCalendarFilter(value){
+  calendarFilter=value;
+  render();
+}
+function setCalendarSearch(value){
+  calendarSearch=value;
+  render();
+}
+
+function eventMatchesDate(event,key){
+  if(key<event.date)return false;
+  const repeat=event.repeat||'none';
+  if(repeat==='none')return key===event.date;
+  if(event.repeatUntil&&key>event.repeatUntil)return false;
+  const start=fromKey(event.date);
+  const current=fromKey(key);
+  if(repeat==='daily')return true;
+  if(repeat==='weekly')return Math.round((current-start)/86400000)%7===0;
+  if(repeat==='monthly')return current.getDate()===start.getDate();
+  if(repeat==='yearly')return current.getMonth()===start.getMonth()&&current.getDate()===start.getDate();
+  return false;
+}
+
+function eventsOn(key){
+  return events.filter(e=>eventMatchesDate(e,key))
+    .filter(e=>calendarFilter==='All'||e.category===calendarFilter)
+    .filter(e=>!calendarSearch||
+      (e.name+' '+(e.location||'')+' '+(e.description||''))
+      .toLowerCase().includes(calendarSearch.toLowerCase()));
+}
+
+function openEventModal(id=null){
+  const event=id?events.find(e=>e.id==id):null;
+  $('eventModalTitle').textContent=event?'Edit event':'Create event';
+  $('eventEditId').value=event?event.id:'';
+  $('eventName').value=event?.name||'';
+  $('eventDate').value=event?.date||selectedDate;
+  $('eventEndDate').value=event?.endDate||event?.date||selectedDate;
+  $('eventTime').value=event?.time||'09:00';
+  $('eventEndTime').value=event?.endTime||'10:00';
+  $('eventLocation').value=event?.location||'';
+  $('eventDescription').value=event?.description||'';
+  $('eventCategory').value=event?.category||'Personal';
+  $('eventRepeat').value=event?.repeat||'none';
+  selectedEventColor=event?.color||COLORS[0];
+  $('eventColors').innerHTML=COLORS.map(c=>
+    `<button type="button" class="color-choice ${c===selectedEventColor?'active':''}" style="background:${c}" onclick="chooseEventColor('${c}',this)"></button>`
+  ).join('');
+  $('eventModal').classList.add('show');
+}
+function chooseEventColor(color,button){
+  selectedEventColor=color;
+  document.querySelectorAll('.color-choice').forEach(b=>b.classList.remove('active'));
+  button.classList.add('active');
+}
+function closeEventModal(){
+  $('eventModal').classList.remove('show');
+}
+
+function saveEvent(){
   const name=$('eventName').value.trim();
   const date=$('eventDate').value;
+  const endDate=$('eventEndDate').value||date;
   const time=$('eventTime').value;
-
-  if(!name||!date){
-    toast('Enter an event name and date');
-    return;
+  const endTime=$('eventEndTime').value;
+  if(!name||!date||!time||!endTime){
+    toast('Fill in the title, date and times');return;
   }
-
-  events.push({
-    id:Date.now(),
-    name,
-    date,
-    time
-  });
-
+  if(endDate<date||(endDate===date&&endTime<=time)){
+    toast('End must be after start');return;
+  }
+  const id=$('eventEditId').value;
+  const event={
+    id:id?id:Number(Date.now()),
+    name,date,endDate,time,endTime,
+    location:$('eventLocation').value.trim(),
+    description:$('eventDescription').value.trim(),
+    category:$('eventCategory').value,
+    color:selectedEventColor,
+    repeat:$('eventRepeat').value
+  };
+  if(id){
+    const index=events.findIndex(e=>e.id==id);
+    if(index>=0)events[index]=event;
+  }else events.push(event);
   save();
+  closeEventModal();
   render();
-  toast('Event added');
+  toast(id?'Event updated':'Event created');
 }
 
 function deleteEvent(id){
-  events=events.filter(e=>e.id!==id);
+  events=events.filter(e=>e.id!=id);
   save();
   render();
+  toast('Event deleted');
+}
+
+function moveEventDate(id,newDate){
+  const event=events.find(e=>e.id==id);
+  if(!event)return;
+  const oldStart=fromKey(event.date);
+  const oldEnd=fromKey(event.endDate||event.date);
+  const duration=Math.round((oldEnd-oldStart)/86400000);
+  event.date=newDate;
+  event.endDate=addDays(newDate,duration);
+  save();
+  render();
+  toast('Event rescheduled');
+}
+
+function eventConflicts(event){
+  return events.some(other=>{
+    if(other.id==event.id)return false;
+    if(other.date!==event.date)return false;
+    return event.time<other.endTime&&event.endTime>other.time;
+  });
 }
 
 // ==========================================
-// CHALLENGES
+// DRAG AND DROP
 // ==========================================
 
-function toggleChallenge(id){
-  const item=challenges.find(x=>x.id===id);
-  if(!item)return;
-
-  item.done=!item.done;
-
-  if(item.done){
-    awardXP('challenge-'+item.id,20);
-  }
-
-  save();
-  render();
+function allowDrop(event){
+  event.preventDefault();
 }
-
-// ==========================================
-// STORE AND AVATAR
-// ==========================================
-
-function buyItem(id){
-  const item=shop.find(x=>x.id===id);
-  if(!item)return;
-
-  if(owned.includes(id)){
-    avatar=id;
-    save();
-    render();
-    toast('Avatar equipped');
-    return;
-  }
-
-  if(coins<item.price){
-    toast('Not enough coins yet');
-    return;
-  }
-
-  coins-=item.price;
-  owned.push(id);
-  avatar=id;
-  save();
-  render();
-  toast('Item purchased!');
+function dragEvent(event,id){
+  event.dataTransfer.setData('text/plain',String(id));
+}
+function dropEvent(event,date){
+  event.preventDefault();
+  const id=event.dataTransfer.getData('text/plain');
+  if(id)moveEventDate(id,date);
 }
 
 // ==========================================
@@ -818,89 +990,47 @@ function buyItem(id){
 
 function exportData(){
   const data={
-    tasks,cats,focus,exams,notes,events,
-    xp,coins,xpAwards,owned,avatar,
-    challenges,completedDays,weeklyGoal
+    tasks,cats,focus,exams,notes,events,xp,coins,
+    xpAwards,owned,avatar,challenges,completedDays,weeklyGoal
   };
-
-  const blob=new Blob(
-    [JSON.stringify(data,null,2)],
-    {type:'application/json'}
-  );
-
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;
   a.download='redline-backup.json';
   a.click();
-
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  URL.revokeObjectURL(url);
   toast('Backup exported');
 }
 
-function importData(file){
+function importData(input){
+  const file=input.files?.[0];
   if(!file)return;
-
   const reader=new FileReader();
-
   reader.onload=()=>{
     try{
       const data=JSON.parse(reader.result);
-      if(!Array.isArray(data.tasks))throw Error();
-
-      tasks=data.tasks;
+      tasks=data.tasks||[];
       cats=data.cats||cats;
       focus=data.focus||{};
       exams=data.exams||[];
       notes=data.notes||{};
       events=data.events||[];
-      xp=Number(data.xp)||0;
-      coins=Number(data.coins)||0;
+      xp=data.xp||0;
+      coins=data.coins||0;
       xpAwards=data.xpAwards||{};
       owned=data.owned||['default'];
       avatar=data.avatar||'default';
       challenges=data.challenges||[];
       completedDays=data.completedDays||[];
-      weeklyGoal=Number(data.weeklyGoal)||20;
-
+      weeklyGoal=data.weeklyGoal||20;
+      ensureRecurringSchedule();
       save();
       render();
       toast('Backup restored');
-    }catch{
-      toast('Invalid backup file');
-    }
+    }catch(e){toast('Invalid backup file')}
   };
-
   reader.readAsText(file);
-}
-
-// ==========================================
-// INITIAL SETUP
-// ==========================================
-
-function initialise(){
-  tasks=Array.isArray(tasks)?tasks:[];
-  cats=Array.isArray(cats)&&cats.length?cats:['Study','Personal','Fitness','Other'];
-  focus=focus&&typeof focus==='object'?focus:{};
-  exams=Array.isArray(exams)?exams:[];
-  notes=notes&&typeof notes==='object'?notes:{};
-  events=Array.isArray(events)?events:[];
-  xpAwards=xpAwards&&typeof xpAwards==='object'?xpAwards:{};
-  owned=Array.isArray(owned)?owned:['default'];
-  challenges=Array.isArray(challenges)?challenges:[];
-  completedDays=Array.isArray(completedDays)?completedDays:[];
-
-  if(timerRunning){
-    syncTimer();
-    if(timerLeft>0){
-      timerId=setInterval(()=>{
-        syncTimer();
-        updateTimerDisplay();
-      },500);
-    }
-  }
-
-  save();
 }
 // ==========================================
 // NAVIGATION
@@ -916,143 +1046,360 @@ function renderNav(){
 
 function render(){
   renderNav();
-
   $('levelPill').textContent=`LEVEL ${level()} · ${xp} XP`;
 
   const screens={
     today:renderToday,
     calendar:renderCalendar,
     focus:renderFocus,
-    stats:renderStats,
+    progress:renderStats,
     more:renderMore
   };
-
   (screens[tab]||renderToday)();
 }
 
 // ==========================================
-// TODAY DASHBOARD
+// TODAY SCREEN
 // ==========================================
 
 function renderToday(){
-  const today=todayKey();
-  const list=dayTasks(selectedDate);
+  const key=selectedDate;
+  const list=dayTasks(key);
   const done=list.filter(t=>t.done).length;
-  const total=list.length;
-  const percent=total?Math.round(done/total*100):0;
+  const percent=list.length?Math.round(done/list.length*100):0;
 
-  const d=fromKey(selectedDate);
-  const label=selectedDate===today?'Today':
-    d.toLocaleDateString('en-IN',{
-      weekday:'long',day:'numeric',month:'long'
-    });
-
-  const week=[];
   const start=new Date();
   start.setDate(start.getDate()-start.getDay());
-
+  const week=[];
   for(let i=0;i<7;i++){
-    const x=new Date(start);
-    x.setDate(start.getDate()+i);
-    week.push(x);
+    const d=new Date(start);
+    d.setDate(start.getDate()+i);
+    week.push(d);
   }
 
-  const todayFocus=focus[today]||0;
+  const dateButtons=week.map(d=>{
+    const k=dateKey(d);
+    const count=dayTasks(k).filter(t=>t.done).length;
+    return `<button class="date-btn ${k===key?'active':''}" onclick="chooseDate('${k}')">
+      <span>${d.toLocaleDateString('en-IN',{weekday:'short'})}</span>
+      <b>${d.getDate()}</b>
+      <i>${count?count+' ✓':''}</i>
+    </button>`;
+  }).join('');
+
+  const taskHTML=list.length?list.map(t=>`
+    <div class="task ${t.done?'done':''}">
+      <input type="checkbox" ${t.done?'checked':''} onchange="toggleTask('${t.id}')">
+      <div class="task-name">
+        ${escapeHTML(t.text)}
+        <small>${escapeHTML(t.cat)} · ${['Normal','Important','High'][t.pri||0]}</small>
+      </div>
+      <button class="delete" onclick="deleteTask('${t.id}')">×</button>
+    </div>
+  `).join(''):`<div class="empty">No tasks scheduled for this day.</div>`;
+
+  const note=notes[key]||'';
 
   $('screen').innerHTML=`
+    <div class="page-heading">
+      <div class="eyebrow">YOUR COMMAND CENTRE</div>
+      <h1>${key===todayKey()?'Make today count.':'Your schedule.'}</h1>
+      <p class="muted">${formatDate(key,{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</p>
+    </div>
+
     <section class="hero">
-      <div class="eyebrow">YOUR DAILY MISSION</div>
-      <h1>Make today<br><span>count.</span></h1>
-      <p>One task at a time. Keep moving.</p>
-      <button class="primary" onclick="openTaskModal()">＋ Add a task</button>
-      <div class="section-head">
-        <b>${done} / ${total} tasks completed</b>
-        <b>${percent}%</b>
-      </div>
-      <div class="progress-track">
-        <i style="width:${percent}%"></i>
-      </div>
+      <div class="eyebrow">DAILY PROGRESS</div>
+      <h1>${done}<span> / ${list.length}</span></h1>
+      <p>Tasks completed</p>
+      <div class="progress-track"><i style="width:${percent}%"></i></div>
+      <div class="muted">${percent}% completed</div>
     </section>
 
-    <div class="date-strip">
-      ${week.map(x=>{
-        const k=dateKey(x);
-        const n=tasks.filter(t=>t.date===k&&t.done).length;
-        return `
-          <button class="date-btn ${k===selectedDate?'active':''}"
-            onclick="chooseDate('${k}')">
-            <span>${x.toLocaleDateString('en-IN',{weekday:'short'})}</span>
-            <b>${x.getDate()}</b>
-            <i>${n?'✓':'·'}</i>
-          </button>`;
-      }).join('')}
-    </div>
+    <div class="date-strip">${dateButtons}</div>
 
     <div class="section-head">
-      <div>
-        <div class="eyebrow">YOUR SCHEDULE</div>
-        <h2>${escapeHTML(label)}</h2>
-      </div>
-      <button class="secondary" onclick="openTaskModal()">＋ Add</button>
+      <h2>Tasks</h2>
+      <button class="primary" onclick="openTaskModal()">+ Add task</button>
     </div>
+    <section class="card">${taskHTML}</section>
 
-    <div class="card">
-      ${total?list.map(t=>`
-        <div class="task ${t.done?'done':''}">
-          <input type="checkbox" ${t.done?'checked':''}
-            onchange="toggleTask(${Number(t.id)})">
-          <div class="task-name">
-            ${escapeHTML(t.text)}
-            <small>
-              ${escapeHTML(cats[t.cat]||'Other')}
-              · ${t.pri===2?'High priority':t.pri===1?'Important':'Normal'}
-              ${t.rep&&t.rep!=='none'?' · Repeats':''}
-            </small>
+    <div class="section-head">
+      <h2>Events</h2>
+      <button class="secondary" onclick="openEventModal()">+ Event</button>
+    </div>
+    <section class="card">
+      ${eventsOn(key).length?eventsOn(key).map(e=>`
+        <div class="event-card">
+          <div class="event-color" style="background:${e.color}"></div>
+          <div class="event-content">
+            <b>${escapeHTML(e.name)}</b>
+            <div class="muted">${formatTime(e.time)} – ${formatTime(e.endTime)} · ${escapeHTML(e.category)}</div>
+            ${e.location?`<div class="muted">📍 ${escapeHTML(e.location)}</div>`:''}
           </div>
-          <button class="delete" onclick="deleteTask(${Number(t.id)})">×</button>
+          <button class="delete" onclick="openEventModal('${e.id}')">✎</button>
         </div>
-      `).join(''):`<div class="empty">
-        <h2>Nothing scheduled</h2>
-        <p>Add a task and get started.</p>
-      </div>`}
-    </div>
+      `).join(''):'<div class="empty">Nothing scheduled.</div>'}
+    </section>
 
-    <div class="grid">
-      <div class="card stat-card">
-        <div class="eyebrow">CURRENT STREAK</div>
-        <div class="stat-number">${streak()}<small> days</small></div>
-      </div>
-      <div class="card stat-card">
-        <div class="eyebrow">FOCUS TODAY</div>
-        <div class="stat-number">${Math.floor(todayFocus/60)}<small>h</small> ${todayFocus%60}<small>m</small></div>
-      </div>
-    </div>
+    <div class="section-head"><h2>Daily note</h2></div>
+    <section class="card">
+      ${note&&!editingNote?`
+        <div class="note-card">
+          ${escapeHTML(note)}
+          <button class="note-edit" onclick="editNote()">✎</button>
+        </div>
+      `:`
+        <textarea id="noteInput" placeholder="Write down your thoughts, plans or daily summary...">${escapeHTML(note)}</textarea>
+        <button class="primary block" onclick="saveNote()">Save note</button>
+        ${note?'<button class="secondary block" onclick="cancelNoteEdit()">Cancel</button>':''}
+      `}
+    </section>
 
-    <div class="card">
-      <div class="eyebrow">YOUR JOURNEY</div>
-      <h2>Level ${level()} · ${xp} XP</h2>
-      <div class="progress-track">
-        <i style="width:${xpPercent()}%"></i>
-      </div>
-      <p class="muted">${levelEnd()-xp} XP until your next level.</p>
-      <p class="muted">🪙 ${coins} coins available</p>
-    </div>
-
-    <div class="card">
-      <div class="eyebrow">DAILY REFLECTION</div>
-      <h2>How was your day?</h2>
-      <textarea id="dailyNote" placeholder="Write down your thoughts...">${escapeHTML(notes[today]||'')}</textarea>
-      <button class="primary block" onclick="saveNote()">Save my note</button>
-    </div>
-
-    <div class="card">
-      <div class="eyebrow">A LITTLE MOTIVATION</div>
-      <div class="quote" id="quoteText"></div>
-      <button class="secondary block" onclick="newQuote()">Roll another quote ↻</button>
-    </div>
+    <section class="card">
+      <div class="eyebrow">DAILY REMINDER</div>
+      <div class="quote">"${QUOTES[currentQuote]}"</div>
+      <button class="secondary block" onclick="newQuote()">↻ New quote</button>
+    </section>
   `;
+}
 
-  newQuote();
+// ==========================================
+// CALENDAR SCREEN
+// ==========================================
+
+function renderCalendar(){
+  const monthName=calendarMonth.toLocaleDateString('en-IN',{
+    month:'long',year:'numeric'
+  });
+
+  const viewButtons=['month','week','day','agenda'].map(v=>`
+    <button class="${calendarView===v?'active':''}" onclick="setCalendarView('${v}')">
+      ${v[0].toUpperCase()+v.slice(1)}
+    </button>
+  `).join('');
+
+  let content='';
+
+  if(calendarView==='month'){
+    const first=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth(),1);
+    const offset=first.getDay();
+    const gridStart=new Date(first);
+    gridStart.setDate(1-offset);
+
+    let cells='';
+    for(let i=0;i<42;i++){
+      const d=new Date(gridStart);
+      d.setDate(gridStart.getDate()+i);
+      const key=dateKey(d);
+      const dayEvents=eventsOn(key);
+      const dayTasksList=dayTasks(key);
+      const examList=exams.filter(e=>e.date===key);
+
+      cells+=`
+        <button class="month-cell
+          ${d.getMonth()!==calendarMonth.getMonth()?'outside':''}
+          ${key===selectedDate?'selected':''}
+          ${key===todayKey()?'today':''}"
+          onclick="chooseDate('${key}')"
+          ondragover="allowDrop(event)"
+          ondrop="dropEvent(event,'${key}')">
+          <span class="day-number">${d.getDate()}</span>
+          ${dayEvents.slice(0,2).map(e=>`
+            <span class="event-dot" style="background:${e.color};color:#101114">
+              ${escapeHTML(e.name)}
+            </span>
+          `).join('')}
+          ${dayTasksList.length?`<span class="event-dot task-dot">${dayTasksList.length} tasks</span>`:''}
+          ${examList.map(e=>`<span class="event-dot exam-dot">🎓 ${escapeHTML(e.name)}</span>`).join('')}
+          ${dayEvents.length>2?`<span class="small muted">+${dayEvents.length-2} more</span>`:''}
+        </button>
+      `;
+    }
+
+    content=`
+      <div class="cal-weekdays">
+        ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div>${d}</div>`).join('')}
+      </div>
+      <div class="month-grid">${cells}</div>
+      <div class="muted small" style="margin-top:12px">Select a date to see its tasks and events below. Drag an event to another date on desktop.</div>
+    `;
+  }
+
+  if(calendarView==='week'||calendarView==='day'){
+    const start=fromKey(selectedDate);
+    if(calendarView==='week')start.setDate(start.getDate()-start.getDay());
+    const days=calendarView==='week'?7:1;
+
+    content=`
+      <div class="calendar-day-list" style="margin-bottom:12px">
+        ${Array.from({length:days},(_,i)=>{
+          const d=new Date(start);
+          d.setDate(start.getDate()+i);
+          const key=dateKey(d);
+          return `<button class="secondary" onclick="chooseDate('${key}')">
+            ${formatDate(key,{weekday:'short',month:'short',day:'numeric'})}
+            ${key===selectedDate?' · Selected':''}
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="time-grid">
+        <div class="time-grid-inner">
+          ${Array.from({length:18},(_,i)=>{
+            const hour=i+6;
+            const time=`${pad(hour)}:00`;
+            return `<div class="time-row">
+              <div class="time-label">${formatTime(time)}</div>
+              <div class="time-slot"></div>
+            </div>`;
+          }).join('')}
+          ${Array.from({length:days},(_,i)=>{
+            const d=new Date(start);
+            d.setDate(start.getDate()+i);
+            const key=dateKey(d);
+            return eventsOn(key).map(e=>{
+              const [h,m]=(e.time||'09:00').split(':').map(Number);
+              const [eh,em]=(e.endTime||'10:00').split(':').map(Number);
+              const top=(h-6)*58+(m/60)*58;
+              const height=Math.max(30,((eh-h)+(em-m)/60)*58);
+              if(top<0||top>1044)return '';
+              return `<div class="time-event" style="top:${top}px;height:${height}px;background:${e.color}33;border-color:${e.color};left:${i*100/days}%"
+                onclick="openEventModal('${e.id}')">
+                <b>${escapeHTML(e.name)}</b><br>${formatTime(e.time)}
+              </div>`;
+            }).join('');
+          }).join('')}
+        </div>
+      </div>
+      <button class="primary block" onclick="openEventModal()">+ Add event</button>
+    `;
+  }
+
+  if(calendarView==='agenda'){
+    let rows='';
+    for(let i=0;i<30;i++){
+      const key=addDays(todayKey(),i);
+      const dayEvents=eventsOn(key);
+      const dayTasksList=dayTasks(key);
+      const dayExams=exams.filter(e=>e.date===key);
+      if(!dayEvents.length&&!dayTasksList.length&&!dayExams.length)continue;
+
+      rows+=`
+        <div class="agenda-date">${formatDate(key,{weekday:'long',month:'long',day:'numeric'})}</div>
+        ${dayEvents.map(e=>`
+          <div class="event-card">
+            <div class="event-color" style="background:${e.color}"></div>
+            <div class="event-content">
+              <b>${escapeHTML(e.name)}</b>
+              <div class="muted">${formatTime(e.time)} – ${formatTime(e.endTime)}</div>
+            </div>
+            <button class="delete" onclick="openEventModal('${e.id}')">✎</button>
+          </div>
+        `).join('')}
+        ${dayTasksList.map(t=>`
+          <div class="event-card">
+            <div class="event-color" style="background:var(--green)"></div>
+            <div class="event-content">
+              <b>${escapeHTML(t.text)}</b>
+              <div class="muted">Task · ${t.done?'Completed':'Pending'}</div>
+            </div>
+          </div>
+        `).join('')}
+        ${dayExams.map(e=>`
+          <div class="event-card">
+            <div class="event-color" style="background:var(--amber)"></div>
+            <div class="event-content"><b>🎓 ${escapeHTML(e.name)}</b></div>
+          </div>
+        `).join('')}
+      `;
+    }
+    content=rows||'<div class="empty">No upcoming items in the next 30 days.</div>';
+  }
+
+  const selectedEvents=eventsOn(selectedDate);
+
+  $('screen').innerHTML=`
+    <div class="page-heading">
+      <div class="eyebrow">PLAN YOUR TIME</div>
+      <h1>Calendar.</h1>
+      <p class="muted">Your tasks, events and schedule in one place.</p>
+    </div>
+
+    <section class="card">
+      <div class="calendar-toolbar">
+        <div class="calendar-controls">
+          <button class="secondary" onclick="changeCalendar(-1)">‹</button>
+          <button class="secondary" onclick="calendarToday()">Today</button>
+          <button class="secondary" onclick="changeCalendar(1)">›</button>
+        </div>
+        <h2>${monthName}</h2>
+        <button class="primary" onclick="openEventModal()">+ Event</button>
+      </div>
+
+      <div class="section-head">
+        <div class="view-switch">${viewButtons}</div>
+      </div>
+
+      <div class="field">
+        <input placeholder="Search events..." value="${escapeHTML(calendarSearch)}"
+          oninput="setCalendarSearch(this.value)">
+      </div>
+
+      <div class="field">
+        <select onchange="setCalendarFilter(this.value)">
+          ${['All','Personal','School','Work','Fitness','Other'].map(c=>
+            `<option ${calendarFilter===c?'selected':''}>${c}</option>`
+          ).join('')}
+        </select>
+      </div>
+      ${content}
+    </section>
+
+    <div class="section-head">
+      <h2>${formatDate(selectedDate,{weekday:'short',month:'short',day:'numeric'})}</h2>
+      <button class="secondary" onclick="openEventModal()">+ Add</button>
+    </div>
+    <section class="card">
+      ${selectedEvents.length?selectedEvents.map(e=>`
+        <div class="event-card">
+          <div class="event-color" style="background:${e.color}"></div>
+          <div class="event-content">
+            <b>${escapeHTML(e.name)}</b>
+            <div class="muted">${formatTime(e.time)} – ${formatTime(e.endTime)}</div>
+            <div class="muted">${escapeHTML(e.category)} ${e.location?'· '+escapeHTML(e.location):''}</div>
+            ${e.description?`<p class="muted">${escapeHTML(e.description)}</p>`:''}
+            ${eventConflicts(e)?'<span class="small" style="color:var(--amber)">⚠ Time conflict</span>':''}
+          </div>
+          <div class="event-actions">
+            <button class="secondary" onclick="openEventModal('${e.id}')">Edit</button>
+            <button class="danger" onclick="deleteEvent('${e.id}')">×</button>
+          </div>
+        </div>
+      `).join(''):'<div class="empty">No events on this date.</div>'}
+    </section>
+
+    <div class="section-head"><h2>Exams & deadlines</h2></div>
+    <section class="card">
+      <div class="field">
+        <label>EXAM OR DEADLINE</label>
+        <input id="examName" placeholder="e.g. Mathematics exam">
+      </div>
+      <div class="field">
+        <label>DATE</label>
+        <input id="examDate" type="date">
+      </div>
+      <button class="secondary block" onclick="addExam()">Add deadline</button>
+      ${exams.sort((a,b)=>a.date.localeCompare(b.date)).map(e=>{
+        const days=Math.ceil((fromKey(e.date)-fromKey(todayKey()))/86400000);
+        return `<div class="event-card">
+          <div class="event-content">
+            <b>🎓 ${escapeHTML(e.name)}</b>
+            <div class="muted">${formatDate(e.date)} · ${days<0?'Passed':days===0?'Today':days+' days left'}</div>
+          </div>
+          <button class="delete" onclick="deleteExam('${e.id}')">×</button>
+        </div>`;
+      }).join('')}
+    </section>
+  `;
 }
 
 // ==========================================
@@ -1060,312 +1407,210 @@ function renderToday(){
 // ==========================================
 
 function renderFocus(){
-  syncTimer();
-
-  const minutes=Math.floor(timerLeft/60);
-  const seconds=timerLeft%60;
-  const total=Object.values(focus).reduce(
-    (a,b)=>a+(Number(b)||0),0
-  );
+  const total=totalFocus(todayKey());
+  const choices=[15,25,45,60];
 
   $('screen').innerHTML=`
     <div class="page-heading">
-      <div class="eyebrow">DEEP WORK MODE</div>
-      <h1>Lock in.</h1>
-      <p class="muted">One session. One goal. No distractions.</p>
+      <div class="eyebrow">DEEP WORK</div>
+      <h1>Focus mode.</h1>
+      <p class="muted">One thing at a time. Give it your full attention.</p>
     </div>
 
-    <div class="card center">
-      <div class="eyebrow">FOCUS SESSION</div>
+    <section class="card center">
+      <div class="eyebrow">${timerRunning?'SESSION IN PROGRESS':'READY WHEN YOU ARE'}</div>
       <div class="timer-ring">
-        <div class="timer">${pad(minutes)}:${pad(seconds)}</div>
+        <div>
+          <div class="timer">${timerText()}</div>
+          <div class="muted">TIME REMAINING</div>
+        </div>
       </div>
-
       <div class="grid">
-        ${[15,25,45,60].map(m=>`
-          <button class="secondary" onclick="setTimer(${m})">${m} min</button>
+        ${choices.map(n=>`
+          <button class="secondary" onclick="setTimer(${n})"
+            ${timerRunning?'disabled':''}>${n} min</button>
         `).join('')}
       </div>
-
-      <div class="grid" style="margin-top:15px">
-        <button class="secondary" onclick="resetTimer()">Reset</button>
-        <button class="primary" onclick="toggleTimer()">
-          ${timerRunning?'Pause':'Start focus'}
-        </button>
-      </div>
-
-      <p class="muted">Your session is saved using its end time.</p>
-    </div>
+      <button class="primary block" onclick="${timerRunning?'pauseTimer()':'startTimer()'}">
+        ${timerRunning?'Pause':'Start focus'}
+      </button>
+      <button class="secondary block" onclick="resetTimer()">Reset</button>
+    </section>
 
     <div class="grid">
-      <div class="card stat-card">
-        <div class="eyebrow">TOTAL FOCUS</div>
-        <div class="stat-number">${Math.floor(total/60)}<small>h</small> ${total%60}<small>m</small></div>
-      </div>
-      <div class="card stat-card">
+      <section class="card stat-card">
         <div class="eyebrow">TODAY</div>
-        <div class="stat-number">${focus[todayKey()]||0}<small> min</small></div>
-      </div>
+        <div class="stat-number">${Math.floor(total/60)}h ${total%60}<small>m</small></div>
+        <div class="muted">Focus completed</div>
+      </section>
+      <section class="card stat-card">
+        <div class="eyebrow">GOAL</div>
+        <div class="stat-number">${weeklyGoal}<small>h</small></div>
+        <div class="muted">Weekly target</div>
+      </section>
     </div>
+    <section class="card">
+      <h2>Focus tip</h2>
+      <p class="muted">Put your phone on silent, choose one task, and work until the timer ends. Take a proper break afterwards.</p>
+    </section>
   `;
 }
 
 // ==========================================
-// CALENDAR
-// ==========================================
-
-function renderCalendar(){
-  const year=calendarMonth.getFullYear();
-  const month=calendarMonth.getMonth();
-
-  const first=new Date(year,month,1);
-  const offset=first.getDay();
-  const count=new Date(year,month+1,0).getDate();
-
-  const cells=[];
-
-  for(let i=0;i<offset;i++)cells.push(null);
-  for(let i=1;i<=count;i++)cells.push(i);
-
-  $('screen').innerHTML=`
-    <div class="page-heading">
-      <div class="eyebrow">PLAN YOUR LIFE</div>
-      <h1>Your calendar.</h1>
-      <p class="muted">Keep track of tasks, events and exams.</p>
-    </div>
-
-    <div class="card">
-      <div class="section-head">
-        <button class="secondary" onclick="changeMonth(-1)">‹</button>
-        <h2>${calendarMonth.toLocaleDateString('en-IN',{month:'long',year:'numeric'})}</h2>
-        <button class="secondary" onclick="changeMonth(1)">›</button>
-      </div>
-
-      <div class="calendar-grid">
-        ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>`
-          <div class="center muted small">${x}</div>
-        `).join('')}
-
-        ${cells.map(day=>{
-          if(!day)return '<div></div>';
-
-          const k=dateKey(new Date(year,month,day));
-          const hasTasks=tasks.some(t=>t.date===k&&t.done);
-          const today=k===todayKey();
-
-          return `
-            <button class="calendar-day ${today?'today':''} ${hasTasks?'marked':''}"
-              onclick="chooseDate('${k}')">
-              ${day}
-              <small>${hasTasks?'✓':''}</small>
-            </button>`;
-        }).join('')}
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="eyebrow">ADD AN EVENT</div>
-      <h2>Something important?</h2>
-
-      <div class="field">
-        <label>EVENT NAME</label>
-        <input id="eventName" placeholder="Class, meeting, activity...">
-      </div>
-      <div class="field">
-        <label>DATE</label>
-        <input id="eventDate" type="date" value="${todayKey()}">
-      </div>
-      <div class="field">
-        <label>TIME</label>
-        <input id="eventTime" type="time">
-      </div>
-      <button class="primary block" onclick="addEvent()">Add event</button>
-    </div>
-
-    <div class="card">
-      <div class="eyebrow">UPCOMING EVENTS</div>
-      ${events.length?events.slice().sort((a,b)=>
-        a.date.localeCompare(b.date)
-      ).map(e=>`
-        <div class="task">
-          <div class="task-name">
-            ${escapeHTML(e.name)}
-            <small>${e.date} ${escapeHTML(e.time||'')}</small>
-          </div>
-          <button class="delete" onclick="deleteEvent(${Number(e.id)})">×</button>
-        </div>
-      `).join(''):'<p class="muted">No events yet.</p>'}
-    </div>
-
-    <div class="card">
-      <div class="eyebrow">EXAM COUNTDOWN</div>
-      <h2>Add an exam</h2>
-      <div class="field">
-        <label>SUBJECT</label>
-        <input id="examName" placeholder="Mathematics">
-      </div>
-      <div class="field">
-        <label>EXAM DATE</label>
-        <input id="examDate" type="date" min="${todayKey()}">
-      </div>
-      <button class="primary block" onclick="addExam()">Add exam</button>
-
-      ${exams.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>{
-        const days=Math.ceil((fromKey(e.date)-fromKey(todayKey()))/86400000);
-        return `
-          <div class="task">
-            <div class="task-name">
-              ${escapeHTML(e.name)}
-              <small>${days<0?'Past':days===0?'Today':days+' days left'}</small>
-            </div>
-            <button class="delete" onclick="deleteExam(${Number(e.id)})">×</button>
-          </div>`;
-      }).join('')}
-    </div>
-  `;
-}
-
-// ==========================================
-// PROGRESS AND 100-DAY TRACKER
+// PROGRESS SCREEN
 // ==========================================
 
 function renderStats(){
-  const totalDone=completedCount();
-  const totalTasks=tasks.length;
-  const rate=totalTasks?Math.round(totalDone/totalTasks*100):0;
-
-  const totalFocus=Object.values(focus).reduce(
-    (a,b)=>a+(Number(b)||0),0
-  );
-
-  const data=[];
+  const today=fromKey(todayKey());
+  let weekDone=0;
+  let weekTotal=0;
+  let weekFocus=0;
+  const bars=[];
 
   for(let i=6;i>=0;i--){
-    const d=new Date();
-    d.setDate(d.getDate()-i);
-    const k=dateKey(d);
-    const items=tasks.filter(t=>t.date===k);
-
-    data.push({
+    const d=new Date(today);
+    d.setDate(today.getDate()-i);
+    const key=dateKey(d);
+    const day=dayTasks(key);
+    const done=day.filter(t=>t.done).length;
+    weekDone+=done;
+    weekTotal+=day.length;
+    weekFocus+=focus[key]||0;
+    bars.push({
       label:d.toLocaleDateString('en-IN',{weekday:'short'}),
-      done:items.filter(t=>t.done).length,
-      total:items.length
+      value:focus[key]||0
     });
   }
 
-  const max=Math.max(1,...data.map(x=>x.total));
+  const max=Math.max(1,...bars.map(b=>b.value));
+  const percent=Math.min(100,Math.round(weekFocus/(weeklyGoal*3600)*100));
+  const completed=tasks.filter(t=>t.done).length;
+
+  const last100=Array.from({length:100},(_,i)=>{
+    const key=addDays(todayKey(),i-99);
+    return `<div title="${key}" style="
+      aspect-ratio:1;border-radius:4px;
+      background:${completedDays.includes(key)?'var(--green)':'var(--panel2)'};
+      border:1px solid var(--line)"></div>`;
+  }).join('');
 
   $('screen').innerHTML=`
     <div class="page-heading">
-      <div class="eyebrow">THE BIG PICTURE</div>
-      <h1>Your progress.</h1>
-      <p class="muted">Look at how far you've come.</p>
+      <div class="eyebrow">YOUR MOMENTUM</div>
+      <h1>Progress.</h1>
+      <p class="muted">Measure the work. Improve the system.</p>
     </div>
 
     <div class="grid">
-      <div class="card stat-card">
+      <section class="card stat-card">
         <div class="eyebrow">TASKS DONE</div>
-        <div class="stat-number">${totalDone}</div>
-      </div>
-      <div class="card stat-card">
-        <div class="eyebrow">COMPLETION</div>
-        <div class="stat-number">${rate}%</div>
-      </div>
-      <div class="card stat-card">
-        <div class="eyebrow">FOCUS HOURS</div>
-        <div class="stat-number">${(totalFocus/60).toFixed(1)}</div>
-      </div>
-      <div class="card stat-card">
+        <div class="stat-number">${completed}</div>
+        <div class="muted">All time</div>
+      </section>
+      <section class="card stat-card">
         <div class="eyebrow">STREAK</div>
-        <div class="stat-number">${streak()} days</div>
-      </div>
+        <div class="stat-number">${streak()} 🔥</div>
+        <div class="muted">Consecutive days</div>
+      </section>
+      <section class="card stat-card">
+        <div class="eyebrow">TOTAL XP</div>
+        <div class="stat-number">${xp}</div>
+        <div class="muted">Level ${level()}</div>
+      </section>
+      <section class="card stat-card">
+        <div class="eyebrow">COINS</div>
+        <div class="stat-number">${coins} 🪙</div>
+        <div class="muted">Available balance</div>
+      </section>
     </div>
 
-    <div class="card">
-      <div class="eyebrow">LAST 7 DAYS</div>
-      <h2>Your activity</h2>
+    <section class="card">
+      <div class="section-head">
+        <h2>Weekly focus</h2>
+        <b>${percent}%</b>
+      </div>
+      <div class="progress-track"><i style="width:${percent}%"></i></div>
+      <p class="muted">${(weekFocus/3600).toFixed(1)} hours out of ${weeklyGoal} hours</p>
       <div class="chart">
-        ${data.map(x=>`
-          <div class="bar-col" title="${x.done}/${x.total}">
-            <i style="height:${Math.max(2,x.done/max*100)}%"></i>
-            <span>${x.label}</span>
+        ${bars.map(b=>`
+          <div class="bar-col">
+            <i style="height:${Math.max(2,b.value/max*100)}%"></i>
+            <span>${b.label}</span>
           </div>
         `).join('')}
       </div>
-    </div>
+    </section>
 
-    <div class="card">
-      <div class="eyebrow">100-DAY CHALLENGE</div>
-      <h2>Your consistency calendar</h2>
-      <p class="muted">A marked day means all tasks scheduled that day were completed.</p>
-      <div class="calendar-grid">
-        ${Array.from({length:100},(_,i)=>{
-          const d=new Date();
-          d.setDate(d.getDate()-(99-i));
-          const k=dateKey(d);
-          const marked=completedDays.includes(k);
-
-          return `
-            <div class="calendar-day ${marked?'marked':''}">
-              ${d.getDate()}
-              <small>${marked?'✓':''}</small>
-            </div>`;
-        }).join('')}
+    <section class="card">
+      <h2>Last 100 days</h2>
+      <p class="muted">Green = all tasks scheduled that day completed.</p>
+      <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:15px">
+        ${last100}
       </div>
-      <p class="muted">${completedDays.length} perfect days recorded.</p>
-    </div>
+    </section>
 
-    <div class="card">
-      <div class="eyebrow">YOUR EXPERIENCE</div>
-      <h2>Level ${level()}</h2>
-      <div class="stat-number">${xp} XP</div>
-      <div class="progress-track"><i style="width:${xpPercent()}%"></i></div>
-      <p class="muted">${levelEnd()-xp} XP until next level.</p>
-    </div>
+    <section class="card">
+      <div class="eyebrow">LEVEL ${level()}</div>
+      <h2>${levelXP()} / 100 XP</h2>
+      <div class="progress-track"><i style="width:${levelXP()}%"></i></div>
+      <p class="muted">Complete tasks and focus sessions to earn XP and coins.</p>
+    </section>
+
+    <section class="card">
+      <h2>Weekly task completion</h2>
+      <div class="stat-number">${weekDone} / ${weekTotal}</div>
+      <p class="muted">Tasks completed this week.</p>
+    </section>
   `;
 }
-
 // ==========================================
 // ACHIEVEMENTS
 // ==========================================
 
+const ACHIEVEMENTS=[
+  {name:'First Step',desc:'Complete your first task',goal:1,check:()=>tasks.filter(t=>t.done).length},
+  {name:'Getting Started',desc:'Complete 10 tasks',goal:10,check:()=>tasks.filter(t=>t.done).length},
+  {name:'Consistent',desc:'Complete 50 tasks',goal:50,check:()=>tasks.filter(t=>t.done).length},
+  {name:'Task Machine',desc:'Complete 100 tasks',goal:100,check:()=>tasks.filter(t=>t.done).length},
+  {name:'Early Momentum',desc:'Build a 3-day streak',goal:3,check:()=>streak()},
+  {name:'Unstoppable',desc:'Build a 7-day streak',goal:7,check:()=>streak()},
+  {name:'Legendary',desc:'Build a 30-day streak',goal:30,check:()=>streak()},
+  {name:'Focused',desc:'Complete 1 hour of focus',goal:3600,check:()=>Object.values(focus).reduce((a,b)=>a+b,0)},
+  {name:'Deep Worker',desc:'Complete 10 hours of focus',goal:36000,check:()=>Object.values(focus).reduce((a,b)=>a+b,0)},
+  {name:'Level Up',desc:'Reach level 5',goal:5,check:()=>level()},
+  {name:'Big League',desc:'Reach level 10',goal:10,check:()=>level()},
+  {name:'Perfect Day',desc:'Complete all tasks on a day',goal:1,check:()=>completedDays.length}
+];
+
 function renderAchievements(){
-  const totalFocus=Object.values(focus).reduce(
-    (a,b)=>a+(Number(b)||0),0
-  );
-
-  const achievements=[
-    ['🌱','First step','Complete your first task',completedCount()>=1],
-    ['⚡','Getting started','Complete 10 tasks',completedCount()>=10],
-    ['🔥','Consistent','Complete 25 tasks',completedCount()>=25],
-    ['🏆','Task master','Complete 100 tasks',completedCount()>=100],
-    ['⏱️','Deep focus','Record 1 hour of focus',totalFocus>=60],
-    ['🧠','Study mode','Record 5 hours of focus',totalFocus>=300],
-    ['💎','High achiever','Earn 1,000 XP',xp>=1000],
-    ['📚','Level five','Reach Level 5',level()>=5],
-    ['📅','Planner','Add an exam',exams.length>=1],
-    ['📝','Reflect','Write a daily note',Object.values(notes).some(x=>String(x).trim())],
-    ['🎯','Perfect day','Complete all tasks on a day',completedDays.length>=1],
-    ['🪙','Collector','Earn 500 coins',coins>=500]
-  ];
-
-  const unlocked=achievements.filter(a=>a[3]).length;
-
-  return `
-    <div class="card">
-      <div class="eyebrow">ACHIEVEMENTS</div>
-      <h2>${unlocked} / ${achievements.length} unlocked</h2>
-      <div class="progress-track">
-        <i style="width:${unlocked/achievements.length*100}%"></i>
+  const html=ACHIEVEMENTS.map(a=>{
+    const value=a.check();
+    const done=value>=a.goal;
+    const percent=Math.min(100,Math.round(value/a.goal*100));
+    return `
+      <div class="badge ${done?'unlocked':'locked'}">
+        <div class="section-head">
+          <b>${done?'🏆':'🔒'} ${a.name}</b>
+          <span class="small">${done?'Unlocked':percent+'%'}</span>
+        </div>
+        <div class="muted">${a.desc}</div>
+        <div class="progress-track"><i style="width:${percent}%"></i></div>
+        <div class="small muted">${Math.min(value,a.goal)} / ${a.goal}</div>
       </div>
+    `;
+  }).join('');
+
+  $('screen').innerHTML=`
+    <div class="page-heading">
+      <div class="eyebrow">EARN YOUR REWARDS</div>
+      <h1>Achievements.</h1>
+      <p class="muted">Every milestone counts.</p>
     </div>
-    ${achievements.map(a=>`
-      <div class="badge ${a[3]?'unlocked':'locked'}">
-        <b>${a[0]} ${a[1]}</b>
-        <p class="muted">${a[2]}</p>
-        <small>${a[3]?'✓ Unlocked':'Locked'}</small>
-      </div>
-    `).join('')}
+    <section class="card">
+      <div class="stat-number">${ACHIEVEMENTS.filter(a=>a.check()>=a.goal).length} / ${ACHIEVEMENTS.length}</div>
+      <div class="muted">Achievements unlocked</div>
+    </section>
+    ${html}
   `;
 }
 
@@ -1373,34 +1618,45 @@ function renderAchievements(){
 // CHALLENGES
 // ==========================================
 
+const CHALLENGE_LIST=[
+  {id:'seven',name:'7-Day Consistency',desc:'Complete at least one task every day for 7 days.',days:7},
+  {id:'focus5',name:'Focus Builder',desc:'Complete five focus sessions.',days:5},
+  {id:'tasks10',name:'Task Takedown',desc:'Complete 10 tasks.',days:10},
+  {id:'planner',name:'Plan Ahead',desc:'Add five events to your calendar.',days:5},
+  {id:'early',name:'Morning Momentum',desc:'Complete a task before noon for five days.',days:5},
+  {id:'notes',name:'Daily Reflection',desc:'Write a note on five different days.',days:5}
+];
+
+function challengeProgress(c){
+  if(c.id==='seven')return Math.min(7,streak());
+  if(c.id==='focus5')return Math.min(5,Object.values(focus).filter(v=>v>=900).length);
+  if(c.id==='tasks10')return Math.min(10,tasks.filter(t=>t.done).length);
+  if(c.id==='planner')return Math.min(5,events.length);
+  if(c.id==='notes')return Math.min(5,Object.keys(notes).length);
+  return 0;
+}
+
 function renderChallenges(){
-  const options=[
-    ['morning','🌅','Morning momentum','Complete one task before noon'],
-    ['focus','⏱️','Focus session','Complete one focus session'],
-    ['planner','📅','Plan ahead','Add three tasks'],
-    ['reflection','📝','Daily reflection','Write a daily note'],
-    ['reading','📖','Learning time','Spend some time learning something new'],
-    ['consistency','🎯','Consistency','Complete your planned tasks today']
-  ];
-
-  return `
-    <div class="card">
-      <div class="eyebrow">YOUR CHALLENGES</div>
-      <h2>Build good habits.</h2>
-      <p class="muted">Choose realistic challenges that fit your day.</p>
+  $('screen').innerHTML=`
+    <div class="page-heading">
+      <div class="eyebrow">PUSH YOURSELF</div>
+      <h1>Challenges.</h1>
+      <p class="muted">Build useful habits at a sustainable pace.</p>
     </div>
-    ${options.map(c=>{
-      const done=challenges.some(x=>x.id===c[0]&&x.done);
-
+    ${CHALLENGE_LIST.map(c=>{
+      const value=challengeProgress(c);
+      const done=value>=c.days;
       return `
-        <div class="badge ${done?'unlocked':''}">
-          <b>${c[1]} ${c[2]}</b>
-          <p class="muted">${c[3]}</p>
-          <button class="${done?'secondary':'primary'}"
-            onclick="toggleChallenge('${c[0]}')">
-            ${done?'Completed ✓':'Mark complete'}
-          </button>
-        </div>`;
+        <section class="card">
+          <div class="section-head">
+            <h2>${escapeHTML(c.name)}</h2>
+            <span class="small">${done?'Completed':'In progress'}</span>
+          </div>
+          <p class="muted">${escapeHTML(c.desc)}</p>
+          <div class="progress-track"><i style="width:${Math.min(100,value/c.days*100)}%"></i></div>
+          <div class="muted small">${value} / ${c.days}</div>
+        </section>
+      `;
     }).join('')}
   `;
 }
@@ -1410,27 +1666,59 @@ function renderChallenges(){
 // ==========================================
 
 function renderStore(){
-  return `
-    <div class="card center">
-      <div class="eyebrow">REDLINE STORE</div>
-      <h1>🪙 ${coins} coins</h1>
-      <p class="muted">Earn coins by completing tasks and focus sessions.</p>
-      <h2>Your avatar: ${shop.find(x=>x.id===avatar)?.emoji||'⚡'}</h2>
+  $('screen').innerHTML=`
+    <div class="page-heading">
+      <div class="eyebrow">SPEND YOUR REWARDS</div>
+      <h1>Store.</h1>
+      <p class="muted">Unlock avatars using coins earned from progress.</p>
     </div>
 
-    ${shop.map(item=>`
-      <div class="shop-item">
-        <div class="emoji">${item.emoji}</div>
-        <div class="details">
-          <b>${item.name}</b>
-          <div class="muted">${item.price===0?'Free':item.price+' coins'}</div>
+    <section class="hero">
+      <div class="eyebrow">YOUR BALANCE</div>
+      <h1>${coins} 🪙</h1>
+      <p>Keep completing tasks to earn more.</p>
+    </section>
+
+    ${SHOP.map(item=>{
+      const isOwned=owned.includes(item.id);
+      const isActive=avatar===item.id;
+      return `
+        <div class="shop-item">
+          <div class="emoji">${item.emoji}</div>
+          <div class="details">
+            <b>${item.name}</b>
+            <div class="muted">${item.price===0?'Free':item.price+' coins'}</div>
+          </div>
+          <button class="${isActive?'secondary':'primary'}"
+            onclick="buyItem('${item.id}')">
+            ${isActive?'Equipped':isOwned?'Equip': 'Buy'}
+          </button>
         </div>
-        <button class="secondary" onclick="buyItem('${item.id}')">
-          ${avatar===item.id?'Equipped':owned.includes(item.id)?'Equip':item.price===0?'Get':'Buy'}
-        </button>
-      </div>
-    `).join('')}
+      `;
+    }).join('')}
   `;
+}
+
+function buyItem(id){
+  const item=SHOP.find(i=>i.id===id);
+  if(!item)return;
+  if(owned.includes(id)){
+    avatar=id;
+    save();
+    renderStore();
+    toast('Avatar equipped');
+    return;
+  }
+  if(coins<item.price){
+    toast('Not enough coins');
+    return;
+  }
+  coins-=item.price;
+  owned.push(id);
+  avatar=id;
+  save();
+  renderStore();
+  toast('New avatar unlocked!');
 }
 
 // ==========================================
@@ -1438,62 +1726,120 @@ function renderStore(){
 // ==========================================
 
 function renderMore(){
+  const activeAvatar=SHOP.find(i=>i.id===avatar)||SHOP[0];
+
   $('screen').innerHTML=`
     <div class="page-heading">
-      <div class="eyebrow">YOUR CONTROL CENTRE</div>
+      <div class="eyebrow">YOUR REDLINE</div>
       <h1>More.</h1>
-      <p class="muted">Build your system. Track your progress.</p>
+      <p class="muted">Your tools, settings and rewards.</p>
     </div>
 
-    <div class="card">
-      <div class="eyebrow">YOUR PROFILE</div>
-      <h2>${shop.find(x=>x.id===avatar)?.emoji||'⚡'} Level ${level()}</h2>
-      <p class="muted">${xp} XP · ${coins} coins</p>
-      <div class="progress-track"><i style="width:${xpPercent()}%"></i></div>
+    <section class="hero">
+      <div style="font-size:45px">${activeAvatar.emoji}</div>
+      <div class="eyebrow">LEVEL ${level()}</div>
+      <h1>${activeAvatar.name}</h1>
+      <p>${xp} total XP · ${coins} coins</p>
+      <div class="progress-track"><i style="width:${levelXP()}%"></i></div>
+      <div class="muted">${levelXP()} / 100 XP to next level</div>
+    </section>
+
+    <div class="grid">
+      <button class="card center" onclick="renderAchievements()">
+        <div style="font-size:25px">🏆</div>
+        <b>Achievements</b>
+        <div class="muted">Your milestones</div>
+      </button>
+      <button class="card center" onclick="renderChallenges()">
+        <div style="font-size:25px">🎯</div>
+        <b>Challenges</b>
+        <div class="muted">Build consistency</div>
+      </button>
+      <button class="card center" onclick="renderStore()">
+        <div style="font-size:25px">🛍️</div>
+        <b>Store</b>
+        <div class="muted">Unlock avatars</div>
+      </button>
+      <button class="card center" onclick="go('calendar')">
+        <div style="font-size:25px">🗓️</div>
+        <b>Calendar</b>
+        <div class="muted">Manage your time</div>
+      </button>
     </div>
 
-    <div class="card">
-      <div class="section-head"><h2>🏆 Achievements</h2></div>
-      ${renderAchievements()}
-    </div>
+    <section class="card">
+      <h2>Weekly focus goal</h2>
+      <p class="muted">Set your target in hours per week.</p>
+      <div class="field">
+        <input id="weeklyGoalInput" type="number" min="1" max="168" value="${weeklyGoal}">
+      </div>
+      <button class="primary block" onclick="saveGoal()">Save goal</button>
+    </section>
 
-    <div class="card">
-      <div class="section-head"><h2>🎮 Challenges</h2></div>
-      ${renderChallenges()}
-    </div>
-
-    <div class="card">
-      <div class="section-head"><h2>🛍️ Avatar store</h2></div>
-      ${renderStore()}
-    </div>
-
-    <div class="card">
-      <div class="eyebrow">WEEKLY GOAL</div>
-      <h2>Set your target</h2>
-      <input id="goalInput" type="number" min="1" max="500" value="${weeklyGoal}">
-      <button class="primary block" onclick="
-        const n=Number($('goalInput').value);
-        if(!Number.isInteger(n)||n<1||n>500){toast('Choose 1 to 500');}
-        else{weeklyGoal=n;save();render();toast('Goal updated');}
-      ">Save goal</button>
-    </div>
-
-    <div class="card">
-      <div class="eyebrow">YOUR DATA</div>
-      <h2>Backup and restore</h2>
+    <section class="card">
+      <h2>Data & backup</h2>
+      <p class="muted">Export your progress before changing devices or clearing browser data.</p>
       <button class="secondary block" onclick="exportData()">Export backup</button>
       <div class="field">
-        <label>RESTORE A BACKUP</label>
-        <input type="file" accept=".json,application/json"
-          onchange="importData(this.files[0])">
+        <label>RESTORE BACKUP</label>
+        <input type="file" accept=".json,application/json" onchange="importData(this)">
       </div>
-    </div>
+    </section>
+
+    <section class="card">
+      <h2>About Redline</h2>
+      <p class="muted">Redline helps you organise your tasks, focus sessions, events and progress.</p>
+      <p class="muted small">Version 2.1 · Your data is stored locally on this device/browser.</p>
+    </section>
   `;
 }
 
+function saveGoal(){
+  const value=Number($('weeklyGoalInput').value);
+  if(!Number.isFinite(value)||value<1||value>168){
+    toast('Enter a goal between 1 and 168 hours');
+    return;
+  }
+  weeklyGoal=value;
+  save();
+  renderMore();
+  toast('Weekly goal updated');
+}
+
 // ==========================================
-// START APP
+// INITIALISE
 // ==========================================
+
+function initialise(){
+  if(!Array.isArray(tasks))tasks=[];
+  if(!Array.isArray(events))events=[];
+  if(!Array.isArray(exams))exams=[];
+  if(!Array.isArray(completedDays))completedDays=[];
+  if(!Array.isArray(cats)||!cats.length)cats=['Study','Personal','Fitness','Other'];
+
+  ensureRecurringSchedule();
+  save();
+
+  if(timerRunning){
+    timerLeft=Math.max(0,Math.ceil((timerEndAt-Date.now())/1000));
+    if(timerLeft<=0){
+      timerRunning=false;
+      timerEndAt=0;
+      timerLeft=timerLength;
+      save();
+    }else{
+      timerId=setInterval(updateTimer,1000);
+    }
+  }
+
+  document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden&&timerRunning)updateTimer();
+  });
+
+  window.addEventListener('pageshow',()=>{
+    if(timerRunning)updateTimer();
+  });
+}
 
 initialise();
 render();
