@@ -13,8 +13,9 @@
 </head>
 <body>
 <script>
-window.addEventListener('error',function(e){var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99;background:#b00020;color:#fff;padding:12px;font:13px monospace;white-space:pre-wrap';d.textContent='ERROR: '+e.message+' ('+String(e.filename||'').split('/').pop()+' line '+e.lineno+')';document.body.appendChild(d)});
-setTimeout(function(){var m=document.getElementById('screen');if(!m||!m.innerHTML.trim()){var d=document.createElement('div');d.style.cssText='padding:20px;color:#fff;font:14px sans-serif';d.textContent='Redline did not render. core.js '+(window.__p>=1?'OK':'MISSING')+', screens1.js '+(window.__p>=2?'OK':'MISSING')+', screens2.js '+(window.__p>=3?'OK':'MISSING');document.body.appendChild(d)}},1500);
+window.__e=[];
+window.addEventListener('error',function(ev){window.__e.push(ev.message+' ('+String(ev.filename||'').split('/').pop()+' line '+ev.lineno+')');var d=document.getElementById('errbar');if(!d){d=document.createElement('div');d.id='errbar';d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99;background:#b00020;color:#fff;padding:12px;font:13px monospace;white-space:pre-wrap;max-height:70vh;overflow:auto';document.body.appendChild(d)}d.textContent=window.__e.map(function(x,i){return (i+1)+') '+x}).join('\n')});
+setTimeout(function(){var m=document.getElementById('screen');if(!m||!m.innerHTML.trim()){var d=document.createElement('div');d.style.cssText='padding:20px;color:#fff;font:14px sans-serif';d.textContent='Redline did not render. core.js '+(typeof save==='function'?'OK':'BROKEN')+', screens1.js '+(typeof renderCalendar==='function'?'OK':'BROKEN')+', screens2.js '+(typeof renderFocus==='function'?'OK':'BROKEN');document.body.appendChild(d)}},1500);
 </script>
 
 <div class="app">
