@@ -1,5 +1,5 @@
-// Redline service worker: makes the app load offline and count as installable.
-const CACHE = 'redline-v25';
+// Redline service worker
+const CACHE = 'redline-v26';
 const FILES = [
   './',
   './index.html',
@@ -14,9 +14,9 @@ const FILES = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE).then(cache =>
-      Promise.all(FILES.map(url => cache.add(url).catch(() => null)))
-    ).then(() => self.skipWaiting())
+    caches.open(CACHE)
+      .then(cache => Promise.all(FILES.map(url => cache.add(url).catch(() => null))))
+      .then(() => self.skipWaiting())
   );
 });
 
@@ -28,8 +28,6 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Network first: online users always get the newest files,
-// offline users get the saved copy.
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
