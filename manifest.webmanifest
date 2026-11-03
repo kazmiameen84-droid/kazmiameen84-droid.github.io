@@ -1,1 +1,24 @@
-{"name":"Redline","short_name":"Redline","description":"Daily task tracker and productivity app","start_url":"./index.html","scope":"./","display":"standalone","orientation":"portrait","background_color":"#fbf5f4","theme_color":"#d62839","icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]}
+{
+  "name": "Redline",
+  "short_name": "Redline",
+  "description": "Plan with precision. Execute with discipline. Progress without excuses.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#071426",
+  "theme_color": "#071426",
+  "categories": ["productivity", "education"],
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "screenshots": [
+    {"src": "screenshot-1-dashboard.png", "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow", "label": "Command centre dashboard"},
+    {"src": "screenshot-2-calendar.png", "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow", "label": "Calendar"},
+    {"src": "screenshot-3-focus.png", "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow", "label": "Focus timer"},
+    {"src": "screenshot-4-progress.png", "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow", "label": "Progress"}
+  ]
+}
