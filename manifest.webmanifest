@@ -20,5 +20,10 @@
     {"src": "screenshot-2-calendar.png", "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow", "label": "Calendar"},
     {"src": "screenshot-3-focus.png", "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow", "label": "Focus timer"},
     {"src": "screenshot-4-progress.png", "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow", "label": "Progress"}
+  ],
+  "shortcuts": [
+    {"name": "Focus", "short_name": "Focus", "description": "Start a focus session", "url": "./?tab=focus", "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"}]},
+    {"name": "Today", "short_name": "Today", "description": "Open today's tasks", "url": "./?tab=today", "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"}]},
+    {"name": "Calendar", "short_name": "Plan", "description": "Open the calendar", "url": "./?tab=calendar", "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"}]}
   ]
 }
